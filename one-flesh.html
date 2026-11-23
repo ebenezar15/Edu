@@ -452,6 +452,29 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
 .isn rect { fill: transparent; stroke: var(--sky); stroke-width: 3; stroke-dasharray: 6 4; transition: all .8s; }
 .wwl { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
 @media (max-width: 760px) { .ladw { grid-template-columns: minmax(0, 1fr); } }
+
+/* v7 */
+.nwd { animation: pop .5s cubic-bezier(.3,1.5,.5,1) both; transform-box: fill-box; transform-origin: center; }
+.slidep { animation: dash 1.2s linear infinite; }
+.spin-slow { animation: spin 40s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.orbitg { animation: spin 60s linear infinite; }
+.orbitg:hover { animation-play-state: paused; }
+.bnode { cursor: pointer; } .bnode.on circle { fill: var(--rose-soft); stroke-width: 3; }
+.bnt { transform-box: fill-box; transform-origin: center; animation: spin 60s linear infinite reverse; }
+.hbeat { transform-box: fill-box; transform-origin: center; animation: hb 1.4s infinite; }
+.spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0; border-radius: 14px; overflow: hidden; }
+.specc { padding: 16px; background: color-mix(in srgb, var(--c) 14%, transparent); border-top: 4px solid var(--c); display: grid; gap: 6px; align-content: start; }
+.specc b { font-family: var(--display); font-size: 18px; } .specc p { font-size: 14.5px; color: var(--muted); }
+.anode { cursor: pointer; } .anode.on circle { stroke-width: 4; fill: var(--gold-soft); }
+.flowl { animation: dash 1.2s linear infinite; }
+.heatw { overflow-x: auto; }
+.heat { border-collapse: separate; border-spacing: 4px; min-width: 520px; width: 100%; }
+.heat th { font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 500; text-align: left; }
+.heat tbody th { font-family: var(--body); font-size: 14px; color: var(--ink); }
+.heat td i, .hk { display: block; height: 26px; border-radius: 6px; animation: pop .5s both; }
+.hk { display: inline-block; width: 14px; height: 14px; margin-right: 6px; vertical-align: middle; animation: none; }
+.h0 { background: var(--line); } .h1 { background: color-mix(in srgb, var(--rose) 25%, transparent); } .h2 { background: color-mix(in srgb, var(--rose) 55%, transparent); } .h3 { background: var(--rose); }
 </style>
 
 <canvas id="bgfx" aria-hidden="true"></canvas>
@@ -544,10 +567,10 @@ function orbit() {
 /* ============ navigation ============ */
 const NAV = [
   { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['learning', 'How We Learn About Sex'], ['lovelust', 'Love, Lust & Sin'], ['myths', 'Myths & Misunderstandings']] },
-  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan']] },
+  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan'], ['drive', 'Desire, Drive & Widowhood'], ['benefits', 'Benefits of Sex'], ['ssa', 'Same-Sex Attraction']] },
   { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['struggles', 'Struggles in Marriage'], ['closeness', 'Intimacy Without Sex'], ['foreplay', 'Foreplay & Touch'], ['practice', 'The Act: Process & Safety'], ['positions', 'Positions & Penetration'], ['deeper', 'Deeper Pleasure'], ['variety', 'Keeping It Alive'], ['questions', 'Oral Sex & Honest Questions'], ['pain', 'When It Is Hard or Painful'], ['aftercare', 'Pain, Cool-down & Aftercare']] },
-  { g: 'Shadows', c: 'var(--rose)', items: [['falls', 'Why Good People Fall'], ['chains', 'Domino Chains & Consequences'], ['premarital', 'Pre-marital Sex & Dating'], ['affairs', 'Affairs: Anatomy & Recovery'], ['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
-  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['healing', 'Healing & Freedom'], ['sinful', 'When Sex Feels Sinful'], ['energy', 'Creative Power Before Marriage']] },
+  { g: 'Shadows', c: 'var(--rose)', items: [['falls', 'Why Good People Fall'], ['chains', 'Domino Chains & Consequences'], ['premarital', 'Pre-marital Sex & Dating'], ['casual', 'Sex Without Commitment'], ['affairs', 'Affairs: Anatomy & Recovery'], ['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
+  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['addictions', 'Addictions & Statistics'], ['healing', 'Healing & Freedom'], ['sinful', 'When Sex Feels Sinful'], ['energy', 'Creative Power Before Marriage']] },
   { g: 'Teaching', c: 'var(--gold)', items: [['children', 'Teaching Children'], ['teach', 'Curriculum by Age'], ['counsel', 'Counselling Toolkit']] },
   { g: 'Reference', c: 'var(--muted)', items: [['solver', 'Problem Solver'], ['vocab', 'Sexual Vocabulary'], ['stats', 'Statistics'], ['sources', 'Books & Sources']] }
 ];
@@ -3315,6 +3338,166 @@ M.solver = {
   mount() {
     const show = i => { const P = PROB[i]; $$('#psC .chip').forEach((c, j) => c.setAttribute('aria-pressed', j === i)); $('#psO').innerHTML = `<h3 style="font-size:24px;margin:12px 0 8px">${P[0]}</h3>${flow('psf', P[1], true)}<div class="chips" style="margin-top:10px"><span class="label" style="align-self:center">Go deeper:</span>${P[2].map(id => `<a class="chip" href="#${id}">${TITLE[id]}</a>`).join('')}</div>`; };
     $('#psC').addEventListener('click', e => { const c = e.target.closest('[data-p]'); if (c) show(+c.dataset.p); }); show(0);
+  }
+};
+
+/* ================= v7 modules ================= */
+/* ---------- SEX WITHOUT COMMITMENT ---------- */
+M.casual = {
+  t: 'Sex Without Commitment', e: 'Shadows',
+  l: 'Casual sex, multiple partners, live-in relationships and "friends with benefits" are now common in Indian cities. This section covers what research shows about their effects, why God designed sex for covenant, and how people, especially teens and young adults, end up there.',
+  h() {
+    return `${sec('Your sexual network', `<div class="stage"><svg viewBox="0 0 640 380" id="netS" role="img" aria-label="Sexual network diagram"></svg><label class="label" for="nwR">Each person has had <b id="nwV">3</b> partners before</label><input type="range" id="nwR" min="0" max="5" value="3" style="width:100%;accent-color:var(--rose)"><p id="nwT"></p></div>`, 'When you have sex with someone, you are also exposed, biologically, to the infections of everyone they have been with, and everyone those people have been with. Drag to see how fast the network grows.')}
+    ${sec('What research shows', cards([
+      ['Mental health', 'Hookups were associated with more depression and distress among first-year college women (Fielder & Carey, 2013). Many people of both sexes report regret after casual sex, women more often.', 'Emotional'],
+      ['Later marital stability', 'Sociologist Nicholas Wolfinger (Institute for Family Studies, 2016) found US women who married with 0-1 previous partners had the lowest divorce rates; rates were higher with more partners. The data are correlational.', 'Marriage'],
+      ['Living together first', 'Couples who lived together before engagement reported lower marital quality and higher divorce proneness than those who waited until engagement or marriage (Rhoades, Stanley & Markman, 2009). Researchers call it "sliding vs deciding".', 'Live-in'],
+      ['Infections', 'STI risk rises with each partner and each partner\'s network. Many infections (HPV, chlamydia, herpes) have no symptoms. HPV causes most cervical cancer.', 'Physical'],
+      ['Bonding & comparison', 'Bonding hormones attach us to partners whether or not we intend commitment. Many describe lingering attachments, comparisons and intrusive memories in later marriage.', 'Bonding'],
+      ['Unequal stakes', 'Unplanned pregnancy, unsafe abortion, social stigma and violence fall more heavily on women, especially in India.', 'Justice']
+    ]))}
+    ${sec('Sliding vs deciding', `<div class="stage"><svg viewBox="0 0 640 210" role="img" aria-label="Sliding versus deciding">
+      <path d="M20 60 C 140 60 200 110 320 110 S 520 160 620 160" fill="none" stroke="var(--rose)" stroke-width="4" stroke-dasharray="8 6" class="slidep"/>
+      ${['Dating', 'Staying over', 'Keeping things there', 'Sharing rent', 'Marriage by inertia'].map((t, i) => `<g class="prin" style="animation-delay:${i * .25}s"><circle cx="${20 + i * 150}" cy="${[60, 92, 112, 138, 160][i]}" r="7" fill="var(--rose)"/><text x="${20 + i * 150}" y="${[60, 92, 112, 138, 160][i] - 14}" text-anchor="${i === 0 ? 'start' : i === 4 ? 'end' : 'middle'}" class="ft" style="font-size:11px">${t}</text></g>`).join('')}
+      <circle r="9" fill="var(--rose)" class="slider-ball"><animateMotion dur="6s" repeatCount="indefinite" path="M20 60 C 140 60 200 110 320 110 S 520 160 620 160"/></circle>
+      <text x="20" y="195" class="ft" style="fill:var(--rose);font-weight:700">Sliding: no clear decision; commitment happens by default</text></svg>${note('Deciding is the alternative: clear, conscious commitment before living together and before sex, which in Christian terms is the covenant of marriage. Commitment that is decided is stronger than commitment that happened to you.', 'sage')}</div>`)}
+    ${sec('Why God designed sex for covenant', `<div class="stage"><svg viewBox="0 0 640 260" role="img" aria-label="Covenant protects intimacy"><circle cx="320" cy="130" r="110" fill="none" stroke="var(--gold)" stroke-width="3" stroke-dasharray="6 6" class="spin-slow" style="transform-origin:320px 130px"/><text x="320" y="20" text-anchor="middle" class="ft" style="font-weight:700;fill:var(--gold)">COVENANT: a promise for life</text><circle cx="290" cy="130" r="48" fill="var(--rose-soft)" stroke="var(--rose)"/><circle cx="350" cy="130" r="48" fill="var(--sky-soft)" stroke="var(--sky)"/><text x="320" y="134" text-anchor="middle" style="font-family:var(--display);font-weight:700;fill:var(--ink)">one flesh</text>${[['Safety to be vulnerable', 60, 60], ['Trust to be fully known', 60, 200], ['Security for children', 580, 60], ['Bonding that lasts', 580, 200]].map((r, i) => `<text x="${r[1]}" y="${r[2]}" text-anchor="${r[1] < 320 ? 'start' : 'end'}" class="ft prin" style="animation-delay:${i * .2}s;font-size:12px">${r[0]}</text>`).join('')}</svg></div>`, 'Sex creates the deepest vulnerability two people can share. Covenant is the protective wall that makes that vulnerability safe.')}
+    ${sec('How people end up there', flow('casflow', [
+      ['Drivers', 'Curiosity, loneliness, wanting to feel desired, peer pressure ("everyone has"), porn-shaped expectations, rebellion against strict homes, alcohol.'],
+      ['Settings', 'Hostels, PGs, IT-city flats, college trips, parties, dating apps, long-distance from family.'],
+      ['The first time', 'Usually within a romantic relationship, often unplanned, often late at night, alone, and sometimes after drinking. Some first experiences are pressured or coerced.'],
+      ['After', 'Some feel closer, many feel regret or anxiety. Once the line is crossed, the next time feels easier ("what\'s the point now?").'],
+      ['Pattern', 'Serial relationships, hookups or live-in arrangements can become normal.'],
+      ['The way back', 'Honesty, grace, boundaries, community. Restoration is real (see Pre-marital Sex & Dating).']
+    ]))}
+    ${sec('Who initiates?', cards([
+      ['In couples', 'Studies of heterosexual couples consistently find men initiate sex more often than women, though many women initiate too, and the gap narrows in satisfied long-term relationships.', 'Research'],
+      ['First sex in India', 'For most Indian women, first sex happens within marriage. In the Youth in India study, a notable minority of young women who had pre-marital sex reported it was forced or pressured. Men more often describe first sex as their choice.', 'India'],
+      ['Pressure goes both ways', 'Boys and young men also experience pressure, from peers to "prove" themselves and sometimes from older women.', 'Both']
+    ]))}
+    ${sec('Stories (composites)', cases([
+      { tag: 'Live-in, Bengaluru', k: 'rose', t: 'Three years, no decision', s: 'Ashwin and Neha moved in to save rent. After three years his parents arranged his marriage elsewhere; she was devastated and felt "used".', w: 'Sliding: deep bonding without a decided commitment.', h: 'Counselling; her church friends; time.', o: 'Lesson: live-in creates marriage-level bonding without marriage-level protection.' },
+      { tag: 'Engineering student', k: 'sky', t: 'Dating apps in first year', s: 'Karthik, from a Christian home in Tirunelveli, joined dating apps in his Chennai hostel and had several casual partners in two years. He felt empty and later developed anxiety about intimacy with his fiancée.', h: 'Honest disclosure to his fiancée with a counsellor present; STI tests; therapy.', o: 'Lesson: casual sex rarely stays casual inside you.' }
+    ]))}`;
+  },
+  mount() {
+    const draw = p => { $('#nwV').textContent = p; const S = $('#netS'); let html = '', n1 = p, n2 = p * p, n3 = p * p * p;
+      const ring = (cnt, R, col, delay) => { let h = ''; for (let i = 0; i < Math.min(cnt, 140); i++) { const a = i / Math.min(cnt, 140) * Math.PI * 2; h += `<circle cx="${320 + R * Math.cos(a)}" cy="${190 + R * .8 * Math.sin(a)}" r="${R < 80 ? 7 : R < 140 ? 5 : 3}" fill="${col}" class="nwd" style="animation-delay:${delay + i * .004}s"/>`; } return h; };
+      html += `<circle cx="320" cy="190" r="12" fill="var(--sage)"/><text x="320" y="166" text-anchor="middle" class="ft" style="font-weight:700">You</text>`;
+      if (p) { html += `<circle cx="320" cy="190" r="70" fill="none" stroke="var(--line)" stroke-dasharray="3 5"/>` + ring(n1, 70, 'var(--gold)', 0) + `<circle cx="320" cy="190" r="125" fill="none" stroke="var(--line)" stroke-dasharray="3 5"/>` + ring(n2, 125, 'var(--rose)', .3) + `<circle cx="320" cy="190" r="175" fill="none" stroke="var(--line)" stroke-dasharray="3 5"/>` + ring(n3, 175, 'var(--muted)', .6); }
+      S.innerHTML = html; const tot = n1 + n2 + n3;
+      $('#nwT').innerHTML = p === 0 ? '<b>A faithful couple who both waited:</b> a network of one. No indirect exposure at all.' : `<b>If you and each partner had ${p} previous partner${p > 1 ? 's' : ''}:</b> ${n1} direct, ${n2} second-level and ${n3} third-level contacts, so <b>${tot}</b> people in your network within three steps. (A simplified model; real networks overlap.)`; };
+    $('#nwR').addEventListener('input', e => draw(+e.target.value)); draw(3);
+  }
+};
+
+/* ---------- DESIRE, DRIVE & WIDOWHOOD ---------- */
+M.drive = {
+  t: 'Desire, Drive & Widowhood', e: 'Body & Mind',
+  l: 'Do all women have sexual desire from puberty? How do men\'s and women\'s drives differ, what triggers them, and how do people handle them? Why do many widows in India seem to lose interest in sex, and what really happens?',
+  h() {
+    return `${sec('Two rhythms', `<div class="stage"><svg viewBox="0 0 640 260" role="img" aria-label="Hormone rhythms"><text x="10" y="18" class="ft" style="font-size:11px;fill:var(--sky);font-weight:700">HIS TESTOSTERONE: A DAILY RHYTHM (HIGHEST IN THE MORNING)</text>
+      <path id="mPath" d="M20 40 C 120 40 200 100 320 108 S 520 92 620 44" fill="none" stroke="var(--sky)" stroke-width="3"/>${['6am', 'noon', '6pm', 'midnight', '6am'].map((t, i) => `<text x="${20 + i * 150}" y="126" class="ft" style="font-size:10px;fill:var(--muted)">${t}</text>`).join('')}
+      <text x="10" y="150" class="ft" style="font-size:11px;fill:var(--rose);font-weight:700">HER CYCLE: A MONTHLY RHYTHM (DESIRE OFTEN PEAKS AROUND OVULATION)</text>
+      <path id="fPath" d="M20 240 C 80 238 140 220 200 190 C 240 170 260 166 290 168 C 320 172 340 210 380 212 C 440 214 500 200 560 225 S 610 240 620 240" fill="none" stroke="var(--rose)" stroke-width="3"/>${['day 1', 'day 7', 'day 14', 'day 21', 'day 28'].map((t, i) => `<text x="${20 + i * 150}" y="256" class="ft" style="font-size:10px;fill:var(--muted)">${t}</text>`).join('')}
+      <circle id="mDot" r="7" fill="var(--sky)"/><circle id="fDot" r="7" fill="var(--rose)"/></svg><p class="label">Illustrative curves showing typical patterns, not exact hormone values.</p></div>`)}
+    ${sec('Do all women have sexual desire from puberty?', split(panel('Short answer', prose(['<b>Most women do, but it often looks different from men\'s desire.</b> Rising oestrogen and testosterone at puberty awaken attraction, romantic longing and physical arousal in most girls, often from about 10-14.', 'Women\'s desire is more often <i>responsive</i> and context-dependent, so many girls and women don\'t recognise it as "sexual desire" the way boys do. In shame-based cultures many also learn to suppress or deny it.', 'About 1% of people report little or no sexual attraction at all (Bogaert, 2004), described as asexuality. A small minority of women have medically low desire (HSDD).']), 'rose'), panel('Why it\'s often hidden', ul(['Girls are taught "good girls don\'t", so desire becomes shameful.', 'Desire may feel emotional (longing to be held, chosen) rather than genital.', 'Women\'s physical arousal and felt desire often don\'t match (non-concordance).', 'Little language: many Indian women have never been asked or allowed to describe desire.']), 'gold')))}
+    ${sec('Drive: triggers and handling', tbl(['', 'Men (common patterns)', 'Women (common patterns)'], [
+      ['Main triggers', 'Visual cues, novelty, morning testosterone, physical closeness, stress relief', 'Emotional closeness, feeling desired, words, touch, ovulation, rest, safety'],
+      ['Turn-offs', 'Rejection, criticism, performance worry', 'Stress, pain, resentment, exhaustion, feeling used, mess and mental load'],
+      ['How it feels', 'Often urgent and physical; "out of nowhere"', 'Often builds slowly; "willing first, wanting later"'],
+      ['Healthy handling (single)', 'Exercise, purpose, guarding eyes and late nights, friendship, accountability', 'Naming desire without shame, community, guarding romance fantasy, purpose'],
+      ['Healthy handling (married)', 'Pursue her heart; communicate; accept no gracefully', 'Name brakes; initiate sometimes; tell him what helps'],
+      ['Unhealthy handling', 'Porn, masturbation with fantasy, pressure, affairs', 'Suppression and numbness, emotional affairs, romance novels, resentment']
+    ]) + note('These are tendencies, not rules. Many women have higher drive than their husbands; many men have responsive desire. Treat your spouse as a person, not a statistic.', 'sage'))}
+    ${sec('Widowhood and desire in India', `<div class="stage"><input type="range" id="wdR" min="0" max="4" value="0" style="width:100%;accent-color:var(--rose)" aria-label="Time since loss"><div class="age-ticks" style="grid-template-columns:repeat(5,1fr)"><span>First months</span><span>Year 1</span><span>Years 2-3</span><span>Years 4+</span><span>Later life</span></div><div id="wdO"></div></div>`, 'Drag through the years after losing a husband. India has over 4 crore widowed women (Census 2011), many widowed young.')}
+    ${sec('Why many widows appear to "lose interest"', cards([
+      ['Grief', 'Desire often disappears during acute grief: the body is in survival mode.', 'Body'],
+      ['Age & menopause', 'Many widows are older; menopause and health problems lower desire.', 'Body'],
+      ['Social control', 'White sarees, removing the thali and bangles, being kept away from celebrations: traditional practices that desexualise widows and police them.', 'Culture'],
+      ['Gossip & honour', 'Any male friendship invites suspicion, so many widows suppress all expression.', 'Culture'],
+      ['Children & in-laws', 'Families often oppose remarriage, especially over property.', 'Family'],
+      ['Faith & conscience', 'Some feel remarriage or desire would betray their husband or God. Scripture says otherwise (below).', 'Belief']
+    ]) + note('<b>Strong, or suppressed?</b> Some widows genuinely feel little desire; others feel it and suppress it in silence with guilt. Neither strength nor weakness is the full story. No reliable statistics exist on affairs among Indian widows (Christian or otherwise). Counsellors report that loneliness makes widows vulnerable to emotional exploitation by men who offer "help", including in churches.', 'rose'))}
+    ${sec('What Scripture says to widows', verses([['1 Corinthians 7:39', 'A wife is bound to her husband as long as he lives. But if her husband dies, she is free to be married to whom she wishes, only in the Lord.'], ['1 Timothy 5:14', 'I would have younger widows marry, bear children, manage their households.'], ['1 Corinthians 7:8-9', 'To the unmarried and the widows I say that it is good for them to remain single... But if they cannot exercise self-control, they should marry.'], ['James 1:27', 'Religion that is pure... is this: to visit orphans and widows in their affliction.']]))}
+    ${sec('How churches can help', steps([['Honour, don\'t police', 'Include widows in celebrations; reject practices that shame them.'], ['Bless remarriage', 'Teach 1 Cor 7:39 openly; support widows (and widowers) who choose to remarry.'], ['Protect from exploitation', 'Watch for men targeting lonely widows with "help" or money.'], ['Meet real needs', 'Company, finances, children\'s education, touch and friendship.'], ['Talk about desire', 'Normalise that grief and desire can co-exist and that neither is sin.']]))}
+    ${sec('Story (composite)', cases([{ tag: 'Widow, 34, Tamil Nadu', k: 'rose', t: '"I am not supposed to want anything"', s: 'Mary was widowed at 31 with two children. Her in-laws expected her to live quietly; she felt intense loneliness and desire and believed both were sinful. A married man at church began "helping" with bills and messaging her late at night.', h: 'A pastor\'s wife noticed, ended the contact, and walked through 1 Cor 7 and 1 Tim 5 with her. The church supported her remarriage two years later despite family resistance.', o: 'Lesson: lonely widows are vulnerable; honest teaching and community protect them.' }]))}`;
+  },
+  mount() {
+    const m = $('#mPath'), f = $('#fPath'), Lm = m.getTotalLength(), Lf = f.getTotalLength(), md = $('#mDot'), fd = $('#fDot'), t0 = performance.now(); let raf;
+    const tick = t => { if (!m.isConnected) return; const k = ((t - t0) / 8000) % 1, a = m.getPointAtLength(k * Lm), b = f.getPointAtLength(k * Lf); md.setAttribute('cx', a.x); md.setAttribute('cy', a.y); fd.setAttribute('cx', b.x); fd.setAttribute('cy', b.y); if (!RM) raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick);
+    const W = [['First months', 'Shock and grief. Desire usually disappears; sleep, appetite and concentration suffer. Rituals and visitors fill the days.', 'Presence, meals, practical help. Don\'t talk about remarriage.'], ['Year 1', 'Loneliness sets in after the visitors leave. Some feel desire return and are shocked or ashamed.', 'Normalise feelings; grief counselling; widow support groups.'], ['Years 2-3', 'Practical and financial pressures; questions of remarriage; vulnerability to exploitative "helpers".', 'Teach 1 Cor 7:39; protect; mentoring.'], ['Years 4+', 'A new identity forms: some remarry, some flourish single, some stay isolated.', 'Community, purpose, friendship; bless either path.'], ['Later life', 'Health, children leaving, dependence. Touch and companionship remain real needs.', 'Visit (James 1:27); include; respect dignity.']];
+    const s = i => { const w = W[i]; $('#wdO').innerHTML = `<h3 style="margin:10px 0 8px;font-size:22px">${w[0]}</h3>${split(panel('What often happens', `<p>${w[1]}</p>`, 'gold'), panel('How to help', `<p>${w[2]}</p>`, 'sage'))}`; };
+    $('#wdR').addEventListener('input', e => s(+e.target.value)); s(0);
+  }
+};
+
+/* ---------- BENEFITS ---------- */
+const BEN = [['Heart', 'Men having sex at least twice a week had lower risk of cardiovascular events than those having it once a month or less (Hall et al., 2010). Correlational.'], ['Stress', 'Sex and affectionate touch lower stress hormones; people with recent intercourse showed lower blood-pressure reactions to stress (Brody, 2006).'], ['Sleep', 'Prolactin and oxytocin after orgasm promote relaxation and sleep.'], ['Pain relief', 'Endorphins and oxytocin raise pain thresholds; some people with migraines report relief after orgasm (Hambach et al., 2013).'], ['Bonding', 'Oxytocin and vasopressin deepen attachment to a spouse; sexual satisfaction predicts marital satisfaction.'], ['Happiness', 'Well-being rises with sexual frequency up to about once a week, then levels off (Muise et al., 2016).'], ['Prostate', 'Frequent ejaculation (21+ per month) was associated with lower prostate cancer risk (Rider et al., 2016).'], ['Pelvic floor', 'Orgasm contractions exercise the pelvic floor, supporting continence.'], ['Immunity', 'One small study found weekly sex linked to higher salivary antibodies (IgA). Weak evidence.'], ['Longevity', 'In the Welsh Caerphilly study, men with high orgasm frequency had lower mortality over 10 years (Davey Smith et al., 1997). Correlational.'], ['Self-esteem', 'Feeling desired and accepted by a spouse supports confidence and body image.'], ['Spiritual', 'Self-giving love practised in the body: a picture of Christ\'s love (Eph 5:32), received with thanksgiving (1 Tim 4:4).']];
+M.benefits = {
+  t: 'Benefits of Sex', e: 'Body & Mind',
+  l: 'Sex in a loving marriage is good for body, mind, relationship and spirit. Tap any benefit orbiting the heart to see the research behind it. Most studies are correlational: healthy, happy people may simply have more sex. The benefits come from loving, mutual sex, not from frequency alone.',
+  h() {
+    return `<div class="stage"><div class="wheelw"><svg viewBox="0 0 360 360" role="img" aria-label="Benefits orbit"><g class="orbitg" style="transform-origin:180px 180px">${BEN.map((b, i) => { const a = i / BEN.length * Math.PI * 2; return `<g class="bnode" data-b="${i}" tabindex="0" role="button"><circle cx="${180 + 140 * Math.cos(a)}" cy="${180 + 140 * Math.sin(a)}" r="24" fill="var(--surface)" stroke="var(--rose)" stroke-width="2"/><text x="${180 + 140 * Math.cos(a)}" y="${184 + 140 * Math.sin(a)}" text-anchor="middle" class="ft bnt" style="font-size:9px;font-weight:700">${b[0]}</text></g>`; }).join('')}</g><path d="M180 222 C 130 190 136 146 166 150 C 172 151 180 160 180 166 C 180 160 188 151 194 150 C 224 146 230 190 180 222 Z" fill="var(--rose)" class="hbeat"/></svg><div class="info" id="bnI"><span class="label">Tap a benefit</span><h3>Good by design</h3><p>"God saw everything that he had made, and behold, it was very good."</p></div></div></div>
+    ${sec('Benefits need the right conditions', cards([['Mutual and wanted', 'Pressured or painful sex carries none of the benefits and causes harm.', 'Condition'], ['Within trust', 'Bonding benefits depend on a safe, committed relationship.', 'Condition'], ['Not a cure', 'Sex does not fix a broken relationship; repair comes first.', 'Caution']]))}`;
+  },
+  mount() { const show = i => { $$('.bnode').forEach((g, j) => g.classList.toggle('on', j === i)); $('#bnI').innerHTML = `<span class="label">Benefit</span><h3>${BEN[i][0]}</h3><p>${BEN[i][1]}</p>`; }; $('.orbitg').addEventListener('click', e => { const g = e.target.closest('.bnode'); if (g) show(+g.dataset.b); }); }
+};
+
+/* ---------- SAME-SEX ATTRACTION ---------- */
+M.ssa = {
+  t: 'Same-Sex Attraction', e: 'Body & Mind',
+  l: 'What does research say leads to same-sex attraction? There is no single cause. This section summarises the science honestly, lays out the range of Christian views, and gives guidance for caring for people, including your own children, with love.',
+  h() {
+    return `${sec('What research suggests', `<div class="stage"><svg viewBox="0 0 640 300" role="img" aria-label="Factors linked to sexual orientation"><circle cx="320" cy="150" r="56" fill="var(--sky-soft)" stroke="var(--sky)" stroke-width="2"/><text x="320" y="146" text-anchor="middle" class="ft" style="font-weight:700">Sexual</text><text x="320" y="162" text-anchor="middle" class="ft" style="font-weight:700">orientation</text>
+      ${[['Genes', 'many small effects', 110, 50, '--gold'], ['Prenatal hormones', 'womb environment', 530, 50, '--rose'], ['Birth order', 'older brothers (men)', 90, 160, '--sage'], ['Unique experiences', 'not shared by siblings', 550, 160, '--sky'], ['Fluidity', 'change over life (more in women)', 130, 260, '--muted'], ['Parenting style?', 'not supported by evidence', 510, 260, '--muted']].map((r, i) => `<line x1="320" y1="150" x2="${r[2]}" y2="${r[3]}" stroke="var(${r[4]})" stroke-width="2" class="rootl" style="animation-delay:${i * .12}s"/><g class="rootn" style="animation-delay:${.3 + i * .12}s"><rect x="${r[2] - 88}" y="${r[3] - 22}" width="176" height="44" rx="12" fill="var(--surface)" stroke="var(${r[4]})"/><text x="${r[2]}" y="${r[3] - 3}" text-anchor="middle" class="ft" style="font-weight:700">${r[0]}</text><text x="${r[2]}" y="${r[3] + 13}" text-anchor="middle" class="ft" style="font-size:10px;fill:var(--muted)">${r[1]}</text></g>`).join('')}</svg></div>`)}
+    ${sec('The evidence in brief', cards([
+      ['Genetics', 'The largest study (Ganna et al., Science, 2019; about 477,000 people) found many genes each with tiny effects. Genetics explains part, not all; there is no "gay gene".', 'Genes'],
+      ['Twins', 'In a Swedish twin study, genetic factors accounted for about 35% of variation in men and about 18% in women, with unique (non-shared) environment accounting for most of the rest (Långström et al., 2010).', 'Twins'],
+      ['Birth order', 'Each older biological brother modestly raises the odds of a man being gay (the "fraternal birth order effect"), probably through a prenatal immune response.', 'Prenatal'],
+      ['Abuse & family', 'Childhood abuse is reported more often by gay and bisexual adults, but research has not shown it causes orientation. Parenting style is not supported as a cause.', 'Environment'],
+      ['Fluidity', 'Attractions can shift over life for some people, more often women (Diamond).', 'Change'],
+      ['Change efforts', 'Major medical bodies say "conversion therapy" is ineffective and harmful. In India, the Madras High Court (2021) directed action against it and the National Medical Commission (2022) declared it professional misconduct.', 'Caution']
+    ]))}
+    ${sec('Christian views', `<div class="stage"><div class="spec">${[['Traditional', 'Same-sex attraction is not itself sin; sexual activity outside man-woman marriage is. Calls for celibacy or, for some, marriage to the opposite sex. Held by Catholic, Orthodox and most evangelical churches in India.', 'var(--gold)'], ['"Side B" / celibate gay Christians', 'Accept a gay orientation as part of their story while committing to celibacy; emphasise friendship and community.', 'var(--sage)'], ['Affirming', 'Bless committed same-sex relationships; held by some Western denominations; a minority view in India.', 'var(--sky)']].map(v => `<div class="specc" style="--c:${v[2]}"><b>${v[0]}</b><p>${v[1]}</p></div>`).join('')}</div>${note('All three views agree that people with same-sex attraction are made in God\'s image, deserve love and dignity, and must never be mocked, abused or rejected by their families or churches.')}</div>`)}
+    ${sec('If your child or friend tells you', steps([['Thank them', '"Thank you for trusting me." They have probably feared this moment for years.'], ['Love first', '"I love you. That doesn\'t change." Rejection drives depression and suicide risk.'], ['Listen', 'Ask about their experience before offering your views.'], ['Don\'t blame', 'Not yourself, not them. There is no single cause.'], ['Protect', 'From bullying, forced marriage, "cures", and violence. Gay youth are often targets of abuse and blackmail.'], ['Walk together', 'Find wise, gentle pastoral support and keep the relationship open.']]))}`;
+  }
+};
+
+/* ---------- ADDICTIONS & STATISTICS ---------- */
+const ADD = [
+  ['Alcohol', '14.6%', 'of Indians aged 10-75 currently use alcohol (about 16 crore people); about 5.2% are harmful or dependent users.', 'National Survey on Substance Use, AIIMS/MoSJE, 2019', 'var(--gold)', ['Teens 0-17: low but rising', 'Young adults: high', 'Adults: highest', 'Older: moderate']],
+  ['Tobacco', '28.6%', 'of Indian adults use tobacco in some form (smoked or chewed).', 'GATS-2, 2016-17', 'var(--muted)', []],
+  ['Cannabis (ganja)', '2.8%', 'of Indians aged 10-75 used cannabis in the past year.', 'National Survey on Substance Use, 2019', 'var(--sage)', []],
+  ['Opioids', '2.1%', 'of Indians use opioids (heroin, pharmaceutical opioids, opium).', 'National Survey on Substance Use, 2019', 'var(--rose)', []],
+  ['Gaming disorder', '~3%', 'of gamers worldwide meet criteria for gaming disorder (meta-analysis, Stevens et al., 2021). Recognised by WHO (ICD-11).', 'Stevens et al., 2021', 'var(--sky)', []],
+  ['Online gambling & betting', 'Rising', 'Fantasy sports, rummy and betting apps have driven debt and suicides; Tamil Nadu banned online gambling (2022).', 'News & state legislation', 'var(--gold)', []],
+  ['Smartphone & social media', '20-40%', 'of Indian students show problematic smartphone use in many surveys (rates vary widely by method).', 'Various Indian studies', 'var(--sky)', []],
+  ['Pornography', '~92% / 60%', 'of US men / women reported porn use in the past month in a national sample (Solano et al., 2020). Indian data are scarce but use is widespread.', 'Solano, Eaton & O\'Leary, 2020', 'var(--rose)', []],
+  ['Compulsive sexual behaviour', '~8.6%', 'of US adults screened positive for clinically relevant distress about controlling sexual urges (10.3% men, 7% women).', 'Dickenson et al., JAMA Network Open, 2018', 'var(--rose)', []],
+  ['Romance & love addiction', 'Not measured', 'Compulsive pursuit of romantic highs, fantasy, or relationships; overlaps with emotional affairs and romance-novel binging.', 'Clinical literature', 'var(--rose)', []],
+  ['Food & sugar', 'Varies', 'Compulsive or emotional eating uses the same reward pathways; binge-eating disorder affects about 1-3% of adults.', 'Clinical literature', 'var(--sage)', []],
+  ['Work & shopping', 'Varies', 'Behavioural compulsions that are socially rewarded, so often unnoticed.', 'Clinical literature', 'var(--muted)', []]
+];
+const HEAT = [['Smartphone / social media', [3, 3, 3, 2, 1]], ['Gaming', [3, 3, 2, 1, 0]], ['Porn', [2, 3, 3, 2, 1]], ['Masturbation (compulsive)', [2, 3, 2, 1, 0]], ['Alcohol', [1, 2, 3, 3, 2]], ['Tobacco', [1, 2, 3, 3, 3]], ['Gambling & betting', [1, 2, 3, 2, 1]], ['Affairs / romance', [0, 1, 2, 3, 1]], ['Work', [0, 1, 2, 3, 2]]];
+M.addictions = {
+  t: 'Addictions & Statistics', e: 'Healing',
+  l: 'Porn and sex are not the only addictions. Many behaviours and substances hijack the same reward circuit. This section maps them, gives the best available statistics (with sources), shows which age groups are most at risk, and explains why many people never get hooked.',
+  h() {
+    return `${sec('One brain circuit, many hooks', `<div class="stage"><div class="wheelw"><svg viewBox="0 0 380 380" role="img" aria-label="Addictions around the dopamine reward circuit"><circle cx="190" cy="190" r="56" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2" class="hbeat" style="transform-origin:190px 190px"/><text x="190" y="186" text-anchor="middle" class="ft" style="font-weight:700">Dopamine</text><text x="190" y="202" text-anchor="middle" class="ft" style="font-size:10px">reward circuit</text>${ADD.map((a, i) => { const ang = i / ADD.length * Math.PI * 2 - Math.PI / 2, x = 190 + 148 * Math.cos(ang), y = 190 + 148 * Math.sin(ang); return `<line x1="190" y1="190" x2="${x}" y2="${y}" stroke="${a[4]}" stroke-width="1.5" stroke-dasharray="3 4" class="flowl"/><g class="anode" data-a="${i}" tabindex="0" role="button"><circle cx="${x}" cy="${y}" r="26" fill="var(--surface)" stroke="${a[4]}" stroke-width="2"/><text x="${x}" y="${y + 4}" text-anchor="middle" class="ft" style="font-size:8.5px;font-weight:700">${a[0].split(' ')[0]}</text></g>`; }).join('')}</svg><div class="info" id="adI"><span class="label">Tap any addiction</span><h3>The same hook</h3><p>Every addiction offers fast relief or pleasure through the brain's reward system. Over time it needs more for less effect (tolerance), and stopping feels bad (withdrawal).</p></div></div></div>`)}
+    ${sec('Prevalence (best available data)', `<div class="stage bars">${[['Tobacco use, Indian adults', 28.6, 'GATS-2 2016-17', 'var(--muted)'], ['Alcohol use, Indians aged 10-75', 14.6, 'National Survey on Substance Use, 2019', 'var(--gold)'], ['Compulsive sexual behaviour distress, US adults', 8.6, 'Dickenson et al., 2018', 'var(--rose)'], ['Harmful or dependent alcohol use, India', 5.2, 'National Survey on Substance Use, 2019', 'var(--gold)'], ['Gaming disorder among gamers, worldwide', 3, 'Stevens et al., 2021', 'var(--sky)'], ['Cannabis use, India', 2.8, 'National Survey on Substance Use, 2019', 'var(--sage)'], ['Opioid use, India', 2.1, 'National Survey on Substance Use, 2019', 'var(--rose)']].map(b => `<div class="bar"><div class="bar-h"><span>${b[0]}</span><b>${b[1]}%</b></div><div class="bar-t"><i style="width:${b[1] * 3}%;background:${b[3]}"></i></div><small>${b[2]}</small></div>`).join('')}</div>`, 'Bars are scaled for readability (x3). Different surveys use different methods, so compare carefully.')}
+    ${sec('Who is most at risk, by age', `<div class="stage"><div class="heatw"><table class="heat"><thead><tr><th></th>${['10-17', '18-25', '26-40', '41-60', '60+'].map(a => `<th>${a}</th>`).join('')}</tr></thead><tbody>${HEAT.map((r, ri) => `<tr><th>${r[0]}</th>${r[1].map((v, ci) => `<td><i class="h${v}" style="animation-delay:${ri * .05 + ci * .04}s"></i></td>`).join('')}</tr>`).join('')}</tbody></table></div><div class="chips">${['Low', 'Moderate', 'High', 'Peak risk'].map((l, i) => `<span class="chip" style="cursor:default"><i class="hk h${i}"></i>${l}</span>`).join('')}</div>${note('An illustrative risk map synthesising general research patterns (adolescent reward sensitivity, mid-life alcohol peaks, and so on). It is not one dataset.')}</div>`)}
+    ${sec('How many never get hooked, or never try?', cards([
+      ['Porn', 'About 27% of US teens aged 13-17 said they had never seen online porn (Common Sense Media, 2022). In US adults, about 8% of men and 40% of women reported no porn use in the past month (Solano et al., 2020).', 'Free'],
+      ['Alcohol', 'About 85% of Indians aged 10-75 did not currently drink alcohol (2019 national survey); abstinence is especially common among women and in many religious communities.', 'Free'],
+      ['Tobacco', 'About 71% of Indian adults use no tobacco (GATS-2).', 'Free'],
+      ['Compulsive sex', 'Over 90% of adults do not meet the threshold for compulsive sexual behaviour distress.', 'Free'],
+      ['Masturbation', 'A minority of adults, more often women and religiously devout people, report never masturbating. Good Indian data do not exist.', 'Data gap']
+    ]) + note('<b>What protects people?</b> Secure attachment, warm family relationships, purpose, faith communities that offer grace (not only rules), healthy coping skills, and delayed first exposure.', 'sage'))}
+    ${sec('Cross-addiction', flow('xadd', [['One addiction stops', 'For example, porn is given up.'], ['The need remains', 'Stress, loneliness and pain still need relief.'], ['Substitution', 'Gaming, food, scrolling, work, or romance fill the gap.'], ['Treat the root', 'Address the underlying need and build healthy coping, not just abstinence.']]))}`;
+  },
+  mount() {
+    $('svg [data-a]') && $('#adI').parentElement.querySelector('svg').addEventListener('click', e => { const g = e.target.closest('.anode'); if (!g) return; const a = ADD[+g.dataset.a]; $$('.anode').forEach(x => x.classList.toggle('on', x === g)); $('#adI').innerHTML = `<span class="label">${a[3]}</span><h3>${a[0]}</h3><p style="font-size:30px;font-family:var(--display);font-weight:700;color:${a[4]}">${a[1]}</p><p>${a[2]}</p>`; });
   }
 };
 
