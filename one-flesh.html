@@ -355,6 +355,39 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
 .lsm, .lsf { transition: opacity .4s; }
 .bside > *, .wheelw > * { min-width: 0; }
 @media (max-width: 900px) { .wheelw { grid-template-columns: minmax(0, 1fr); } }
+
+/* v4 */
+.zone { cursor: pointer; }
+.zg { transform-box: fill-box; transform-origin: center; animation: zpulse 2.6s ease-in-out infinite; }
+.zi1 { opacity: .35; } .zi2 { opacity: .6; } .zi3 { opacity: .95; }
+@keyframes zpulse { 50% { transform: scale(1.25); } }
+.zone.on circle:last-child { fill: var(--gold); r: 5; }
+.zdot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--rose); margin-right: 6px; vertical-align: middle; }
+.zdot.z1 { opacity: .35; } .zdot.z2 { opacity: .6; }
+.tsbar { position: relative; height: 14px; border-radius: 999px; background: var(--bg2); border: 1px solid var(--line); overflow: hidden; margin: 8px 0; }
+.tsbar i { position: absolute; top: 1px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); animation: slide 3s ease-in-out infinite alternate; }
+@keyframes slide { from { left: 2px; } to { left: calc(100% - 12px); } }
+.possvg { width: 100%; height: auto; display: block; background: var(--bg2); border-radius: 12px; padding: 6px; }
+.possvg .pw { animation: breathe 4s ease-in-out infinite; }
+.possvg .ph { animation: breathe 4s ease-in-out infinite reverse; }
+@keyframes breathe { 50% { transform: translateY(-1.5px); } }
+.rates { display: grid; gap: 4px; }
+.rates div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px; align-items: center; font-size: 12.5px; color: var(--muted); }
+.rates i { display: block; height: 6px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.rates b { display: block; height: 100%; background: linear-gradient(90deg, var(--rose), var(--gold)); border-radius: 4px; animation: grow 1s cubic-bezier(.4,.1,.2,1) both; }
+.breath { justify-items: center; text-align: center; }
+.bcirc { position: relative; width: 220px; height: 220px; display: grid; place-items: center; }
+.bcirc i { position: absolute; inset: 30px; border-radius: 50%; background: radial-gradient(circle, var(--sage-soft), var(--sky-soft)); border: 2px solid var(--sage); transition: transform 4s ease-in-out; box-shadow: 0 0 40px var(--sage-soft); }
+.bcirc span { position: relative; font-family: var(--display); font-size: 19px; font-weight: 600; max-width: 150px; }
+.field { display: flex; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 0 16px; }
+.field input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 16px; padding: 10px 0; outline: none; }
+.vocab { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 8px; margin: 0; }
+.vt { padding: 12px 14px; border-radius: 12px 12px 12px 3px; background: var(--surface); border: 1px solid var(--line); animation: rise .35s both; }
+.vt dt { font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.vt dd { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.chk { display: flex; gap: 10px; align-items: center; padding: 8px 12px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; }
+.chk input { width: 18px; height: 18px; accent-color: var(--sage); }
+#rcl { grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
 </style>
 
 <canvas id="bgfx" aria-hidden="true"></canvas>
@@ -448,11 +481,11 @@ function orbit() {
 const NAV = [
   { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['myths', 'Myths & Misunderstandings']] },
   { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan']] },
-  { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['practice', 'The Act: Process & Safety'], ['deeper', 'Deeper Pleasure'], ['pain', 'When It Is Hard or Painful']] },
+  { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['closeness', 'Intimacy Without Sex'], ['foreplay', 'Foreplay & Touch'], ['practice', 'The Act: Process & Safety'], ['positions', 'Positions & Penetration'], ['deeper', 'Deeper Pleasure'], ['pain', 'When It Is Hard or Painful'], ['aftercare', 'Pain, Cool-down & Aftercare']] },
   { g: 'Shadows', c: 'var(--rose)', items: [['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
-  { g: 'Healing', c: 'var(--sage)', items: [['healing', 'Healing & Freedom'], ['energy', 'Creative Power Before Marriage']] },
+  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['healing', 'Healing & Freedom'], ['energy', 'Creative Power Before Marriage']] },
   { g: 'Teaching', c: 'var(--gold)', items: [['children', 'Teaching Children'], ['teach', 'Curriculum by Age'], ['counsel', 'Counselling Toolkit']] },
-  { g: 'Reference', c: 'var(--muted)', items: [['stats', 'Statistics'], ['sources', 'Books & Sources']] }
+  { g: 'Reference', c: 'var(--muted)', items: [['vocab', 'Sexual Vocabulary'], ['stats', 'Statistics'], ['sources', 'Books & Sources']] }
 ];
 const ORDER = NAV.flatMap(g => g.items.map(i => i[0]));
 const TITLE = Object.fromEntries(NAV.flatMap(g => g.items));
@@ -491,8 +524,8 @@ M.home = {
       ['Parents', 'Teaching your children from age 2 to 18, body safety, and spotting abuse.', ['children', 'family', 'abuse', 'bodymap']],
       ['Teens & youth', 'Your body, desire, porn, masturbation, and what to do with sexual energy.', ['bodymap', 'fantasy', 'energy', 'porn']],
       ['Pre-marital couples', 'Design, the first night, the process, safety, and the conversations to have now.', ['design', 'firstnight', 'fertility', 'myths']],
-      ['Married couples', 'Deeper pleasure, when it is hard or painful, and creative, growing intimacy.', ['deeper', 'pain', 'response', 'healing']],
-      ['Survivors & strugglers', 'Abuse, unwanted behaviour, and the road to healing.', ['family', 'fantasy', 'healing', 'abuse']],
+      ['Married couples', 'Deeper pleasure, when it is hard or painful, and creative, growing intimacy.', ['foreplay', 'positions', 'closeness', 'aftercare']],
+      ['Survivors & strugglers', 'Abuse, unwanted behaviour, and the road to healing.', ['rewire', 'family', 'fantasy', 'healing']],
       ['Teachers & counsellors', 'The relational lens, curricula, session outlines, the PLISSIT model, case work, and referral lines.', ['lens', 'teach', 'counsel', 'offenders']]
     ];
     window.MM2D = mm;
@@ -2397,6 +2430,308 @@ M.lifespan = {
     $('#lsR').addEventListener('input', e => show(+e.target.value));
     $('#lsSex').addEventListener('click', e => { const c = e.target.closest('[data-x]'); if (!c) return; sx = c.dataset.x; $$('#lsSex .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); $$('.lsm').forEach(p => p.style.opacity = sx === 'f' ? .15 : 1); $$('.lsf').forEach(p => p.style.opacity = sx === 'm' ? .15 : 1); show(+$('#lsR').value); });
     show(4);
+  }
+};
+
+/* ================= v4 modules ================= */
+/* ---------- FOREPLAY & TOUCH ---------- */
+const ZONES = {
+  f: [['Scalp & hair', 150, 28, 12, 2, 'Slow fingers through the hair relax the whole nervous system; a good place to begin.'], ['Ears', 121, 62, 6, 2, 'Earlobes and the skin behind the ears are thin and nerve-rich. Warm breath and whispered words work here.'], ['Lips', 150, 80, 8, 3, 'Among the most sensitive skin on the body. Unhurried kissing is the heart of foreplay for many women.'], ['Neck', 150, 108, 10, 2, 'Light kisses on the side and back of the neck.'], ['Hands & fingers', 230, 332, 7, 1, 'Holding hands, tracing palms. Connection before arousal.'], ['Inner arms', 206, 205, 8, 1, 'Thin skin; slow stroking feels affectionate.'], ['Breasts & nipples', 130, 164, 14, 3, 'Highly sensitive for most women (sometimes too sensitive, especially before a period or while breastfeeding). Start gently around, not directly on, the nipple.'], ['Abdomen & waist', 150, 262, 12, 1, 'Soft, ticklish for some; a bridge toward the genitals.'], ['Inner thighs', 128, 410, 10, 2, 'Building anticipation by touching close to, but not yet on, the genitals.'], ['Vulva & clitoris', 150, 364, 9, 3, 'The centre of most women\'s pleasure. Usually best touched indirectly at first (over the hood or labia), with lubrication, gentle circles or side-to-side movement, and steady rhythm once she likes something.'], ['Behind the knees', 132, 470, 6, 1, 'A surprising sensitive spot for some.'], ['Feet', 118, 562, 8, 1, 'A foot massage relaxes deeply; on the brain\'s touch map the feet lie next to the genitals.']],
+  m: [['Scalp & hair', 150, 28, 12, 2, 'Scalp touch relaxes; many men rarely receive gentle touch at all.'], ['Ears', 121, 62, 6, 2, 'Breath and whispered words.'], ['Lips', 150, 80, 8, 3, 'Kissing builds arousal and connection for men too.'], ['Neck', 150, 108, 10, 2, 'Sensitive skin along the side of the neck.'], ['Hands & fingers', 240, 336, 7, 1, 'Holding and tracing hands.'], ['Chest & nipples', 131, 160, 10, 2, 'Many men\'s nipples are sensitive; others feel little. Ask.'], ['Abdomen', 150, 262, 12, 1, 'The line below the navel builds anticipation.'], ['Inner thighs', 128, 410, 10, 2, 'Slow touch close to the genitals.'], ['Penis & testicles', 150, 370, 10, 3, 'The glans and frenulum (underside) are most sensitive; the shaft responds to firmer, rhythmic touch; the testicles need gentleness. Lubrication helps.'], ['Perineum', 150, 395, 6, 2, 'The area between testicles and anus is sensitive for many men; gentle pressure here stimulates the prostate area indirectly.'], ['Behind the knees', 132, 470, 6, 1, 'Sensitive for some.'], ['Feet', 116, 562, 8, 1, 'Relaxing massage; adjacent to the genitals on the brain\'s touch map.']]
+};
+M.foreplay = {
+  t: 'Foreplay & Touch', e: 'Union',
+  l: 'Foreplay is not a warm-up before the "real thing". For most women it is where arousal, lubrication and orgasm actually happen, and it deepens connection for both. This section covers the steps, a touch map for both bodies, the science of touch, and how self-stimulation works for men and women.',
+  h() {
+    return `${sec('Touch map', `<div class="stage" id="tz"><div class="bw-top"><div class="chips" id="tzSex"><button class="chip" data-s="f" aria-pressed="true">Her body</button><button class="chip" data-s="m">His body</button></div><button class="pbtn solid" id="tzPlay">Play a foreplay journey</button></div><div class="bodyw"><svg viewBox="0 0 300 600" class="bodysvg" id="tzSvg" role="img" aria-label="Erogenous zone map"></svg><div class="bside"><div class="info" id="tzInfo"></div><div class="chips">${[1, 2, 3].map(n => `<span class="chip" style="cursor:default"><i class="zdot z${n}"></i>${['Gentle', 'Sensitive', 'Highly sensitive'][n - 1]}</span>`).join('')}</div>${note('A general guide. Every body is different, and the only real map is the one you learn together by asking: "Do you like this? Softer? Slower?"')}</div></div></div>`, 'Glowing zones show common areas of sensitivity. Play the journey to see the usual path: from the outside in, from the least to the most sensitive.')}
+    ${sec('The science of a good touch', `<div class="stage"><svg viewBox="0 0 640 200" id="tsSvg" role="img" aria-label="Touch speed and pleasantness curve"><line x1="40" y1="170" x2="620" y2="170" stroke="var(--line)"/>${[[.3, '0.3'], [1, '1'], [3, '3'], [10, '10'], [30, '30 cm/s']].map(([v, l]) => { const x = 40 + Math.log10(v / .3) / 2 * 580; return `<text x="${x}" y="190" text-anchor="middle" class="ft" style="font-size:10px;fill:var(--muted)">${l}</text><line x1="${x}" x2="${x}" y1="20" y2="170" stroke="var(--line)" stroke-dasharray="2 6"/>`; }).join('')}<path d="M40 150 C 160 140 250 40 330 40 C 410 40 500 130 620 160" fill="none" stroke="var(--rose)" stroke-width="3"/><text x="330" y="30" text-anchor="middle" class="ft" style="fill:var(--rose)">feels most pleasant</text><circle id="tsDot" r="8" fill="var(--gold)" cy="40" cx="330"/></svg>
+      <input type="range" id="tsR" min="0" max="100" value="50" style="accent-color:var(--rose);width:100%" aria-label="Stroking speed"><div class="tsbar"><i id="tsBall"></i></div><p id="tsTxt"></p></div>`, 'Skin has special nerve fibres (C-tactile afferents) that fire most when stroked slowly, at about 1-10 cm per second, and the brain reads this as affection (Löken et al., Nature Neuroscience, 2009). Drag to change the speed of a stroke.')}
+    ${sec('Foreplay step by step', flow('fpflow', [
+      ['Connect', 'Eye contact, unhurried talk, laughter, maybe prayer. Put phones away. Arousal starts in a calm, safe nervous system.'],
+      ['Kiss', 'Slow kissing, varying pressure. Many couples rush past this; it is among the most bonding things you can do.'],
+      ['Whole-body touch', 'Massage, stroking, holding: scalp, back, arms, legs. Slow speed (see above). No goal yet.'],
+      ['Undress slowly', 'Take turns; tell each other what you love seeing (Song 4 and 7 are full of this).'],
+      ['Approach, don\'t rush', 'Tease toward sensitive zones (inner thighs, breasts, abdomen) before touching them directly. Anticipation multiplies arousal.'],
+      ['Genital touch', 'With lubrication. For her: start indirect around the clitoris; find a rhythm she likes and keep it steady. For him: firmer, rhythmic touch on the shaft, gentle on the glans and testicles.'],
+      ['Oral (if both want)', 'Many women reach orgasm most easily this way. It is a matter of mutual comfort and consent (see God\'s Design, questions).'],
+      ['Check readiness', 'Is she fully aroused, swollen and lubricated, and does she want more? Ask. Most women need 15-20 minutes or more.'],
+      ['Choose what\'s next', 'Intercourse, more touch, orgasm by hand or mouth, or simply holding each other. Foreplay can be complete in itself.']
+    ], true))}
+    ${sec('Foreplay for her, foreplay for him', split(panel('For her', ul(['Time is the biggest factor: slow down by half.', 'Emotional safety and words (affirmation, "you\'re beautiful") are part of foreplay.', 'Clitoral stimulation is central; direct touch on the glans can be too intense, so use the hood, the sides, or the labia.', 'Consistency: when she says "that", keep doing exactly that without speeding up.', 'Lubricant removes friction and pain.', 'Help with chores and kids during the day counts. Desire builds or fades for hours before bedtime.']), 'rose'), panel('For him', ul(['Being desired and pursued is a powerful turn-on for many men; let him know you want him.', 'Most men enjoy firmer touch than women do; ask about pressure.', 'The frenulum and the underside of the glans are most sensitive.', 'Kissing and whole-body touch matter for men too; many men are touch-starved.', 'If he finishes too quickly, slow down and use the stop-start technique (see When It Is Hard).', 'Erections come and go during long foreplay; this is normal, not a loss of interest.']), 'sky')))}
+    ${sec('How self-stimulation works (masturbation explained)', prose(['This is clinical knowledge, not instruction to do it. Christians hold different views on masturbation (see Masturbation: Deep Study). But understanding how arousal works in each body helps spouses pleasure each other, helps doctors and counsellors, and helps parents answer questions honestly.']) + split(panel('Women', ul(['Most women stimulate the <b>clitoral area externally</b>, often indirectly: over the hood or labia, with circles, side-to-side or up-down movement, rarely by penetration alone.', 'Lying on the back or front, with fingers, a pillow, a shower stream, or a vibrator (common in the West, much less discussed in India).', 'Arousal builds more slowly and depends on relaxation; many reach orgasm more reliably alone than with a partner, which is useful information for the husband.', 'In sex therapy, guided self-exploration (directed masturbation) is used to help women who have never had an orgasm, often within marriage and with the husband learning too.', 'Risks: secrecy, shame, fantasy about others, or habits that only work alone.']), 'rose'), panel('Men', ul(['Most men grip the shaft and stroke up and down, focusing near the glans, speeding up toward orgasm.', 'Typically quick (a few minutes), often visually driven (porn or images).', 'Risks: a tight "death grip" or very fast technique trains the body to need it, causing delayed ejaculation with a wife; rushing trains premature ejaculation; porn conditions arousal to screens.', 'In therapy for premature ejaculation, men practise slow, stop-start self-stimulation to learn the "point of no return".', 'Night emissions (wet dreams) are involuntary and normal.']), 'sky')) + note('<b>Within marriage:</b> showing your spouse how you like to be touched (hand-over-hand, "hand riding") is one of the fastest ways to better sex. Many couples also include self-touch during intercourse, for example the wife stimulating her clitoris, which is a shared act, not a solitary one.', 'sage'))}
+    ${sec('Stories (composites)', cases([
+      { tag: 'Married 8 years', k: 'rose', t: '"I\'ve never had an orgasm"', s: 'Leena enjoyed closeness but had never climaxed. Sex lasted about 10 minutes from first kiss to the end.', h: 'A Christian sex therapist explained that most women need clitoral stimulation and time. They tripled foreplay, she guided his hand, and they tried woman-on-top with her own touch.', o: 'First orgasm within weeks. Lesson: it was a knowledge problem, not a body problem.' },
+      { tag: 'Newly married', k: 'sky', t: 'Delayed ejaculation', s: 'Daniel could not climax with his wife, though he could alone. Years of fast, tight-grip masturbation to porn had conditioned him.', h: 'He stopped porn and solo sex for 3 months; they practised sensate focus and slower, lubricated touch.', o: 'Normal function returned. Lesson: how you train your body alone shapes your marriage bed.' }
+    ]))}`;
+  },
+  mount() {
+    let sx = 'f', tmr;
+    const draw = () => { clearInterval(tmr); const B = BOD[sx];
+      $('#tzSvg').innerHTML = `<defs><linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky)" stop-opacity=".2"/><stop offset="1" stop-color="var(--rose)" stop-opacity=".16"/></linearGradient><radialGradient id="zg"><stop offset="0" stop-color="var(--rose)" stop-opacity=".9"/><stop offset="1" stop-color="var(--rose)" stop-opacity="0"/></radialGradient></defs><ellipse cx="150" cy="56" rx="30" ry="38" fill="url(#skinG)" stroke="var(--line)" stroke-width="1.5"/><path d="${B.sil}" fill="url(#skinG)" stroke="var(--line)" stroke-width="1.5"/>`
+        + `<path id="tzTrail" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 6" opacity="0"/>`
+        + ZONES[sx].map((z, i) => `<g class="zone" data-z="${i}" tabindex="0" role="button" aria-label="${z[0]}"><circle cx="${z[1]}" cy="${z[2]}" r="${z[3] * (1 + z[4] * .7)}" fill="url(#zg)" class="zg zi${z[4]}" style="animation-delay:${i * .17}s"/><circle cx="${z[1]}" cy="${z[2]}" r="3.5" fill="var(--rose)"/></g>`).join('');
+      show(0); };
+    const show = i => { const z = ZONES[sx][i]; $$('#tzSvg .zone').forEach((g, j) => g.classList.toggle('on', j === i)); $('#tzInfo').innerHTML = `<span class="label">${['', 'Gentle', 'Sensitive', 'Highly sensitive'][z[4]]} zone</span><h3>${z[0]}</h3><p>${z[5]}</p>`; };
+    $('#tz').addEventListener('click', e => {
+      const s = e.target.closest('[data-s]'); if (s) { sx = s.dataset.s; $$('#tzSex .chip').forEach(c => c.setAttribute('aria-pressed', c === s)); draw(); }
+      const z = e.target.closest('.zone'); if (z) { clearInterval(tmr); show(+z.dataset.z); }
+      if (e.target.id === 'tzPlay') { clearInterval(tmr); const Z = ZONES[sx], order = Z.map((_, i) => i).sort((a, b) => Z[a][4] - Z[b][4] || Z[a][2] - Z[b][2]); let k = 0;
+        const tr = $('#tzTrail'); tr.setAttribute('d', 'M' + order.map(i => Z[i][1] + ' ' + Z[i][2]).join(' L')); tr.setAttribute('opacity', '.7');
+        show(order[0]); tmr = setInterval(() => { k++; if (k >= order.length || !tr.isConnected) return clearInterval(tmr); show(order[k]); }, RM ? 500 : 2200); }
+    });
+    draw();
+    const upd = () => { const v = +$('#tsR').value, sp = .3 * Math.pow(10, v / 50), x = 40 + v / 100 * 580; const y = 40 + Math.pow(Math.log10(sp / 3), 2) * 95;
+      $('#tsDot').setAttribute('cx', x); $('#tsDot').setAttribute('cy', Math.min(165, y)); $('#tsBall').style.animationDuration = Math.max(.15, 10 / sp) + 's';
+      $('#tsTxt').innerHTML = `<b>${sp < 1 ? sp.toFixed(1) : Math.round(sp)} cm per second.</b> ` + (sp < .8 ? 'Very slow: can feel ticklish or uncertain.' : sp <= 10 ? 'The sweet spot: the affectionate-touch nerves fire most, and the brain reads it as love and safety.' : 'Fast: feels functional or rough rather than tender. Save faster rhythm for later in arousal, when it is wanted.'); };
+    $('#tsR').addEventListener('input', upd); upd();
+  }
+};
+
+/* ---------- POSITIONS & PENETRATION ---------- */
+const POS = [
+  { n: 'Face-to-face, man above', h: [[40, 64], [[52, 70], [104, 78], [134, 92], [168, 96]]], w: [[26, 84], [[38, 88], [96, 90], [118, 68], [140, 88]]], r: [5, 2, 3, 2, 2], tg: ['Deep connection', 'Beginner'], t: 'Eye contact, kissing, full embrace. A pillow under her hips tilts the pelvis for better angle and comfort. He supports his weight on elbows.' },
+  { n: 'Coital Alignment Technique', h: [[30, 62], [[44, 68], [96, 80], [130, 92], [166, 96]]], w: [[26, 84], [[38, 88], [96, 90], [128, 88], [156, 92]]], r: [5, 2, 2, 5, 2], tg: ['Her pleasure', 'Deep connection'], t: 'From man-above, he slides up so the base of his penis presses the clitoris. Both rock together with pressure rather than thrusting. Shown in studies to increase women\'s orgasm during intercourse.' },
+  { n: 'Woman above, upright', h: [[26, 88], [[38, 90], [112, 90], [150, 90], [184, 90]]], w: [[100, 26], [[100, 38], [106, 80], [132, 90], [112, 94]]], r: [4, 4, 4, 4, 5], tg: ['Her pleasure', 'Pain-friendly', 'Beginner'], t: 'She controls depth, speed and angle, and can rock forward for clitoral contact. Best for first times, pain, vaginismus recovery, and when he tires or has back pain.' },
+  { n: 'Woman above, leaning forward', h: [[26, 88], [[38, 90], [112, 90], [150, 90], [184, 90]]], w: [[36, 66], [[48, 72], [104, 80], [132, 90], [150, 92]]], r: [5, 3, 2, 4, 5], tg: ['Deep connection', 'Her pleasure', 'Pain-friendly'], t: 'Chest to chest, kissing possible, shallow penetration with lots of clitoral friction. Very intimate and gentle.' },
+  { n: 'Spooning (side-lying)', h: [[30, 58], [[42, 62], [100, 70], [124, 58], [146, 74]]], w: [[40, 72], [[52, 76], [108, 82], [130, 68], [150, 86]]], r: [4, 1, 2, 3, 2], tg: ['Pregnancy', 'Low energy', 'Older couples', 'Back pain'], t: 'Both on their sides, him behind. Shallow, slow, cosy. His hand is free for her breasts and clitoris. Ideal in pregnancy, when tired, or with back pain.' },
+  { n: 'Side-by-side, facing', h: [[170, 66], [[158, 70], [106, 76], [86, 64], [66, 78]]], w: [[30, 70], [[42, 74], [96, 78], [118, 66], [138, 80]]], r: [5, 1, 2, 2, 3], tg: ['Deep connection', 'Low energy', 'Older couples'], t: 'Facing each other on your sides, legs intertwined. Slow, tender, low effort, lots of kissing. Takes a little adjusting.' },
+  { n: 'Rear entry, kneeling', h: [[132, 22], [[132, 34], [126, 72], [150, 94], [176, 96]]], w: [[40, 52], [[50, 58], [110, 58], [112, 94], [150, 96]]], r: [2, 3, 5, 2, 2], tg: ['Depth'], t: 'Deeper penetration and front-wall (G-area) contact. Can bump the cervix, so go slowly and let her rock back to control depth. Less eye contact; some feel distanced, so talk.' },
+  { n: 'Seated, face-to-face', h: [[96, 30], [[96, 42], [92, 84], [130, 86], [150, 98]]], w: [[118, 32], [[118, 44], [110, 80], [80, 78], [70, 96]]], r: [5, 3, 3, 3, 4], tg: ['Deep connection', 'Erection issues'], t: 'He sits (bed or chair); she sits on his lap facing him. A full embrace with slow rocking rather than thrusting. Very connecting.' },
+  { n: 'Edge of the bed', h: [[150, 14], [[150, 26], [144, 68], [146, 84], [146, 100]]], w: [[24, 62], [[36, 66], [106, 68], [128, 46], [146, 36]]], r: [3, 3, 4, 2, 2], tg: ['Back pain', 'Height difference', 'Pregnancy'], t: 'She lies with hips at the edge; he stands or kneels. Takes weight off both backs, works with height differences, and suits later pregnancy with pillows.', bed: 1 }
+];
+const RT = ['Intimacy', 'Effort', 'Depth', 'Clitoral contact', 'Her control'];
+function posSVG(P) {
+  const fig = (c, [hd, ch]) => `<circle cx="${hd[0]}" cy="${hd[1]}" r="9" fill="${c}"/><polyline points="${ch.map(p => p.join(',')).join(' ')}" fill="none" stroke="${c}" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`;
+  return `<svg viewBox="0 0 200 112" class="possvg" role="img" aria-label="${P.n} diagram">${P.bed ? '<rect x="6" y="72" width="112" height="30" rx="6" fill="var(--bg2)" stroke="var(--line)"/>' : '<line x1="6" x2="194" y1="104" y2="104" stroke="var(--line)" stroke-width="2"/>'}<g class="pw" style="opacity:.92">${fig('var(--rose)', P.w)}</g><g class="ph" style="opacity:.85">${fig('var(--sky)', P.h)}</g></svg>`;
+}
+M.positions = {
+  t: 'Positions & Penetration', e: 'Union',
+  l: 'How penetration actually works (angles, depth, arousal, rhythm), and an atlas of positions as simple diagrams: what each is for, how much effort it takes, and who it suits. Rose is her, blue is him.',
+  h() {
+    const tags = [...new Set(POS.flatMap(p => p.tg))];
+    return `${sec('Position atlas', `<div class="chips" id="pf"><button class="chip" data-t="" aria-pressed="true">All</button>${tags.map(t => `<button class="chip" data-t="${t}">${t}</button>`).join('')}</div><div class="grid wide" id="pg">${POS.map((P, i) => `<div class="card pcard" data-tags="${P.tg.join('|')}"><span class="label">${P.tg.join(' &middot; ')}</span><h3>${P.n}</h3>${posSVG(P)}<p>${P.t}</p><div class="rates">${P.r.map((v, k) => `<div><span>${RT[k]}</span><i><b style="width:${v * 20}%"></b></i></div>`).join('')}</div></div>`).join('')}</div>`, 'Abstract diagrams for orientation only. Filter by need. No position is more holy than another; choose by comfort, connection and mutual delight.')}
+    ${sec('How penetration works', `<div class="stage"><div class="chips" id="penC"><button class="chip" data-p="rest" aria-pressed="true">Not yet aroused</button><button class="chip" data-p="aro">Fully aroused</button><button class="chip" data-p="pil">Aroused + pillow under hips</button></div>
+      <svg viewBox="0 0 520 260" id="penSvg" role="img" aria-label="Schematic side view of vaginal canal"><text x="10" y="18" class="ft" style="fill:var(--muted);font-size:10px">SCHEMATIC SIDE VIEW &middot; FRONT OF BODY ON THE LEFT</text>
+        <g id="penG" style="transform-origin:150px 200px;transition:transform 1s cubic-bezier(.3,.7,.2,1)">
+          <ellipse cx="120" cy="120" rx="46" ry="30" fill="var(--sky-soft)" stroke="var(--sky)"/><text x="120" y="124" text-anchor="middle" class="ft" style="font-size:10px">bladder</text>
+          <path id="canal" d="M150 205 C 190 180 230 150 270 125" fill="none" stroke="var(--rose)" stroke-width="22" stroke-linecap="round" opacity=".35" style="transition:all 1s"/>
+          <path d="M150 205 C 162 198 172 192 182 186" fill="none" stroke="var(--gold)" stroke-width="22" stroke-linecap="round" opacity=".45"/>
+          <ellipse id="cervix" cx="282" cy="118" rx="16" ry="12" fill="var(--rose-soft)" stroke="var(--rose)" style="transition:all 1s"/>
+          <path id="uterus" d="M290 112 C 320 70 380 70 380 110 C 380 140 320 140 296 124" fill="var(--rose-soft)" stroke="var(--rose)" style="transition:transform 1s"/>
+          <circle cx="196" cy="168" r="6" fill="var(--gold)"/><text x="172" y="156" class="ft" style="font-size:10px">G-area (front wall)</text>
+          <text x="136" y="228" class="ft" style="font-size:10px">outer third: most nerve endings</text>
+          <text id="cxl" x="282" y="148" text-anchor="middle" class="ft" style="font-size:10px">cervix</text>
+        </g><text x="400" y="230" class="ft" id="penLen" style="font-family:var(--mono)"></text></svg><p id="penTxt"></p></div>`, 'A simplified diagram of the vaginal canal, which angles upward and back toward the spine, not straight in.')}
+    ${sec('Penetration, step by step', steps([
+      ['Readiness first', 'Full arousal changes everything: the inner vagina lengthens and balloons, the uterus lifts, lubrication appears. Penetration before this is the number-one cause of pain.'],
+      ['Lubricate generously', 'Water- or silicone-based; reapply as needed. It is normal to need it, especially in the first months, while breastfeeding, and after 40.'],
+      ['She guides', 'Let her hold and guide the penis to the opening. Aim slightly upward and back (toward her lower back), not straight in.'],
+      ['Enter slowly and pause', 'Go in a little, then stay still while the muscles adjust. Breathe together. Then go deeper gradually.'],
+      ['Start shallow', 'The outer third has the most nerve endings, so shallow, slow movement often feels best at first. Depth is not the same as pleasure.'],
+      ['Find a rhythm together', 'Thrusting (in-out) vs. rocking or grinding (pressure, which is better for clitoral contact). Vary, then keep what works.'],
+      ['Talk', '"Deeper", "slower", "stay there", "wait". If anything hurts, stop and change angle or position.'],
+      ['Withdraw gently', 'Slowly, especially if she is sensitive after orgasm. Then stay close.']
+    ]))}
+    ${sec('Penetration problems and quick fixes', tbl(['Problem', 'Likely cause', 'Try'], [
+      ['Can\'t find the opening', 'Nerves, inexperience, darkness', 'Lights on, she guides with her hand, plenty of lubricant'],
+      ['Burning or stinging at the entrance', 'Not aroused enough, dryness, tension', 'More foreplay, more lubricant, woman on top'],
+      ['Sharp pain deep inside', 'Hitting the cervix, endometriosis, angle', 'Shallower, change position; see a gynaecologist if persistent'],
+      ['Feels like hitting a wall', 'Pelvic-floor spasm (vaginismus)', 'Stop; relaxation breathing; pelvic-floor physiotherapy and dilators'],
+      ['Erection softens on entry', 'Performance anxiety, condom, distraction', 'Take pressure off, return to foreplay, try again later'],
+      ['Air sounds ("queefing")', 'Air pushed in and out of the vagina', 'Normal and harmless. Laugh together.']
+    ]))}`;
+  },
+  mount() {
+    $('#pf').addEventListener('click', e => { const c = e.target.closest('[data-t]'); if (!c) return; $$('#pf .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); $$('#pg .pcard').forEach(k => k.hidden = c.dataset.t && !k.dataset.tags.split('|').includes(c.dataset.t)); });
+    const T = { rest: ['About 7-10 cm', 'Not aroused: the canal is shorter, collapsed and dry, and the cervix sits low. Penetration now is likely to hurt or feel blocked.', 'scale(1,1)', 'M150 205 C 175 190 200 172 230 152', [242, 145]],
+      aro: ['Lengthens up to about 50%', 'Fully aroused: the inner two-thirds lengthens and balloons ("tenting"), the uterus and cervix lift up and away, and the outer third swells and grips. There is far more room and less chance of hitting the cervix.', 'scale(1,1)', 'M150 205 C 190 180 230 150 270 125', [282, 118]],
+      pil: ['Same length, new angle', 'A pillow under her hips tilts the pelvis so the angle of entry lines up better with the canal, and the front wall (G-area) gets more contact. Useful in man-above positions.', 'rotate(-10deg)', 'M150 205 C 190 180 230 150 270 125', [282, 118]] };
+    const set = k => { const t = T[k]; $$('#penC .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.p === k)); $('#canal').setAttribute('d', t[3]); $('#cervix').setAttribute('cx', t[4][0]); $('#cervix').setAttribute('cy', t[4][1]); $('#cxl').setAttribute('x', t[4][0]); $('#cxl').setAttribute('y', t[4][1] + 30); $('#uterus').style.transform = k === 'rest' ? 'translate(-40px,28px)' : 'none'; $('#penG').style.transform = t[2]; $('#penLen').textContent = t[0]; $('#penTxt').textContent = t[1]; };
+    $('#penC').addEventListener('click', e => { const c = e.target.closest('[data-p]'); if (c) set(c.dataset.p); }); set('rest');
+  }
+};
+
+/* ---------- INTIMACY WITHOUT SEX ---------- */
+const IDEAS = [
+  ['6-second kiss', '5', 'any', 'Kiss for at least six seconds every day. Gottman calls it "a kiss with potential".'], ['20-second hug', '5', 'any', 'Long hugs raise oxytocin and lower stress hormones.'], ['Eye-gazing', '5', 'any', 'Look into each other\'s eyes for two silent minutes. Awkward, then tender.'],
+  ['Pray for each other aloud', '5', 'any', 'Hold hands and thank God for one specific thing about your spouse.'], ['Read Song of Songs aloud', '30', 'alone', 'Take turns reading a chapter to each other.'], ['Massage night', '30', 'alone', 'Take turns giving a 15-minute massage with oil and music. Nothing sexual expected.'],
+  ['Bathe or shower together', '30', 'alone', 'Wash each other\'s hair. Vulnerability without performance.'], ['Slow dance in the kitchen', '5', 'any', 'One song. Kids may laugh, which is fine.'], ['Love letter', '30', 'any', 'Write what you love about their character and body. Leave it under the pillow.'],
+  ['Memory lane', '30', 'any', 'Look at wedding photos and tell the story of how you met.'], ['Walk holding hands', '30', 'any', 'No phones. Talk about dreams, not schedules.'], ['Cook together', 'evening', 'any', 'A shared project with lots of touch and teamwork.'],
+  ['Video-call date', '30', 'apart', 'Same meal, same movie, or the same chapter, while apart (Gulf jobs, travel, postpartum stays).'], ['Voice notes', '5', 'apart', 'Send a morning voice note: "I\'m thinking of you because..."'], ['Countdown plans', '5', 'apart', 'Plan what you will do when you see each other again.'],
+  ['Feet in lap', '5', 'pregnant', 'Foot and back massage for a pregnant or postpartum wife.'], ['Take the night feed', 'evening', 'pregnant', 'Let her sleep. For many new mothers this is the most romantic gift.'], ['Hold and nap', '30', 'pregnant', 'Spooning nap with no expectations.'],
+  ['Weekend away', 'weekend', 'alone', 'One night away without children, at least twice a year.'], ['Stargazing or sunrise', 'evening', 'any', 'Wonder together.'], ['Serve together', 'weekend', 'any', 'Volunteering together builds respect and shared purpose.'],
+  ['Pre-marital: deep questions', '30', 'engaged', 'Use the conversation deck (First Night & Talking). Emotional intimacy before marriage builds the foundation without crossing physical boundaries.'], ['Pre-marital: serve each other\'s families', 'weekend', 'engaged', 'Know each other in real life, not only in private.'], ['Pre-marital: agreed boundaries', '30', 'engaged', 'Decide together, in daylight, what physical affection is okay before marriage, and how to keep each other accountable.']
+];
+M.closeness = {
+  t: 'Intimacy Without Sex', e: 'Union',
+  l: 'Couples need many ways to be close that do not lead to intercourse: during pregnancy and recovery, illness, separation, busy seasons, before marriage, or simply because touch without pressure builds desire. This section also covers sex drive: its purpose, and how to handle high, low and mismatched drives.',
+  h() {
+    return `${sec('Intimacy menu', `<div class="stage"><div class="chips" id="imT"><span class="label" style="align-self:center">Time:</span>${[['', 'Any'], ['5', '5 minutes'], ['30', '30 minutes'], ['evening', 'An evening'], ['weekend', 'A weekend']].map((x, i) => `<button class="chip" data-t="${x[0]}" aria-pressed="${i === 0}">${x[1]}</button>`).join('')}</div><div class="chips" id="imS"><span class="label" style="align-self:center">Situation:</span>${[['', 'Any'], ['alone', 'Private time'], ['apart', 'Living apart'], ['pregnant', 'Pregnancy / new baby'], ['engaged', 'Before marriage']].map((x, i) => `<button class="chip" data-s="${x[0]}" aria-pressed="${i === 0}">${x[1]}</button>`).join('')}</div><div class="grid" id="imG"></div></div>`, 'Choose how much time you have and your situation.')}
+    ${sec('Why non-sexual touch matters', cards([
+      ['It removes pressure', 'If every touch leads to sex, a lower-desire spouse starts avoiding touch altogether. Non-demand touch rebuilds safety.', 'Psychology'],
+      ['It builds desire', 'Responsive desire (Basson) grows out of closeness. Cuddling is not a substitute for sex; it is often the doorway.', 'Desire'],
+      ['It heals', 'Touch lowers cortisol and blood pressure and raises oxytocin, even without arousal.', 'Body'],
+      ['It is biblical', '"His left hand is under my head, and his right hand embraces me" (Song 2:6), embrace as delight in itself.', 'Scripture']
+    ]))}
+    ${sec('Sex drive: purpose and handling', prose(['Sex drive (libido) is the body\'s pull toward union. Its purposes, in God\'s design: to draw two people together and keep them together, to make new life, to give joy, and to move us out of ourselves toward another. It is powered by testosterone (in both sexes), oestrogen, dopamine, health, sleep, and above all the quality of the relationship. Drive is not a measure of love or of holiness.']) + `<div class="stage"><div class="mcols"><div><label class="label" for="dH">His ideal times per week: <b id="dHv">3</b></label><input type="range" id="dH" min="0" max="7" value="3" style="width:100%;accent-color:var(--sky)"></div><div><label class="label" for="dW">Her ideal times per week: <b id="dWv">1</b></label><input type="range" id="dW" min="0" max="7" value="1" style="width:100%;accent-color:var(--rose)"></div></div><svg viewBox="0 0 600 70" role="img" aria-label="Desire comparison"><line x1="30" x2="570" y1="35" y2="35" stroke="var(--line)" stroke-width="6" stroke-linecap="round"/><circle id="dHc" r="13" cy="35" fill="var(--sky)" style="transition:cx .5s"/><circle id="dWc" r="13" cy="35" fill="var(--rose)" style="transition:cx .5s"/><circle id="dMc" r="7" cy="35" fill="var(--gold)" style="transition:cx .5s"/></svg><p id="dTxt"></p></div>`, 'A desire gap exists in most marriages, and either spouse can be the higher-desire one. Set each spouse\'s ideal frequency and see the middle ground.')}
+    ${sec('Handling drive in different seasons', cards([
+      ['Single & engaged', 'Steward it: purpose, exercise, sleep, friendships, accountability, guarding the late night (see Creative Power Before Marriage). Desire is a sign you are healthy, not sinful.', 'Before marriage'],
+      ['Higher-desire spouse', 'Pursue your spouse\'s heart, not just their body. Ask what brakes are on (see When It Is Hard). Never pressure, sulk or use Scripture as leverage. Take ownership of your own self-control.', 'Married'],
+      ['Lower-desire spouse', 'Learn about responsive desire: willingness to start can lead to wanting. Name your brakes (pain, fatigue, resentment) honestly. Offer alternatives ("not tonight, but Saturday").', 'Married'],
+      ['Separated seasons', 'Gulf jobs, travel, postpartum stays, illness: plan connection (calls, letters, visits), set safeguards, and talk about temptation openly.', 'Apart'],
+      ['When drive suddenly drops', 'Check health: thyroid, depression, medications (especially antidepressants and some contraceptives), sleep, testosterone, menopause. See a doctor.', 'Medical'],
+      ['When drive feels out of control', 'Compulsion is different from high drive. If it is secretive, escalating or harmful, see Healing & Freedom and Rewire & Restore.', 'Compulsion']
+    ]))}`;
+  },
+  mount() {
+    let t = '', s = '';
+    const draw = () => { $('#imG').innerHTML = IDEAS.filter(x => (!t || x[1] === t) && (!s || x[2] === s || (x[2] === 'any' && s !== 'engaged'))).map(x => `<div class="card"><span class="label">${{ '5': '5 min', '30': '30 min', evening: 'Evening', weekend: 'Weekend' }[x[1]]}</span><h3>${x[0]}</h3><p>${x[3]}</p></div>`).join('') || '<p>No ideas for that combination. Try another.</p>'; };
+    $('#imT').addEventListener('click', e => { const c = e.target.closest('[data-t]'); if (!c) return; t = c.dataset.t; $$('#imT .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); draw(); });
+    $('#imS').addEventListener('click', e => { const c = e.target.closest('[data-s]'); if (!c) return; s = c.dataset.s; $$('#imS .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); draw(); });
+    draw();
+    const dr = () => { const h = +$('#dH').value, w = +$('#dW').value, X = v => 30 + v / 7 * 540, g = Math.abs(h - w); $('#dHv').textContent = h; $('#dWv').textContent = w;
+      $('#dHc').setAttribute('cx', X(h)); $('#dWc').setAttribute('cx', X(w) + (h === w ? 14 : 0)); $('#dMc').setAttribute('cx', X((h + w) / 2));
+      $('#dTxt').innerHTML = g <= 1 ? '<b>Close match.</b> Keep talking as seasons change; drives shift with children, stress and age.' : g <= 3 ? `<b>A common gap.</b> Meet around ${((h + w) / 2).toFixed(1)} times a week as a starting point, protect scheduled times, add plenty of non-sexual touch, and let the lower-desire spouse start from willingness rather than waiting for spontaneous desire.` : '<b>A large gap.</b> Usually something is pressing the brakes on one side (pain, resentment, exhaustion, porn, depression, hormones) or one spouse is using sex to soothe stress. Look for causes together, see a doctor, and consider a counsellor.'; };
+    $('#dH').addEventListener('input', dr); $('#dW').addEventListener('input', dr); dr();
+  }
+};
+
+/* ---------- PAIN, COOL-DOWN & AFTERCARE ---------- */
+const PZ = [
+  ['Entrance (vulva & opening)', 85, 205, 'Burning, stinging or tearing at entry.', ['Not enough arousal or lubrication (most common)', 'Pelvic-floor tension or vaginismus', 'Yeast infection or bacterial vaginosis', 'Vulvodynia (nerve pain)', 'Dryness from breastfeeding, the pill or menopause', 'Scar tissue after episiotomy or tear'], ['Stop; more foreplay and lubricant', 'Woman on top for control', 'Gynaecologist to check for infection or skin conditions', 'Pelvic-floor physiotherapist']],
+  ['Deep inside', 220, 120, 'Aching or sharp pain with deep thrusts.', ['Bumping the cervix', 'Endometriosis (especially if periods are very painful)', 'Ovarian cysts, fibroids, pelvic inflammatory disease', 'Tilted uterus'], ['Shallower depth; positions she controls', 'Change angle (pillow, side-lying)', 'Ultrasound and gynaecology review if it persists']],
+  ['Bladder & urethra', 130, 95, 'Pressure, urgency or burning during or after sex.', ['Pressure on a full bladder', 'Urinary tract infection (honeymoon cystitis)', 'Interstitial cystitis'], ['Empty the bladder before sex and urinate after', 'Drink water', 'See a doctor for burning or blood in the urine']],
+  ['Pelvic muscles', 175, 205, 'Clenching, cramping or a "wall" feeling.', ['Involuntary pelvic-floor spasm (vaginismus)', 'Anxiety, fear of pain, past trauma', 'Muscles tight from stress or posture'], ['Relaxation breathing (below)', 'Graded dilators with a physiotherapist', 'Therapy for fear or trauma (CBT, EMDR)']],
+  ['Lower abdomen after sex', 260, 60, 'Cramps or aching afterwards.', ['Uterine contractions after orgasm (usually mild and normal)', 'Ovulation pain', 'Endometriosis or infection if severe'], ['Warm compress, rest', 'See a doctor if severe, recurrent, or with fever or discharge']]
+];
+M.aftercare = {
+  t: 'Pain, Cool-down & Aftercare', e: 'Union',
+  l: 'Sex should not hurt. This section covers where women\'s pain comes from and how to handle it, a relaxation exercise for the pelvic floor, what the body does as it cools down, and simple healthy measures afterwards, for the body and the heart.',
+  h() {
+    return `${sec('Where does it hurt?', `<div class="stage"><div class="bodyw"><svg viewBox="0 0 320 260" id="pzSvg" role="img" aria-label="Pelvic pain map, side view schematic"><text x="8" y="16" class="ft" style="font-size:10px;fill:var(--muted)">SCHEMATIC SIDE VIEW</text>
+      <ellipse cx="130" cy="95" rx="42" ry="28" fill="var(--sky-soft)" stroke="var(--sky)"/><path d="M90 210 C 130 180 180 150 215 125" fill="none" stroke="var(--rose)" stroke-width="20" stroke-linecap="round" opacity=".35"/><path d="M220 120 C 245 80 300 80 300 115 C 300 145 250 145 228 130" fill="var(--rose-soft)" stroke="var(--rose)"/><path d="M60 230 C 120 245 220 240 280 222" stroke="var(--sage)" stroke-width="7" fill="none" stroke-linecap="round"/>
+      ${PZ.map((z, i) => `<g class="spot" data-z="${i}" tabindex="0" role="button" aria-label="${z[0]}"><circle class="h" cx="${z[1]}" cy="${z[2]}" r="8"/><circle class="p" cx="${z[1]}" cy="${z[2]}" r="7"/></g>`).join('')}</svg><div class="info" id="pzInfo"></div></div></div>`, 'Tap the area where it hurts to see common causes and what helps.')}
+    ${sec('If it hurts during sex', steps([
+      ['Say so immediately', '"Stop, it hurts." No enduring silently. Pain teaches the body to fear sex, which makes the next time worse.'],
+      ['He stops, without sulking', '"Thank you for telling me." Stay close; withdraw gently.'],
+      ['Breathe and soften', 'Slow belly breaths with a long exhale relax the pelvic floor (exercise below).'],
+      ['Change something', 'More lubricant, more foreplay, a position she controls, shallower depth, or finish with non-penetrative touch.'],
+      ['Note it', 'Where, when, how bad (0-10), what was happening. This helps the doctor.'],
+      ['Get help if it repeats', 'Pain more than a few times is a medical issue: gynaecologist, then pelvic-floor physiotherapist. Vaginismus and most causes of pain are treatable.']
+    ]))}
+    ${sec('Pelvic-floor relaxation breathing', `<div class="stage breath" id="pfb"><div class="bcirc"><i id="bOrb"></i><span id="bTxt">Press start</span></div><div class="chips" id="bPat"><button class="chip" data-b="pelvic" aria-pressed="true">Pelvic drop (4-6)</button><button class="chip" data-b="box">Box (4-4-4-4)</button><button class="chip" data-b="sigh">Physiological sigh</button><button class="pbtn solid" id="bGo">Start</button></div><p class="note">On each in-breath, let the belly and pelvic floor drop and soften, as if gently letting go when you start to urinate. On the out-breath, let it rest. Practise 5 minutes daily, and before and during sex. This is "reverse Kegel" training, often taught by pelvic physiotherapists for vaginismus and pain.</p></div>`)}
+    ${sec('Cool-down: what the body does afterwards', cards([
+      ['Swelling subsides', 'Genital blood flow drains over 10-30 minutes (longer without orgasm, which can cause a dull ache in either sex; it is harmless).', 'Body'],
+      ['Heart and breath slow', 'Heart rate returns to normal within minutes. A good time to lie together and breathe.', 'Body'],
+      ['Hormones settle', 'Prolactin brings calm and sleepiness; oxytocin keeps you bonded. This is why afterglow matters.', 'Brain'],
+      ['Emotions surface', 'Tenderness, laughter, sometimes tears or sadness (postcoital dysphoria, in 46% of women at least once). Hold, don\'t analyse.', 'Heart']
+    ]))}
+    ${sec('Aftercare routine', flow('after', [
+      ['Stay close (5-10 min)', 'Cuddle, kiss, stroke hair. Don\'t jump up to your phone or roll over immediately.'],
+      ['Words', 'Affirm: "I love you", "That was beautiful", "Thank you". Words seal the experience as love, not just release.'],
+      ['Urinate', 'Both, but especially her, within about 30 minutes, to flush bacteria and prevent UTIs.'],
+      ['Wash gently', 'External only, with plain water or mild unscented soap. No douching: it disrupts the vagina\'s healthy bacteria.'],
+      ['Hydrate & refresh', 'A glass of water each. Change into clean, breathable cotton underwear.'],
+      ['Soothe any soreness', 'A cool compress for soreness; note any bleeding (beyond the first few times) or pain to report to a doctor.'],
+      ['Check in', 'Later or the next day: "What did you love? Anything you\'d like different?"'],
+      ['Gratitude', 'Some couples pray a short thanks together. Sex is a gift to receive with gratitude (1 Tim 4:4).']
+    ], true))}
+    ${sec('When to see a doctor', cards([
+      ['Bleeding', 'Bleeding after sex beyond the first few times (possible cervical changes; get a Pap/HPV test).', 'Check'],
+      ['Burning urine, fever', 'Possible UTI or infection.', 'Check'],
+      ['Unusual discharge, sores, itching', 'Possible infection or STI.', 'Check'],
+      ['Pain that repeats', 'Any recurring pain during or after sex.', 'Check']
+    ]))}
+    ${sec('Story (composite)', cases([{ tag: 'Married 1 year', k: 'rose', t: '"I thought pain was normal for wives"', s: 'Esther\'s mother told her sex always hurts and a good wife bears it. For a year she clenched her jaw through every encounter, and began to dread her husband\'s touch.', h: 'Her husband noticed tears and insisted they see a gynaecologist: mild vaginismus and very little arousal before penetration. Pelvic physiotherapy, relaxation breathing, 20+ minutes of foreplay, woman on top, plenty of lubricant.', o: 'Pain-free within four months, and she began to enjoy sex. Lesson: pain is a signal, not a duty.' }]))}`;
+  },
+  mount() {
+    const show = i => { const z = PZ[i]; $$('#pzSvg .spot').forEach((g, j) => g.classList.toggle('on', j === i)); $('#pzInfo').innerHTML = `<span class="label">Pain area</span><h3>${z[0]}</h3><p>${z[3]}</p>${split(panel('Common causes', ul(z[4]), 'rose'), panel('What helps', ul(z[5]), 'sage'))}`; };
+    $('#pzSvg').addEventListener('click', e => { const g = e.target.closest('.spot'); if (g) show(+g.dataset.z); }); show(0);
+    breathInit();
+  }
+};
+const BPAT = { pelvic: [['Breathe in, soften and drop', 4, 1.35], ['Breathe out, rest', 6, .8]], box: [['Breathe in', 4, 1.35], ['Hold', 4, 1.35], ['Breathe out', 4, .8], ['Hold', 4, .8]], sigh: [['Inhale', 2, 1.25], ['Top-up inhale', 1, 1.4], ['Long exhale', 6, .8]] };
+function breathInit() {
+  let pat = 'pelvic', tm, on = false; const orb = $('#bOrb'), txt = $('#bTxt');
+  const run = () => { let k = 0; const step = () => { if (!orb.isConnected || !on) return; const [l, s, sc] = BPAT[pat][k % BPAT[pat].length]; orb.style.transitionDuration = s + 's'; orb.style.transform = `scale(${sc})`; txt.textContent = l; k++; tm = setTimeout(step, s * 1000); }; step(); };
+  $('#bPat').addEventListener('click', e => { const c = e.target.closest('[data-b]'); if (c) { pat = c.dataset.b; $$('#bPat [data-b]').forEach(x => x.setAttribute('aria-pressed', x === c)); if (on) { clearTimeout(tm); run(); } }
+    if (e.target.id === 'bGo') { on = !on; e.target.textContent = on ? 'Stop' : 'Start'; clearTimeout(tm); if (on) run(); else { orb.style.transform = 'scale(1)'; txt.textContent = 'Press start'; } } });
+}
+
+/* ---------- REWIRE & RESTORE ---------- */
+const RW = [
+  [0, 7, 'Days 1-7: the hardest week', 'Strong urges, especially at old trigger times. Irritability, restlessness, poor sleep. The old pathway is still the brain\'s default.', 'Remove access (filters, phone out of bedroom), tell one safe person, plan for the top three trigger times, move your body daily.'],
+  [8, 30, 'Days 8-30: withdrawal and wobble', 'Urges come in waves. Some people report low mood, brain fog, or temporarily low libido (often called a "flatline"; this is reported anecdotally, not established in research). Others feel unusually high desire.', 'Urge-surf, breathe, sleep 7-9 hours, sunlight in the morning, exercise, community. A lapse is not a relapse: come back quickly.'],
+  [31, 60, 'Days 31-60: new paths form', 'Cravings weaken and become less frequent. More energy, focus and emotional presence. New habits (exercise, prayer, hobbies, real connection) start to feel natural.', 'Strengthen the new: daily routines, serve others, deepen friendships. Married couples: sensate focus, non-demand touch.'],
+  [61, 90, 'Days 61-90: consolidation', 'The new pathway becomes the default for many. Triggers still appear but have less pull. Sexual response with a spouse often improves.', 'Keep safeguards. Write your relapse-prevention plan. Celebrate. Begin helping someone else.'],
+  [91, 120, 'Beyond 90: a new normal', 'Ninety days is a milestone, not a finish line. The brain stays plastic both ways for life.', 'Keep the rhythms that got you here. Stay connected and honest.']
+];
+M.rewire = {
+  t: 'Rewire & Restore', e: 'Healing',
+  l: 'The brain can be rewired. What we repeatedly do strengthens pathways and what we stop doing weakens them. This section explains neuroplasticity for sexual habits, what "detox" really means, how to calm and restore the nervous system, and a 90-day journey.',
+  h() {
+    return `${sec('Watch two pathways change', `<div class="stage"><svg viewBox="0 0 640 260" role="img" aria-label="Old and new neural pathways"><circle cx="70" cy="130" r="34" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/><text x="70" y="134" text-anchor="middle" class="ft" style="font-weight:700">Trigger</text>
+      <path id="rwOld" d="M104 120 C 250 30 400 40 540 70" fill="none" stroke="var(--rose)" stroke-linecap="round" style="transition:all .6s"/><path id="rwNew" d="M104 140 C 250 230 400 220 540 190" fill="none" stroke="var(--sage)" stroke-linecap="round" style="transition:all .6s"/>
+      <circle cx="570" cy="70" r="30" fill="var(--rose-soft)" stroke="var(--rose)"/><text x="570" y="66" text-anchor="middle" class="ft" style="font-size:11px">Old habit</text><text x="570" y="80" text-anchor="middle" class="ft" style="font-size:10px;fill:var(--muted)">porn / acting out</text>
+      <circle cx="570" cy="190" r="30" fill="var(--sage-soft)" stroke="var(--sage)"/><text x="570" y="186" text-anchor="middle" class="ft" style="font-size:11px">New response</text><text x="570" y="200" text-anchor="middle" class="ft" style="font-size:10px;fill:var(--muted)">connect / move</text>
+      <circle id="rwP1" r="6" fill="var(--rose)"/><circle id="rwP2" r="6" fill="var(--sage)"/></svg>
+      <label class="label" for="rwR">Day <b id="rwD">0</b> of a reset</label><input type="range" id="rwR" min="0" max="120" value="0" style="width:100%;accent-color:var(--sage)"><div id="rwOut"></div></div>`, 'Neurons that fire together wire together (Hebb). Drag the days and watch the old pathway thin and the new one thicken. Pulses show which path the brain prefers.')}
+    ${sec('What "brain detox" really means', split(panel('The truth', ul(['There is no literal "dopamine detox": you cannot drain dopamine out of the brain, and you wouldn\'t want to.', 'What does happen: when you stop a supernormal stimulus (porn, endless novelty), the reward system gradually re-sensitises, so ordinary pleasures (food, friends, nature, a spouse) feel rewarding again.', 'Habits weaken by non-use and are replaced, not just resisted. The new pathway matters as much as the old one fading.', 'Research on habit formation (Lally et al., 2010) found new habits took a median of 66 days to become automatic, with a range of 18-254 days. That is part of why the 90-day frame helps.']), 'gold'), panel('What helps the reset', ul(['Remove easy access: filters, no phone in bed, delete apps.', 'Reduce other supernormal stimuli for a season: endless scrolling, binge gaming.', 'Replace: exercise, creative work, real conversation, worship, nature.', 'Sleep 7-9 hours: tired brains crave.', 'Morning sunlight and movement stabilise mood and sleep.', 'Accountability and community: shame and secrecy fuel the old path.']), 'sage')))}
+    ${sec('Your nervous system: the window of tolerance', `<div class="stage"><svg viewBox="0 0 640 220" role="img" aria-label="Window of tolerance"><rect x="0" y="0" width="640" height="60" fill="var(--rose-soft)"/><rect x="0" y="60" width="640" height="100" fill="var(--sage-soft)"/><rect x="0" y="160" width="640" height="60" fill="var(--sky-soft)"/>
+      <text x="8" y="18" class="ft" style="font-size:11px;font-weight:700">HYPER-AROUSED: anxious, panicky, angry, compulsive urges</text><text x="8" y="80" class="ft" style="font-size:11px;font-weight:700">WINDOW OF TOLERANCE: calm, present, able to choose and connect</text><text x="8" y="212" class="ft" style="font-size:11px;font-weight:700">HYPO-AROUSED: numb, shut down, shame collapse, "nothing matters"</text>
+      <path id="wotA" d="M0 110 C 40 20 80 10 120 40 S 180 210 230 200 S 300 10 350 30 S 420 200 470 190 S 560 20 640 60" fill="none" stroke="var(--ink)" stroke-width="2.5" style="transition:opacity .8s"/>
+      <path id="wotB" d="M0 110 C 40 80 80 80 120 100 S 180 140 230 130 S 300 85 350 95 S 420 135 470 128 S 560 95 640 110" fill="none" stroke="var(--sage)" stroke-width="3" style="transition:opacity .8s;opacity:0"/></svg>
+      <div class="chips" id="wotC"><button class="chip" data-w="a" aria-pressed="true">Dysregulated</button><button class="chip" data-w="b">With regulation tools</button></div><p id="wotT"></p></div>`, 'A model from Dan Siegel. Compulsive sexual behaviour often happens outside the window: as a way to calm panic (hyper) or to feel something when numb (hypo). Regulation widens the window.')}
+    ${sec('Restore the nervous system: daily practices', cards([
+      ['Slow breathing', 'Long exhales activate the calming (parasympathetic) system. 5 minutes of physiological sighs improved mood more than mindfulness in one trial (Balban et al., 2023).', 'Breath'],
+      ['Humming, singing, praying aloud', 'These stimulate the vagus nerve and slow the heart. Worship is regulation too.', 'Vagus'],
+      ['Cold water on the face', 'Triggers the diving reflex, which quickly slows heart rate during a craving or panic.', 'Quick reset'],
+      ['Move every day', '20-30 minutes of exercise reduces stress hormones and cravings and improves sleep.', 'Body'],
+      ['Sleep rhythm', 'Same bedtime, screens off 30-60 minutes before, phone outside the bedroom.', 'Sleep'],
+      ['Safe connection', 'Eye contact, voice and touch with safe people regulate the nervous system faster than anything done alone.', 'People'],
+      ['Grounding', '5-4-3-2-1 senses; feet on the floor; hold something cold or textured.', 'Present'],
+      ['Scripture & stillness', '"Be still, and know that I am God" (Ps 46:10). Slow meditation on Scripture calms the body and renews the mind (Rom 12:2).', 'Spirit']
+    ]))}
+    ${sec('Guided breathing', `<div class="stage breath"><div class="bcirc"><i id="bOrb"></i><span id="bTxt">Press start</span></div><div class="chips" id="bPat"><button class="chip" data-b="sigh" aria-pressed="true">Physiological sigh</button><button class="chip" data-b="box">Box (4-4-4-4)</button><button class="chip" data-b="pelvic">Slow (4-6)</button><button class="pbtn solid" id="bGo">Start</button></div></div>`)}
+    ${sec('Daily restore checklist', `<div class="stage" id="rcl">${['Slept 7+ hours', 'Morning sunlight / walk', '20+ minutes of exercise', '5 minutes of slow breathing', 'Scripture or prayer', 'Real conversation with someone', 'Phone out of bedroom at night', 'Named my feelings once today', 'Did something creative or useful', 'Checked in with accountability partner'].map((x, i) => `<label class="chk"><input type="checkbox" data-i="${i}"> <span>${x}</span></label>`).join('')}<p class="label" id="rclS"></p></div>`, 'Tick what you did today. Saved only in this browser, and it resets each day.')}`;
+  },
+  mount() {
+    let raf; const o = $('#rwOld'), n = $('#rwNew'), p1 = $('#rwP1'), p2 = $('#rwP2'), L1 = o.getTotalLength(), L2 = n.getTotalLength(); let w = 0;
+    const upd = d => { w = Math.min(1, d / 90); $('#rwD').textContent = d; o.setAttribute('stroke-width', 16 - w * 13); o.style.opacity = 1 - w * .6; n.setAttribute('stroke-width', 3 + w * 13); n.style.opacity = .4 + w * .6;
+      const R = RW.find(r => d >= r[0] && d <= r[1]) || RW[4]; $('#rwOut').innerHTML = `<h3 style="font-size:22px;margin:8px 0">${R[2]}</h3>${split(panel('What often happens', `<p>${R[3]}</p>`, 'gold'), panel('What to do', `<p>${R[4]}</p>`, 'sage'))}`; };
+    const t0 = performance.now(); const tick = t => { if (!o.isConnected) return; const k1 = ((t - t0) / (900 + w * 2600)) % 1, k2 = ((t - t0) / (3500 - w * 2600)) % 1; const a = o.getPointAtLength(k1 * L1), b = n.getPointAtLength(k2 * L2); p1.setAttribute('cx', a.x); p1.setAttribute('cy', a.y); p1.style.opacity = 1 - w * .8; p2.setAttribute('cx', b.x); p2.setAttribute('cy', b.y); p2.style.opacity = .3 + w * .7; if (!RM) raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick);
+    $('#rwR').addEventListener('input', e => upd(+e.target.value)); upd(0);
+    const W = { a: 'Swinging between panic and shutdown, and acting out to escape both. Every trigger pushes you out of the window.', b: 'With breathing, sleep, movement and connection, the waves stay inside the window, where you can notice an urge and choose.' };
+    $('#wotC').addEventListener('click', e => { const c = e.target.closest('[data-w]'); if (!c) return; $$('#wotC .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); $('#wotA').style.opacity = c.dataset.w === 'a' ? 1 : .12; $('#wotB').style.opacity = c.dataset.w === 'b' ? 1 : 0; $('#wotT').textContent = W[c.dataset.w]; }); $('#wotT').textContent = W.a;
+    breathInit();
+    const key = 'sia-rcl-' + new Date().toDateString(); let st = []; try { st = JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) {}
+    const sc = () => { const k = $$('#rcl input:checked').length; $('#rclS').textContent = `${k} of 10 today` + (k >= 7 ? ' · a strong restoring day' : ''); };
+    $$('#rcl input').forEach(c => { c.checked = st.includes(+c.dataset.i); c.addEventListener('change', () => { const v = $$('#rcl input:checked').map(x => +x.dataset.i); try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) {} sc(); }); }); sc();
+  }
+};
+
+/* ---------- VOCABULARY ---------- */
+const VOC = [
+  ['Arousal', 'The body\'s physical readiness for sex: blood flow to the genitals, lubrication, erection, faster heart rate.', 'Response'], ['Desire (libido)', 'Wanting sex. Can be spontaneous (comes first) or responsive (appears after touch begins).', 'Response'], ['Orgasm (climax)', 'The peak of sexual response: rhythmic pelvic contractions and intense pleasure, followed by release.', 'Response'], ['Ejaculation', 'Release of semen from the penis, usually with male orgasm.', 'Response'], ['Refractory period', 'The recovery time after male orgasm during which another erection or orgasm is difficult.', 'Response'], ['Lubrication', 'Natural wetness of the vagina during arousal; also the products (lubricants) added to reduce friction.', 'Response'], ['Erection', 'The penis filling with blood and becoming firm.', 'Response'], ['Tenting', 'The lengthening and ballooning of the inner vagina during arousal.', 'Response'], ['Vasocongestion', 'Swelling of tissues with blood during arousal, in both sexes.', 'Response'], ['Afterglow', 'The relaxed, bonded state after sex.', 'Response'], ['Arousal non-concordance', 'When genital response and felt desire don\'t match.', 'Response'],
+  ['Foreplay', 'Kissing, touching and other intimacy before or instead of intercourse; essential for most women\'s arousal.', 'Acts'], ['Outercourse', 'Sexual activity without penetration.', 'Acts'], ['Intercourse (coitus)', 'Penetration of the vagina by the penis.', 'Acts'], ['Penetration', 'Insertion into the vagina (or another opening).', 'Acts'], ['Oral sex', 'Stimulating the genitals with the mouth. Cunnilingus (on a woman), fellatio (on a man).', 'Acts'], ['Manual stimulation', 'Touching the genitals with the hands.', 'Acts'], ['Masturbation', 'Stimulating one\'s own genitals for pleasure.', 'Acts'], ['Erogenous zones', 'Areas of the body especially sensitive to sexual touch.', 'Acts'], ['Sensate focus', 'A structured touch exercise used in sex therapy to remove pressure and rebuild pleasure.', 'Acts'], ['Aftercare', 'Caring for each other physically and emotionally after sex.', 'Acts'], ['Quickie', 'A short, spontaneous sexual encounter.', 'Acts'], ['Consent', 'Free, informed, ongoing agreement to sexual activity, which can be withdrawn at any time.', 'Acts'],
+  ['Vulva', 'The external female genitals: labia, clitoris, vaginal and urethral openings.', 'Anatomy'], ['Vagina', 'The muscular canal from the vulva to the cervix.', 'Anatomy'], ['Clitoris', 'The female organ of pleasure; a small visible glans plus 9-11 cm of internal structure.', 'Anatomy'], ['Labia', 'The outer (majora) and inner (minora) lips of the vulva.', 'Anatomy'], ['Hymen', 'A thin, elastic fringe of tissue at the vaginal opening; not a test of virginity.', 'Anatomy'], ['Cervix', 'The neck of the uterus at the top of the vagina.', 'Anatomy'], ['G-area', 'A sensitive zone on the front wall of the vagina.', 'Anatomy'], ['Penis', 'The male sex organ: shaft, glans (head), frenulum, and in uncircumcised men the foreskin.', 'Anatomy'], ['Scrotum & testes', 'The sac and the glands that make sperm and testosterone.', 'Anatomy'], ['Prostate', 'A gland below the bladder that adds fluid to semen; sensitive to pleasure.', 'Anatomy'], ['Semen', 'Fluid containing sperm, released at ejaculation.', 'Anatomy'], ['Pre-ejaculate', 'Clear fluid released during arousal; can contain sperm.', 'Anatomy'], ['Perineum', 'The area between the genitals and the anus.', 'Anatomy'], ['Pelvic floor', 'The hammock of muscles supporting the pelvic organs; contracts at orgasm.', 'Anatomy'], ['Kegel', 'An exercise that squeezes and releases the pelvic-floor muscles.', 'Anatomy'],
+  ['Dyspareunia', 'Painful intercourse.', 'Problems'], ['Vaginismus', 'Involuntary tightening of the pelvic-floor muscles that makes penetration painful or impossible.', 'Problems'], ['Vulvodynia', 'Chronic pain of the vulva without an obvious cause.', 'Problems'], ['Erectile dysfunction (ED)', 'Persistent difficulty getting or keeping an erection.', 'Problems'], ['Premature ejaculation (PE)', 'Ejaculating sooner than wanted, often within about a minute of penetration.', 'Problems'], ['Delayed ejaculation', 'Difficulty or inability to ejaculate with a partner.', 'Problems'], ['Anorgasmia', 'Difficulty reaching orgasm.', 'Problems'], ['HSDD', 'Hypoactive sexual desire disorder: persistently low desire causing distress.', 'Problems'], ['CSBD', 'Compulsive sexual behaviour disorder (WHO ICD-11, 2019).', 'Problems'], ['Postcoital dysphoria', 'Sadness, tearfulness or anxiety after sex.', 'Problems'], ['Dhat syndrome', 'A South Asian culture-bound anxiety about semen loss causing weakness.', 'Problems'], ['STI', 'Sexually transmitted infection.', 'Problems'],
+  ['Ovulation', 'Release of an egg from the ovary, about 14 days before the next period.', 'Fertility'], ['Fertile window', 'The roughly 6 days per cycle when sex can lead to pregnancy.', 'Fertility'], ['LH surge', 'The hormone spike that triggers ovulation; detected by ovulation kits.', 'Fertility'], ['Lochia', 'Bleeding and discharge after childbirth, lasting 2-6 weeks.', 'Fertility'], ['Contraception', 'Methods to prevent pregnancy.', 'Fertility'], ['Withdrawal', 'Pulling out before ejaculation; about 80% effective.', 'Fertility'],
+  ['Yada (Hebrew)', 'To know. Used for sexual union (Gen 4:1): intimate knowledge of a person.', 'Biblical'], ['Dabaq (Hebrew)', 'To cleave, cling, stick like glue (Gen 2:24).', 'Biblical'], ['Basar echad', 'One flesh (Gen 2:24): total union of two lives.', 'Biblical'], ['Onah (Hebrew)', 'A wife\'s conjugal rights (Ex 21:10).', 'Biblical'], ['Porneia (Greek)', 'Sexual immorality: a broad term for sex outside covenant marriage.', 'Biblical'], ['Moicheia (Greek)', 'Adultery.', 'Biblical'], ['Aselgeia (Greek)', 'Sensuality, unrestrained lust (Gal 5:19).', 'Biblical'], ['Epithymia (Greek)', 'Desire or longing, good or bad depending on its object (Luke 22:15; Matt 5:28).', 'Biblical'], ['Chastity', 'Sexual integrity in every state of life: abstinence when single, faithfulness when married.', 'Biblical'], ['Celibacy', 'Choosing not to marry or have sex, often for ministry (1 Cor 7:7).', 'Biblical'], ['Covenant', 'A binding promise; the framework of biblical marriage.', 'Biblical']
+];
+M.vocab = {
+  t: 'Sexual Vocabulary', e: 'Reference',
+  l: 'Clear, respectful words for bodies, sexual acts, problems, fertility, and biblical terms. Knowing the right words helps you talk with your spouse, doctor, counsellor, or children without shame.',
+  h() {
+    const cats = [...new Set(VOC.map(v => v[2]))];
+    return `<div class="stage"><div class="field"><input id="vq" type="search" placeholder="Search ${VOC.length} terms..." aria-label="Search vocabulary"></div><div class="chips" id="vc"><button class="chip" data-c="" aria-pressed="true">All</button>${cats.map(c => `<button class="chip" data-c="${c}">${c}</button>`).join('')}</div><p class="label" id="vn"></p><dl class="vocab" id="vl"></dl></div>
+    ${note('Using correct words is protective: children who know correct anatomical words are better protected from abuse, and couples who can name things can solve problems. Slang and silence both make sex harder to talk about.')}`;
+  },
+  mount() {
+    let c = '';
+    const draw = () => { const q = $('#vq').value.trim().toLowerCase(), L = VOC.filter(v => (!c || v[2] === c) && (!q || (v[0] + ' ' + v[1]).toLowerCase().includes(q))); $('#vn').textContent = `${L.length} terms`; $('#vl').innerHTML = L.map(v => `<div class="vt"><dt>${v[0]} <span class="pill ${{ Response: 'sky', Acts: '', Anatomy: 'gold', Problems: '', Fertility: 'sage', Biblical: 'gold' }[v[2]]}">${v[2]}</span></dt><dd>${v[1]}</dd></div>`).join(''); };
+    $('#vq').addEventListener('input', draw);
+    $('#vc').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; c = b.dataset.c; $$('#vc .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); }); draw();
   }
 };
 
