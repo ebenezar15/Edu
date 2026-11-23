@@ -340,6 +340,21 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
 .genbar { display: flex; height: 22px; border-radius: 8px; overflow: hidden; background: var(--line); }
 .genbar i { display: block; height: 100%; animation: grow .9s cubic-bezier(.4,.1,.2,1) both; }
 @media (max-width: 900px) { .g3row, .bodyw { grid-template-columns: minmax(0, 1fr); } .bodysvg { max-width: 260px; } }
+
+/* v3 */
+.wheelw { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 18px; align-items: start; }
+#wheel { width: 100%; max-width: 320px; justify-self: center; }
+#wheel path { transition: fill .5s; }
+.wmark { transition: transform 1.2s cubic-bezier(.3,1.3,.5,1); }
+.din { font: inherit; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); max-width: 220px; }
+.jbar { position: relative; display: flex; gap: 3px; margin: 4px 0 8px; }
+.jbar span { padding: 8px 6px; font-family: var(--mono); font-size: 11px; text-align: center; border-radius: 8px; background: var(--rose-soft); color: var(--ink); }
+.jbar span:last-of-type { background: var(--sage-soft); }
+#jmark { position: absolute; top: -6px; bottom: -6px; width: 3px; border-radius: 3px; background: var(--rose); transform: translateX(-50%); transition: left .4s cubic-bezier(.2,.7,.2,1); box-shadow: 0 0 10px var(--rose); }
+.quiz .dcard q { font-size: 24px; }
+.lsm, .lsf { transition: opacity .4s; }
+.bside > *, .wheelw > * { min-width: 0; }
+@media (max-width: 900px) { .wheelw { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 <canvas id="bgfx" aria-hidden="true"></canvas>
@@ -431,9 +446,9 @@ function orbit() {
 
 /* ============ navigation ============ */
 const NAV = [
-  { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots']] },
-  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal']] },
-  { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['practice', 'The Act: Process & Safety'], ['deeper', 'Deeper Pleasure'], ['pain', 'When It Is Hard or Painful']] },
+  { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['myths', 'Myths & Misunderstandings']] },
+  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan']] },
+  { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['practice', 'The Act: Process & Safety'], ['deeper', 'Deeper Pleasure'], ['pain', 'When It Is Hard or Painful']] },
   { g: 'Shadows', c: 'var(--rose)', items: [['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
   { g: 'Healing', c: 'var(--sage)', items: [['healing', 'Healing & Freedom'], ['energy', 'Creative Power Before Marriage']] },
   { g: 'Teaching', c: 'var(--gold)', items: [['children', 'Teaching Children'], ['teach', 'Curriculum by Age'], ['counsel', 'Counselling Toolkit']] },
@@ -475,7 +490,7 @@ M.home = {
     const P = [
       ['Parents', 'Teaching your children from age 2 to 18, body safety, and spotting abuse.', ['children', 'family', 'abuse', 'bodymap']],
       ['Teens & youth', 'Your body, desire, porn, masturbation, and what to do with sexual energy.', ['bodymap', 'fantasy', 'energy', 'porn']],
-      ['Pre-marital couples', 'Design, the first night, the process, safety, and the conversations to have now.', ['design', 'firstnight', 'practice', 'response']],
+      ['Pre-marital couples', 'Design, the first night, the process, safety, and the conversations to have now.', ['design', 'firstnight', 'fertility', 'myths']],
       ['Married couples', 'Deeper pleasure, when it is hard or painful, and creative, growing intimacy.', ['deeper', 'pain', 'response', 'healing']],
       ['Survivors & strugglers', 'Abuse, unwanted behaviour, and the road to healing.', ['family', 'fantasy', 'healing', 'abuse']],
       ['Teachers & counsellors', 'The relational lens, curricula, session outlines, the PLISSIT model, case work, and referral lines.', ['lens', 'teach', 'counsel', 'offenders']]
@@ -2171,6 +2186,219 @@ function homeMap(el) {
   });
   return graph3d(el, { nodes, edges, dist: 10.6, tilt: .3, bend: 1.05, spin: .0016, onPick: n => { if (TITLE[n.id]) location.hash = n.id; } });
 }
+
+/* ---------- FERTILITY & PREGNANCY ---------- */
+const JOURNEY = [
+  [1, 4, 'Weeks 1-4: very early', 'safe', "Sex is safe. Many women don't know yet that they are pregnant. Light spotting at implantation is common. Sex does not cause miscarriage: most early losses come from chromosomal problems in the embryo, not from anything the couple did.", 'Any position that is comfortable.', 'Embryo the size of a poppy seed.'],
+  [5, 13, 'First trimester (weeks 5-13)', 'safe', "Safe in a normal pregnancy. Nausea, exhaustion and sore breasts often lower desire, which is normal. The cervix has more blood flow, so light spotting after sex can happen; report any real bleeding to the doctor.", 'Gentle; avoid pressure on tender breasts.', 'By week 12 the baby is about the size of a lime (6 cm).'],
+  [14, 27, 'Second trimester (weeks 14-27)', 'safe', "Often the best season. Nausea fades, energy returns, and extra pelvic blood flow raises desire and orgasm for many women. After about 20 weeks, avoid lying flat on the back for long: the uterus can press the large vein (vena cava) and cause dizziness.", 'Woman on top, side-lying, spooning, seated.', 'Baby kicks are felt from about 18-22 weeks. The baby cannot see or understand sex and is protected by the amniotic sac, the cervix and its mucus plug.'],
+  [28, 36, 'Third trimester (weeks 28-36)', 'safe', "Still safe in an uncomplicated pregnancy. The bump makes some positions awkward. Orgasm can cause mild tightening (Braxton Hicks contractions); this is harmless if it settles. In many South Indian families the <i>seemantham</i> or <i>valaikaapu</i> baby shower happens around the 7th month, after which the wife often moves to her mother's house until months after delivery.", 'Spooning, rear entry, edge of the bed, side-lying.', 'Baby about 45 cm by week 36.'],
+  [37, 40, 'Full term (weeks 37-40)', 'caution', "Safe until the waters break or labour starts, unless your doctor says otherwise. Studies are mixed on whether sex helps start labour; it is not a reliable method. Stop and call the doctor if there is bleeding, fluid leaking, or regular painful contractions.", 'Whatever is comfortable; go gently.', 'Baby ready to be born.'],
+  [41, 43, 'Postpartum weeks 1-3', 'wait', "Wait. The womb is healing and bleeds (lochia) for 2-6 weeks, any tears, episiotomy or C-section wound are healing, and infection risk is high. Intimacy now means holding, kind words, night feeds shared, meals cooked. Many new mothers feel “touched out”.", 'No intercourse. Cuddling and closeness.', 'Newborn feeds every 2-3 hours.'],
+  [44, 46, 'Postpartum weeks 4-6', 'wait', "Usually still waiting. Have the 6-week check-up. <b>Plan contraception before resuming</b>: if not breastfeeding, ovulation can return as early as about 3-4 weeks after birth, before the first period. Many Indian families keep a 40-day confinement (pathiyam) period, which fits medical advice.", 'Non-penetrative touch if both want it.', 'Mother\'s body still recovering.'],
+  [47, 52, 'Postpartum weeks 7-12', 'caution', "Many couples resume now, when bleeding has stopped, wounds have healed, and she feels ready. Go slowly. Breastfeeding lowers oestrogen and causes dryness, so use plenty of lubricant. Breasts may leak at orgasm (normal). Pain beyond the first few times needs a doctor or pelvic-floor physiotherapist. Watch for postpartum depression in mother (about 1 in 5 in Indian studies) and father.", 'Woman on top or side-lying: she controls depth.', 'Baby starting to smile.']
+];
+const QUIZ = [
+  ['You can\'t get pregnant the first time you have sex.', 'myth', 'Pregnancy depends on ovulation, not experience. Any unprotected sex in the fertile window can cause pregnancy.', 'General'],
+  ['You can get pregnant from pre-ejaculate fluid.', 'fact', 'Pre-ejaculate can contain sperm, which is one reason withdrawal fails about 1 time in 5 with typical use.', 'General'],
+  ['Sperm can survive inside a woman for up to 5 days.', 'fact', 'This is why sex several days before ovulation can lead to pregnancy (Wilcox et al., 1995).', 'General'],
+  ['You can\'t get pregnant during your period.', 'myth', 'Unlikely but possible, especially with short cycles: sperm from period sex can survive until an early ovulation.', 'General'],
+  ['Urinating, washing, or jumping after sex prevents pregnancy.', 'myth', 'Sperm reach the cervix within minutes. None of these work.', 'General'],
+  ['The “safe period” calendar is a reliable contraceptive.', 'myth', 'Calendar counting alone fails often, especially with irregular cycles. Symptom-based methods (temperature plus cervical mucus), learned properly, are far more reliable.', 'General'],
+  ['Sex during a normal pregnancy harms the baby.', 'myth', 'The baby is protected by the amniotic sac, the cervix and the mucus plug. Sex is safe unless the doctor names a complication.', 'India'],
+  ['Ovulation can return before the first period after delivery.', 'fact', 'That is why many “surprise” second pregnancies happen within a year. Plan contraception before resuming sex.', 'General'],
+  ['Copper-T can travel to the heart or cause cancer.', 'myth', 'A common Indian rumour. An IUD stays in the uterus; rare complications (expulsion, perforation at insertion) are checked by a doctor. It does not cause cancer.', 'India'],
+  ['A vasectomy makes a man weak or impotent.', 'myth', 'Vasectomy blocks only sperm; hormones, erections, desire and ejaculation feel the same. Fear of weakness is a big reason India\'s vasectomy rate is among the world\'s lowest.', 'India'],
+  ['The pill causes long-term infertility.', 'myth', 'Fertility usually returns within a few months of stopping.', 'General'],
+  ['Losing semen through masturbation or wet dreams weakens the body.', 'myth', 'The “dhat” belief. Semen is constantly produced and reabsorbed. The anxiety causes the symptoms.', 'India'],
+  ['Frequent sex makes the vagina permanently loose.', 'myth', 'The vagina is elastic and returns to shape. Childbirth and ageing affect the pelvic floor; Kegel exercises help. Sex frequency does not.', 'General'],
+  ['Oral sex can transmit STIs.', 'fact', 'Herpes, gonorrhoea, syphilis and HPV can spread through oral sex.', 'General'],
+  ['Most women need clitoral stimulation to reach orgasm.', 'fact', 'Only about 18% orgasm from intercourse alone (Herbenick, 2018).', 'General'],
+  ['Older people stop having sex.', 'myth', '53% of 65-74 year-olds and 26% of 75-85 year-olds in a US national study were sexually active (Lindau et al., NEJM, 2007).', 'General'],
+  ['Men always want sex more than women.', 'myth', 'In many couples the wife has the higher desire. Desire differences go both ways and change over time.', 'General'],
+  ['Sex was the original sin in Eden.', 'myth', 'The sin was eating the forbidden fruit (Gen 3). “Be fruitful and multiply” was spoken before the Fall (Gen 1:28) and the couple were united before it (Gen 2:24-25).', 'Christian'],
+  ['Song of Songs celebrates a woman\'s sexual desire.', 'fact', 'The woman speaks most of the book and voices her own longing (Song 1:2; 3:1-4; 5:2-6).', 'Christian'],
+  ['A Christian wife must never say no to her husband.', 'myth', '1 Corinthians 7:4-5 gives authority to both spouses and describes abstaining “by agreement”. Love “does not insist on its own way” (1 Cor 13:5). Coercion is never godly.', 'Christian'],
+  ['If a wife gives enough sex, her husband won\'t struggle with porn.', 'myth', 'Porn use is driven by the user\'s own triggers, history and choices. Blaming wives is unbiblical and harmful (Gregoire\'s research found this teaching linked to more sexual pain).', 'Christian'],
+  ['Onan\'s sin (Genesis 38) was masturbation.', 'myth', 'Onan refused to give his brother\'s widow a child while using her sexually. The text is about exploitation and duty, not masturbation.', 'Christian'],
+  ['If you waited until marriage, sex will automatically be great.', 'myth', 'Waiting is valuable, but good sex is learned over time with knowledge, communication and patience.', 'Christian'],
+  ['Feeling tempted is itself a sin.', 'myth', 'Jesus “in every respect has been tempted as we are, yet without sin” (Heb 4:15). Temptation is not sin; yielding to it is.', 'Christian'],
+  ['A woman who is raped is impure or partly guilty.', 'myth', 'Even the Old Testament law says “you shall do nothing to the young woman; she has committed no offense” (Deut 22:26). Survivors are sinned against.', 'Christian'],
+  ['Sexual sin is the one sin God can\'t forgive.', 'myth', 'Paul lists sexual sins and then says “such were some of you. But you were washed” (1 Cor 6:11). Jesus restored sexually broken people again and again.', 'Christian'],
+  ['Paul says married couples should not deprive each other except by mutual agreement.', 'fact', '1 Corinthians 7:5, a mutual principle for both husband and wife.', 'Christian'],
+  ['Talking about sex in church is inappropriate.', 'myth', 'Scripture speaks about sex frankly (Genesis, Leviticus, Proverbs 5-7, Song of Songs, 1 Corinthians 7). Silence leaves people to learn from porn.', 'Christian'],
+  ['Married couples are only allowed one “proper” position.', 'myth', 'That rule came from medieval penitential books, not the Bible. Scripture gives freedom within mutual love and honour.', 'Christian'],
+  ['Celibacy is holier than marriage.', 'myth', 'Both are gifts (1 Cor 7:7). Marriage pictures Christ and the church (Eph 5:32). Jesus himself attended and blessed a wedding (John 2).', 'Christian'],
+  ['A truly spiritual person stops feeling sexual desire.', 'myth', 'Desire is part of being human and embodied. Holiness is about directing desire, not deleting it.', 'Christian']
+];
+const LIFE = [
+  { a: '0-2', t: 'Before birth & infancy', m: 'Reflex erections happen even before birth (seen on ultrasound) and often in baby boys, especially during sleep or nappy changes.', f: 'Baby girls can show reflex vaginal lubrication and clitoral swelling.', both: 'Babies touch their genitals the way they touch their ears or toes: it is soothing and reflexive, not adult sexual desire. Respond calmly; never shame.', teach: 'Use correct names during nappy changes and baths.' },
+  { a: '3-6', t: 'Early childhood', both: 'Curiosity about bodies, lots of questions, comparing with siblings, “playing doctor” with same-age children, self-touch for comfort. All common and normal.', m: 'Boys notice erections and may ask about them.', f: 'Girls ask why they are different from brothers.', teach: 'Privacy rules (PANTS); correct names; answer questions simply. Concerning signs: adult-like sexual acts, force or secrecy, a big age gap between children, or sexual knowledge beyond their age. These can signal abuse.' },
+  { a: '6-9', t: 'Middle childhood', both: 'Adrenarche begins (around 6-8): adrenal glands start producing DHEA, the first hormonal step toward puberty. Modesty increases. Bathroom jokes, first “crushes”.', m: '', f: 'Early breast budding can begin as young as 8 in some girls; this is within normal range.', teach: 'How babies are made; body changes coming; online safety.' },
+  { a: '9-12', t: 'Pre-teen', both: 'First real sexual attraction is commonly remembered at around age 10, before puberty is complete (McClintock & Herdt, 1996).', m: 'Testes begin to enlarge around 11; pubic hair; a growth spurt comes later than in girls.', f: 'Breast budding (average about 10), pubic hair, growth spurt; first period on average around 12-13 in India (range about 9-15).', teach: 'Puberty in detail before it happens: periods, wet dreams, erections, feelings, porn.' },
+  { a: '13-15', t: 'Early teens', both: 'The brain\'s reward system becomes highly responsive while the prefrontal brakes are still maturing (into the mid-20s). Desire and risk-taking feel intense.', m: 'Testosterone rises about twenty-fold. Spontaneous erections (sometimes at awkward moments), wet dreams (first ejaculation around 12-14), strong visual arousal. Masturbation commonly begins.', f: 'Cycles establish. Desire is often felt as romantic longing and is strongly shaped by context and emotion, but physical arousal and curiosity are also common. Some girls begin masturbating; many feel more shame about it than boys do.', teach: 'Desire is normal and good. Consent. Porn and sextortion. Self-control as a skill.' },
+  { a: '16-19', t: 'Late teens', both: 'Desire is strong and frequent for many. Biggest risks: porn habits forming, pressure in relationships, coercion, sextortion, alcohol.', m: 'Testosterone near its peak; arousal fast and easily triggered by sight.', f: 'Regular cycles; desire often rises around ovulation. Arousal tends to depend more on emotional safety and context.', teach: 'Theology of sex, dating boundaries, what to do if assaulted.' },
+  { a: '20s-30s', t: 'Young adulthood', both: 'Marriage, the learning years, pregnancy and small children. In long relationships, responsive desire (desire that appears after touch begins) becomes common for both sexes.', m: 'Testosterone peaks in the early 20s, then declines slowly (about 1% a year from 30-40 on). Performance anxiety is the most common cause of erection problems at this age.', f: 'Many women report growing sexual confidence and easier orgasm in their late 20s and 30s. Pregnancy, breastfeeding and fatigue lower desire for seasons.', teach: 'Pre-marital and newly married sessions; Deeper Pleasure; Fertility & Pregnancy.' },
+  { a: '40s-50s', t: 'Midlife', both: 'Desire can dip from stress or rise with freedom from children and pregnancy fears.', m: 'Erections need more direct stimulation; the refractory period lengthens. In the Massachusetts Male Aging Study, about 52% of men aged 40-70 had some degree of erectile dysfunction. ED can be an early warning of heart disease, so see a doctor.', f: 'Perimenopause: hot flushes, dryness, mood changes. Average menopause in India is around 46-47, earlier than the Western average of about 51. Some women feel more desire once pregnancy fear is gone.', teach: 'Couples 30-50 and 50+ curricula; medical help is normal and effective.' },
+  { a: '60+', t: 'Later life', both: 'Sex continues for many: 53% of 65-74 year-olds and 26% of 75-85 year-olds were sexually active in a US national study (Lindau et al., 2007). Touch, kissing and slow sensuality count. Illness and widowhood are the main barriers.', m: 'Slower erections; ED treatments are often effective.', f: 'Vaginal dryness and thinning, treated with lubricants, moisturisers and local oestrogen.', teach: 'Redefining sex; sexual health check-ups; grief and intimacy.' }
+];
+function arcSeg(cx, cy, r1, r2, a0, a1) {
+  const p = (r, a) => [cx + r * Math.cos(a), cy + r * Math.sin(a)], l = a1 - a0 > Math.PI ? 1 : 0;
+  const [x1, y1] = p(r2, a0), [x2, y2] = p(r2, a1), [x3, y3] = p(r1, a1), [x4, y4] = p(r1, a0);
+  return `M${x1} ${y1} A${r2} ${r2} 0 ${l} 1 ${x2} ${y2} L${x3} ${y3} A${r1} ${r1} 0 ${l} 0 ${x4} ${y4} Z`;
+}
+M.fertility = {
+  t: 'Fertility & Pregnancy', e: 'Union',
+  l: 'When to have sex to conceive, or to avoid pregnancy; whether and how sex is safe through each month of pregnancy; and when and how to resume after delivery. Each comes with myths and real stories.',
+  h() {
+    return `${sec('Your cycle wheel', `<div class="stage"><div class="wheelw"><svg viewBox="0 0 320 320" id="wheel" role="img" aria-label="Menstrual cycle wheel"></svg><div class="bside">
+      <div class="chips" id="goal"><button class="chip" data-g="conceive" aria-pressed="true">Trying to conceive</button><button class="chip" data-g="avoid">Avoiding pregnancy</button></div>
+      <label class="label" for="cLen">Cycle length: <b id="cLenV">28</b> days</label><input type="range" id="cLen" min="21" max="40" value="28" style="accent-color:var(--rose)">
+      <label class="label" for="cLast">First day of last period</label><input type="date" id="cLast" class="din">
+      <div id="cOut"></div></div></div>
+      ${note('An estimate for learning only. Ovulation usually happens about 14 days <i>before</i> the next period (not on day 14 of every cycle), and it moves with stress, illness, breastfeeding and irregular cycles. Don\'t rely on a calendar alone to avoid pregnancy.', 'rose')}</div>`, 'Set your usual cycle length and the first day of your last period. The wheel colours each day and the marker turns to today.')}
+    ${sec('The fertile window', cards([
+      ['6 days per cycle', 'Pregnancy is possible only from about 5 days before ovulation to the day of ovulation (Wilcox et al., NEJM, 1995). Sperm live up to 5 days; an egg lives 12-24 hours.', 'Science'],
+      ['Peak days', 'The 2 days before ovulation and ovulation day itself carry the highest chance, roughly 25-30% per cycle for a healthy young couple.', 'Timing'],
+      ['Body signs', 'Fertile cervical mucus becomes clear, slippery and stretchy like raw egg white. Basal body temperature rises about 0.3°C <i>after</i> ovulation. Ovulation test kits detect the LH surge 24-36 hours before.', 'Signs'],
+      ['Irregular cycles', 'If cycles vary by more than about 7 days, calendar estimates fail. PCOS (common in India) often causes irregular ovulation. See a gynaecologist.', 'Caution']
+    ]))}
+    ${sec('Trying to conceive vs. avoiding pregnancy', split(panel('Trying to conceive', ul(['Have sex every 1-2 days during the fertile window, or simply every 2-3 days all month (UK NICE guidance), which removes timing stress.', 'Position, lying down afterwards, or raising the hips makes no proven difference.', 'Some lubricants (and saliva) can slow sperm; use sperm-friendly ones if needed.', 'Folic acid 400 mcg daily for at least 3 months before conception prevents neural tube defects.', 'Both partners: stop smoking, limit alcohol, keep a healthy weight. Sperm take about 74 days to develop.', 'See a doctor after 12 months of trying (6 months if she is 35+), or sooner with irregular periods or known problems. About half of infertility involves a male factor, so test the husband too.']), 'sage'), panel('Avoiding pregnancy', ul(['Most reliable: IUD (Copper-T or hormonal), implant, or vasectomy/tubectomy if your family is complete (over 99%).', 'Pill: about 93% with typical use. Condoms: about 87%, and they protect against STIs.', 'Fertility awareness (temperature plus mucus, learned from a trained teacher) can exceed 98% with perfect use; calendar counting alone is far weaker.', 'Withdrawal: about 80%.', 'After birth: breastfeeding protects (98%) <b>only</b> if the baby is under 6 months, exclusively breastfed day and night, and periods have not returned.', 'Emergency pill within 72 hours (some up to 120) after unprotected sex.']), 'rose')))}
+    ${sec('Pregnancy & postpartum journey', `<div class="stage"><div class="jbar" id="jbar">${[['1st', 13], ['2nd', 14], ['3rd', 13], ['After birth', 12]].map(s => `<span style="flex:${s[1]}">${s[0]}</span>`).join('')}<i id="jmark"></i></div><input type="range" id="jR" min="1" max="52" value="10" aria-label="Pregnancy and postpartum week" style="accent-color:var(--rose);width:100%"><div id="jOut"></div></div>`, 'Drag through the 40 weeks of pregnancy and the first 12 weeks after delivery.')}
+    ${sec('When to avoid sex in pregnancy', cards([
+      ['Placenta previa', 'The placenta covers the cervix; intercourse can cause serious bleeding.', 'Avoid'],
+      ['Unexplained bleeding', 'Stop and see the doctor before resuming.', 'Avoid'],
+      ['Waters broken', 'Leaking amniotic fluid means infection risk. Go to hospital.', 'Avoid'],
+      ['Preterm labour risk', 'Previous preterm birth, short cervix, cerclage, or certain twin pregnancies: follow the doctor\'s advice.', 'Ask'],
+      ['Never blow air into the vagina', 'During oral sex in pregnancy this can cause a rare but fatal air embolism.', 'Warning'],
+      ['New STI risk', 'Infections in pregnancy can harm the baby. Both partners should be tested.', 'Health']
+    ]))}
+    ${sec('Stories (composites)', cases([
+      { tag: 'Trying for 2 years', k: 'gold', t: '“We always tried on day 14”', s: 'Divya and Sam were told the fertile day was day 14. Divya\'s cycles were 35 days long, so she actually ovulated around day 21. They had been missing her fertile window every month.', h: 'A gynaecologist taught them to read cervical mucus and use ovulation strips; also tested Sam (normal) and Divya (mild PCOS).', o: 'Pregnant within four months. Lesson: ovulation is about 14 days before the next period, not day 14.' },
+      { tag: 'Surprise pregnancy', k: 'rose', t: 'The “safe period”', s: 'Ravi and Anu used the calendar to avoid sex in the “danger days” and assumed the rest were safe. A stressful month delayed her ovulation and they conceived.', h: 'After the birth they chose a Copper-T inserted after delivery, which is free in government hospitals.', o: 'Lesson: calendar counting is a weak method; choose a reliable one if pregnancy would be a crisis.' },
+      { tag: 'Seemantham separation', k: 'sky', t: 'Five months apart', s: 'After the 7th-month baby shower Priya went to her mother\'s town, as is traditional. Her husband Joel was alone for five months, slid back into porn he had quit, and felt distant from his newborn.', h: 'In later pregnancies they planned ahead: weekly visits, nightly video calls, an accountability partner for Joel, and Priya returning at 6 weeks instead of 3 months.', o: 'Lesson: honour family customs, but plan for the marriage too. Long separations need intentional connection.' },
+      { tag: 'Postpartum', k: 'sage', t: 'Pain at 10 weeks', s: 'Grace had an episiotomy. At 10 weeks sex still felt like tearing, she dreaded it, and she thought something was permanently wrong.', h: 'A pelvic-floor physiotherapist released scar tissue and tight muscles; plenty of lubricant (breastfeeding dryness); woman-on-top; her husband learned patience and non-penetrative intimacy.', o: 'Pain-free by 5 months. Lesson: postpartum pain is common and treatable, not something to endure silently.' },
+      { tag: 'Postpartum depression', k: 'rose', t: '“I should be happy”', s: 'Ruth cried daily, felt nothing for her baby, and had no interest in sex or anything else. Her mother-in-law called it laziness.', h: 'Her pastor\'s wife recognised postpartum depression; a psychiatrist, counselling, and family taking night feeds.', o: 'Recovery in months. Lesson: postpartum depression is an illness, not a spiritual failure. Fathers can get it too.' }
+    ]))}`;
+  },
+  mount() {
+    let goal = 'conceive', len = 28;
+    const d0 = new Date(); d0.setDate(d0.getDate() - 9); $('#cLast').value = d0.toISOString().slice(0, 10);
+    const fmt = d => d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+    const add = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+    const draw = () => {
+      len = +$('#cLen').value; $('#cLenV').textContent = len;
+      const last = new Date($('#cLast').value || d0), ov = len - 14, today = new Date();
+      const dayN = ((Math.floor((today - last) / 864e5) % len) + len) % len + 1;
+      const ph = d => d <= 5 ? 'period' : d === ov ? 'ovulation' : (d >= ov - 5 && d < ov) ? 'fertile' : d > ov ? 'luteal' : 'follicular';
+      const C = { period: 'var(--rose)', ovulation: 'var(--gold)', fertile: 'var(--gold-soft)', luteal: 'var(--sky-soft)', follicular: 'var(--sage-soft)' };
+      const st = 2 * Math.PI / len;
+      $('#wheel').innerHTML = Array.from({ length: len }, (_, i) => { const d = i + 1, a0 = -Math.PI / 2 + i * st + .012, a1 = a0 + st - .024; return `<path d="${arcSeg(160, 160, 92, 140, a0, a1)}" fill="${C[ph(d)]}" stroke="${ph(d) === 'fertile' ? 'var(--gold)' : 'var(--line)'}" stroke-width="1"><title>Day ${d}: ${ph(d)}</title></path>${d === 1 || d === ov || d % 7 === 0 ? `<text x="${160 + 154 * Math.cos(a0 + st / 2)}" y="${164 + 154 * Math.sin(a0 + st / 2)}" text-anchor="middle" class="ft" style="font-size:10px;fill:var(--muted)">${d}</text>` : ''}`; }).join('')
+        + `<g class="wmark" style="transform:rotate(${(dayN - .5) * 360 / len}deg);transform-origin:160px 160px"><path d="M160 14 L152 2 L168 2 Z" fill="var(--ink)"/><line x1="160" y1="16" x2="160" y2="96" stroke="var(--ink)" stroke-width="2"/></g>
+        <text x="160" y="150" text-anchor="middle" style="font-family:var(--display);font-size:30px;font-weight:700;fill:var(--ink)">Day ${dayN}</text><text x="160" y="176" text-anchor="middle" class="ft" style="fill:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-size:11px">${ph(dayN)}</text>`;
+      const fw0 = add(last, ov - 6), ovd = add(last, ov - 1), nxt = add(last, len);
+      const lg = [['Period', 'var(--rose)'], ['Fertile', 'var(--gold-soft)'], ['Ovulation', 'var(--gold)'], ['Luteal', 'var(--sky-soft)'], ['Follicular', 'var(--sage-soft)']];
+      $('#cOut').innerHTML = `<div class="chips" style="margin:6px 0">${lg.map(l => `<span class="chip" style="cursor:default"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${l[1]};margin-right:6px;border:1px solid var(--line)"></i>${l[0]}</span>`).join('')}</div>`
+        + tbl(['', 'Estimated dates'], [['Fertile window', `${fmt(fw0)} to ${fmt(ovd)}`], ['Likely ovulation', fmt(ovd)], ['Next period', fmt(nxt)]])
+        + note(goal === 'conceive' ? `<b>To conceive:</b> have sex every 1-2 days from ${fmt(fw0)} to ${fmt(ovd)}, especially ${fmt(add(ovd, -2))} to ${fmt(ovd)}. Watch for egg-white cervical mucus.` : `<b>To avoid pregnancy:</b> ${fmt(add(fw0, -2))} to ${fmt(add(ovd, 2))} carries the highest risk (with a safety margin). Outside it the risk is lower but <b>not zero</b>. Use a reliable method if pregnancy would be a crisis.`, goal === 'conceive' ? 'sage' : 'rose');
+    };
+    $('#cLen').addEventListener('input', draw); $('#cLast').addEventListener('change', draw);
+    $('#goal').addEventListener('click', e => { const c = e.target.closest('[data-g]'); if (!c) return; goal = c.dataset.g; $$('#goal .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); draw(); });
+    draw();
+    const lab = { safe: ['Generally safe', 'sage'], caution: ['Safe with care', 'gold'], wait: ['Wait', '' ] };
+    const jshow = w => { const J = JOURNEY.find(j => w >= j[0] && w <= j[1]); $('#jmark').style.left = ((w - .5) / 52 * 100) + '%';
+      const wl = w <= 40 ? `Pregnancy week ${w}` : `${w - 40} week${w - 40 > 1 ? 's' : ''} after delivery`;
+      $('#jOut').innerHTML = `<div class="info" style="min-height:0;margin-top:12px"><span class="label">${wl}</span><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h3>${J[2]}</h3><span class="pill ${lab[J[3]][1]}">${lab[J[3]][0]}</span></div><p>${J[4]}</p>${split(panel('Positions / intimacy', `<p>${J[5]}</p>`, 'gold'), panel(w <= 40 ? 'Baby' : 'Mother & baby', `<p>${J[6]}</p>`, 'sky'))}</div>`; };
+    $('#jR').addEventListener('input', e => jshow(+e.target.value)); jshow(10);
+  }
+};
+
+/* ---------- MYTHS ---------- */
+M.myths = {
+  t: 'Myths & Misunderstandings', e: 'Foundations',
+  l: 'Myths about sex shape marriages, fears and even theology. Test yourself (or a class) with the myth-or-fact quiz, then read the full list with explanations. It covers general, Indian and Christian myths.',
+  h() {
+    const cats = ['All', 'General', 'India', 'Christian'];
+    return `${sec('Myth or fact?', `<div class="stage quiz"><div class="chips" id="qCat">${cats.map((c, i) => `<button class="chip" data-c="${c}" aria-pressed="${i === 0}">${c}</button>`).join('')}<span class="label" id="qScore" style="margin-left:auto;align-self:center"></span></div><div id="qCard"></div></div>`, 'Tap Myth or Fact, read the explanation, then go to the next statement.')}
+    ${sec('All myths and facts, explained', tabs(['General', 'India', 'Christian'].map(c => [c, acc(QUIZ.filter(q => q[3] === c).map(q => [`<span class="pill ${q[1] === 'myth' ? '' : 'sage'}">${q[1]}</span> ${q[0]}`, `<p>${q[2]}</p>`]))])))}
+    ${sec('Where Christian myths come from', cards([
+      ['Greek dualism', 'The body is low and the spirit is high, so sex is suspect. This led to "sex is only for procreation" and to celibacy being ranked as holier.', 'Philosophy'],
+      ['Silence', 'When churches don\'t teach, people fill the gap with rumours, fear and porn.', 'Culture'],
+      ['Proof-texting', 'Single verses (1 Cor 7:5, Eph 5:22) pulled out of their context of mutual love and used to control people.', 'Misuse'],
+      ['Purity culture', 'Fear-based teaching of the 1990s-2000s: girls as gatekeepers, sex as a reward, shame as motivation.', 'Recent'],
+      ['Local culture mixed in', 'In India, ideas about ritual pollution, honour, the "dhat" belief and caste can pass for Christian teaching.', 'Context']
+    ]))}
+    ${sec('Stories (composites)', cases([
+      { tag: 'Married 25 years', k: 'sky', t: '“We thought sex was over”', s: 'At 52, Thomas had erection problems and Mary had painful dryness after menopause. Both quietly assumed this was the end, and grew distant.', h: 'A doctor checked Thomas\'s heart (ED was an early warning) and prescribed treatment; Mary used lubricant and local oestrogen. They learned slower, more playful sex.', o: 'Lesson: “older people don\'t have sex” is a myth. Treatable problems were mistaken for the end of intimacy.' },
+      { tag: 'Newlywed', k: 'rose', t: '“The Bible says you can\'t refuse”', s: 'Nikhil believed a Christian wife must always say yes, and sulked when Sarah declined. She began to dread nights.', h: 'Their pre-marital mentors walked them through 1 Cor 7:3-5 in context: mutual, by agreement, love without coercion.', o: 'Lesson: a myth taught as Scripture can damage a marriage within months. Context restores the mutuality.' },
+      { tag: 'Young man', k: 'gold', t: 'Dhat fear', s: 'Kiran, 19, believed his wet dreams were draining his strength. He felt weak, anxious, and visited quacks who sold expensive “powders”.', h: 'A doctor explained normal semen production and the culture-bound fear; counselling for anxiety.', o: 'Symptoms faded once the fear was gone. Lesson: the myth, not the semen, caused the harm.' }
+    ]))}`;
+  },
+  mount() {
+    let pool = [...QUIZ], i = 0, sc = 0, n = 0;
+    const show = () => { const q = pool[i % pool.length]; $('#qScore').textContent = `Score: ${sc} / ${n}`;
+      $('#qCard').innerHTML = `<div class="dcard"><span class="label">${q[3]} &middot; ${i % pool.length + 1} of ${pool.length}</span><q>${q[0]}</q><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="pbtn" data-a="myth">Myth</button><button class="pbtn" data-a="fact">Fact</button></div><div id="qAns"></div></div>`; };
+    $('#qCard').addEventListener('click', e => {
+      const b = e.target.closest('[data-a]'); if (b && !$('#qAns').innerHTML) { const q = pool[i % pool.length], ok = b.dataset.a === q[1]; n++; if (ok) sc++; $('#qScore').textContent = `Score: ${sc} / ${n}`;
+        $('#qAns').innerHTML = `${note(`<b>${ok ? 'Correct' : 'Not quite'}: it's a ${q[1]}.</b> ${q[2]}`, ok ? 'sage' : 'rose')}<button class="pbtn solid" data-next="1" style="margin-top:10px">Next statement</button>`; }
+      if (e.target.closest('[data-next]')) { i++; show(); }
+    });
+    $('#qCat').addEventListener('click', e => { const c = e.target.closest('[data-c]'); if (!c) return; $$('#qCat .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); pool = c.dataset.c === 'All' ? [...QUIZ] : QUIZ.filter(q => q[3] === c.dataset.c); i = 0; sc = 0; n = 0; show(); });
+    show();
+  }
+};
+
+/* ---------- LIFESPAN ---------- */
+M.lifespan = {
+  t: 'Desire Across the Lifespan', e: 'Body & Mind',
+  l: 'At what age do sexual arousal, triggers and desire appear in boys and girls, men and women, and how do they change through life? Drag through the ages to see what the body, hormones and mind are doing at each stage.',
+  h() {
+    let wav = 'M0 200 L 72 196 C 92 190 104 90 124 72'; for (let x = 124, k = 0; x < 396; x += 16, k++) wav += ` Q ${x + 8} ${k % 2 ? 92 : 52} ${x + 16} 72`;
+    wav += ' C 420 72 436 176 460 184 L 680 192';
+    const xs = [8, 36, 64, 90, 120, 150, 210, 380, 560];
+    return `<div class="stage"><div class="chips" id="lsSex"><button class="chip" data-x="both" aria-pressed="true">Both</button><button class="chip" data-x="m">Male</button><button class="chip" data-x="f">Female</button></div>
+      <div style="overflow-x:auto"><svg viewBox="0 0 690 230" style="min-width:560px" role="img" aria-label="Hormone curves across life">
+        ${[0, 10, 20, 30, 40, 50, 60, 70, 80].map(a => `<line x1="${a * 8.5}" x2="${a * 8.5}" y1="20" y2="205" stroke="var(--line)" stroke-dasharray="2 6"/><text x="${a * 8.5 + 2}" y="222" class="ft" style="font-size:10px;fill:var(--muted)">${a}</text>`).join('')}
+        <path class="lsm" d="M0 200 L 85 196 C 110 190 130 60 170 40 C 260 38 400 70 680 120" fill="none" stroke="var(--sky)" stroke-width="3"/>
+        <path class="lsf" d="${wav}" fill="none" stroke="var(--rose)" stroke-width="3"/>
+        <text x="520" y="110" class="ft lsm" style="fill:var(--sky)">testosterone (male)</text><text x="470" y="178" class="ft lsf" style="fill:var(--rose)">oestrogen (female, cycling)</text>
+        <rect id="lsBand" y="20" height="185" fill="var(--gold-soft)" style="transition:all .6s cubic-bezier(.2,.7,.2,1)"/>
+      </svg></div>
+      <input type="range" id="lsR" min="0" max="${LIFE.length - 1}" value="4" aria-label="Life stage" style="accent-color:var(--rose);width:100%">
+      <div class="age-ticks" style="grid-template-columns:repeat(${LIFE.length},1fr)">${LIFE.map(l => `<span>${l.a}</span>`).join('')}</div><div id="lsOut"></div></div>
+    ${note('Hormone curves are simplified sketches of typical patterns, not to scale. Every person differs, and male and female patterns overlap a great deal.')}
+    ${sec('When does arousal first happen?', cards([
+      ['Reflexes come first', 'Genital reflexes (erection, lubrication) exist from before birth. They are body plumbing, not desire.', 'Infancy'],
+      ['Attraction comes next', 'The first conscious sexual attraction is often remembered around age 10, linked to adrenal hormones, before visible puberty (McClintock & Herdt, 1996).', 'About 10'],
+      ['Puberty turns up the volume', 'Girls usually start 1-2 years before boys. Boys experience a dramatic testosterone surge; girls\' desire becomes cyclical and context-sensitive.', '9-15'],
+      ['Sleep arousal at every age', 'During REM sleep, men have 3-5 erections a night and women have clitoral and vaginal engorgement. Morning erections are a sign of healthy blood flow, not lust.', 'Lifelong']
+    ]))}
+    ${sec('Male and female differences (tendencies, not rules)', tbl(['', 'Male tendency', 'Female tendency'], [
+      ['Main triggers', 'Visual cues, novelty, physical proximity', 'Emotional safety, context, words, touch, feeling desired'],
+      ['Desire style', 'More often spontaneous (it comes first)', 'More often responsive (it appears after touch begins)'],
+      ['Arousal & mind', 'Genital arousal and reported desire overlap more', 'Genital arousal and desire often diverge (non-concordance)'],
+      ['Cycle', 'Daily testosterone rhythm, highest in the morning', 'Monthly rhythm, often highest around ovulation'],
+      ['Refractory period', 'Yes, lengthening with age', 'Usually none; multiple orgasms are possible'],
+      ['Overlap', 'Many men are responsive and context-driven', 'Many women are spontaneous and visual']
+    ]))}
+    ${sec('Stories (composites)', cases([
+      { tag: 'Boy, 12', k: 'sky', t: 'The first wet dream', s: 'Arjun woke with sticky underwear and was terrified he had an illness or had sinned. He hid his sheets for weeks.', h: 'His father, prepared by a church parents\' session, noticed and said: "This happened to me too. It means your body is growing up exactly as God designed. It is not dirty and not a sin."', o: 'Lesson: tell boys about wet dreams before they happen.' },
+      { tag: 'Girl, 11', k: 'rose', t: 'Blood at school', s: 'Meera got her first period during class, thought she was badly hurt, and was teased. At home she was told to sit apart and not touch the kitchen.', h: 'A teacher calmly explained menstruation; later her aunt taught her about her cycle with pride instead of shame.', o: 'Lesson: explain periods at 8-9, before they come, and present them as healthy design, not impurity.' },
+      { tag: 'Teen girl, 15', k: 'gold', t: '“Am I the only girl who feels this?”', s: 'Hannah felt strong sexual feelings and assumed only boys did, so she believed she must be uniquely sinful.', h: 'A youth mentor told her girls have desire too, that desire is good, and talked with her about stewarding it.', o: 'Lesson: teach girls that their desire is normal, not only boys\'.' },
+      { tag: 'Man, 45', k: 'sage', t: 'Slower erections', s: 'Vinod panicked that he was "finished" when erections became slower and needed more touch.', h: 'A doctor found early high blood pressure; treatment, exercise, and learning that more foreplay was normal at his age.', o: 'Lesson: midlife change is normal, and ED can be a heart warning. See a doctor.' }
+    ]))}`;
+  },
+  mount() {
+    let sx = 'both';
+    const show = i => { const L = LIFE[i], x0 = (+L.a.split(/[-+s]/)[0]) * 8.5, x1 = L.a.includes('+') ? 680 : L.a.includes('s') ? x0 + 170 : (+L.a.split('-')[1]) * 8.5;
+      $('#lsBand').setAttribute('x', x0); $('#lsBand').setAttribute('width', Math.max(10, x1 - x0));
+      const rows = [['What happens', L.both, 'gold']]; if (sx !== 'f' && L.m) rows.push(['Male', L.m, 'sky']); if (sx !== 'm' && L.f) rows.push(['Female', L.f, 'rose']); rows.push(['What to teach / do', L.teach, 'sage']);
+      $('#lsOut').innerHTML = `<h3 style="font-size:26px;margin:10px 0 8px">Age ${L.a}: ${L.t}</h3><div class="grid">${rows.map(r => panel(r[0], `<p>${r[1]}</p>`, r[2])).join('')}</div>`; };
+    $('#lsR').addEventListener('input', e => show(+e.target.value));
+    $('#lsSex').addEventListener('click', e => { const c = e.target.closest('[data-x]'); if (!c) return; sx = c.dataset.x; $$('#lsSex .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); $$('.lsm').forEach(p => p.style.opacity = sx === 'f' ? .15 : 1); $$('.lsf').forEach(p => p.style.opacity = sx === 'm' ? .15 : 1); show(+$('#lsR').value); });
+    show(4);
+  }
+};
 
 M.home.mount = () => { if (!homeMap($('#homeG3'))) $('#homeG3').innerHTML = window.MM2D; };
 /* ============ router ============ */
