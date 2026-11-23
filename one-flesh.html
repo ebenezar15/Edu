@@ -388,6 +388,45 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
 .chk { display: flex; gap: 10px; align-items: center; padding: 8px 12px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; }
 .chk input { width: 18px; height: 18px; accent-color: var(--sage); }
 #rcl { grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+
+/* v5 */
+.venn { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,.8fr) minmax(0,1fr); gap: 0; align-items: center; }
+.vc { display: flex; flex-wrap: wrap; gap: 6px; align-content: center; justify-content: center; padding: 26px 22px; min-height: 260px; border-radius: 50%; border: 2px solid; animation: pop .8s cubic-bezier(.3,1.4,.5,1) both; }
+.vc .label { width: 100%; text-align: center; }
+.v1 { background: var(--sky-soft); border-color: var(--sky); margin-right: -18px; padding-right: 34px; }
+.v2 { background: var(--rose-soft); border-color: var(--rose); margin-left: -18px; padding-left: 34px; animation-delay: .2s; }
+.v3 { background: var(--gold-soft); border-color: var(--gold); border-radius: 40%; min-height: 200px; z-index: 1; animation-delay: .4s; }
+.vchip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 11px; font-size: 13px; cursor: pointer; transition: transform .2s, border-color .2s; }
+.vchip:hover, .vchip.on { transform: scale(1.06); border-color: var(--rose); }
+.lanes-w { overflow-x: auto; padding-bottom: 10px; }
+.lanes { display: grid; gap: 8px; }
+.lh { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); padding: 6px 4px; border-bottom: 2px solid var(--gold); }
+.lt2 { font-family: var(--display); font-weight: 700; font-size: 18px; align-self: center; }
+.lc { font-size: 14px; padding: 12px; border-radius: 12px 12px 12px 3px; animation: rise .6s both; }
+.lm { background: var(--sky-soft); border: 1px solid color-mix(in srgb, var(--sky) 40%, var(--line)); }
+.lw { background: var(--rose-soft); border: 1px solid color-mix(in srgb, var(--rose) 40%, var(--line)); }
+.gbar { animation: growx 1s cubic-bezier(.4,.1,.2,1) both; transform-box: fill-box; transform-origin: left; }
+@keyframes growx { from { transform: scaleX(0); } }
+.sbars { display: grid; gap: 8px; }
+.sbar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 12px; align-items: center; text-align: left; background: none; border: 1px solid transparent; border-radius: 10px; padding: 6px 10px; cursor: pointer; font-size: 15px; }
+.sbar:hover, .sbar.on { border-color: var(--rose); background: var(--rose-soft); }
+.sbar i { display: block; height: 12px; border-radius: 8px; background: var(--line); overflow: hidden; }
+.sbar b { display: block; height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--gold), var(--rose)); animation: grow 1s cubic-bezier(.4,.1,.2,1) both; }
+.rootl { stroke-dasharray: 300; stroke-dashoffset: 300; animation: draw 1s ease forwards; }
+.rootn { animation: pop .6s cubic-bezier(.3,1.5,.5,1) both; transform-box: fill-box; transform-origin: center; }
+.sim { display: grid; gap: 10px; animation: rise .4s both; }
+.bubble { padding: 16px 18px; border-radius: 18px 18px 18px 4px; background: var(--surface); border: 1px solid var(--line); font-size: 17px; font-family: var(--display); max-width: 70ch; }
+.sim-o { display: grid; gap: 8px; }
+.opt.pick { border-color: var(--rose); background: var(--rose-soft); }
+.vwrap svg { width: 100%; max-width: 320px; display: block; margin: auto; }
+.okf { display: grid; justify-items: center; gap: 4px; }
+.okn { width: min(560px, 100%); padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); display: grid; gap: 4px; animation: rise .4s both; }
+.okn.ans { opacity: .85; } .okn.ans small { color: var(--muted); font-size: 13px; }
+.okn.cur { border-color: var(--gold); box-shadow: 0 0 0 4px var(--gold-soft); }
+.okn.res.good { border-color: var(--sage); background: var(--sage-soft); } .okn.res.bad { border-color: var(--rose); background: var(--rose-soft); }
+.okar { color: var(--gold); font-size: 20px; animation: rise .4s both; }
+.prin { animation: pop .7s cubic-bezier(.3,1.5,.5,1) both; transform-box: fill-box; transform-origin: center; }
+@media (max-width: 760px) { .venn { grid-template-columns: minmax(0,1fr); gap: 10px; } .vc { border-radius: 24px; min-height: 0; margin: 0 !important; } .sbar { grid-template-columns: minmax(0,1fr); gap: 4px; } }
 </style>
 
 <canvas id="bgfx" aria-hidden="true"></canvas>
@@ -479,11 +518,11 @@ function orbit() {
 
 /* ============ navigation ============ */
 const NAV = [
-  { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['myths', 'Myths & Misunderstandings']] },
+  { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['learning', 'How We Learn About Sex'], ['myths', 'Myths & Misunderstandings']] },
   { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan']] },
-  { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['closeness', 'Intimacy Without Sex'], ['foreplay', 'Foreplay & Touch'], ['practice', 'The Act: Process & Safety'], ['positions', 'Positions & Penetration'], ['deeper', 'Deeper Pleasure'], ['pain', 'When It Is Hard or Painful'], ['aftercare', 'Pain, Cool-down & Aftercare']] },
+  { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['struggles', 'Struggles in Marriage'], ['closeness', 'Intimacy Without Sex'], ['foreplay', 'Foreplay & Touch'], ['practice', 'The Act: Process & Safety'], ['positions', 'Positions & Penetration'], ['deeper', 'Deeper Pleasure'], ['variety', 'Keeping It Alive'], ['questions', 'Oral Sex & Honest Questions'], ['pain', 'When It Is Hard or Painful'], ['aftercare', 'Pain, Cool-down & Aftercare']] },
   { g: 'Shadows', c: 'var(--rose)', items: [['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
-  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['healing', 'Healing & Freedom'], ['energy', 'Creative Power Before Marriage']] },
+  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['healing', 'Healing & Freedom'], ['sinful', 'When Sex Feels Sinful'], ['energy', 'Creative Power Before Marriage']] },
   { g: 'Teaching', c: 'var(--gold)', items: [['children', 'Teaching Children'], ['teach', 'Curriculum by Age'], ['counsel', 'Counselling Toolkit']] },
   { g: 'Reference', c: 'var(--muted)', items: [['vocab', 'Sexual Vocabulary'], ['stats', 'Statistics'], ['sources', 'Books & Sources']] }
 ];
@@ -2732,6 +2771,246 @@ M.vocab = {
     const draw = () => { const q = $('#vq').value.trim().toLowerCase(), L = VOC.filter(v => (!c || v[2] === c) && (!q || (v[0] + ' ' + v[1]).toLowerCase().includes(q))); $('#vn').textContent = `${L.length} terms`; $('#vl').innerHTML = L.map(v => `<div class="vt"><dt>${v[0]} <span class="pill ${{ Response: 'sky', Acts: '', Anatomy: 'gold', Problems: '', Fertility: 'sage', Biblical: 'gold' }[v[2]]}">${v[2]}</span></dt><dd>${v[1]}</dd></div>`).join(''); };
     $('#vq').addEventListener('input', draw);
     $('#vc').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; c = b.dataset.c; $$('#vc .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); }); draw();
+  }
+};
+
+/* ================= v5 modules ================= */
+/* ---------- HOW WE LEARN ---------- */
+const VENN = {
+  built: [['Sexual desire', 'Hormones (testosterone, oestrogen) and the brain\'s drive systems create desire without anyone teaching it.'], ['Arousal reflexes', 'Erection, lubrication and swelling are automatic nerve reflexes, present even before birth.'], ['Orgasm reflex', 'A spinal reflex: the body knows how to climax once stimulated enough.'], ['Attraction', 'Noticing and being drawn to another person begins around age 10 without instruction.'], ['Bonding hormones', 'Oxytocin and vasopressin attach us to a partner automatically.']],
+  learned: [['Anatomy & "where things go"', 'Many couples genuinely don\'t know. Clinics in India regularly see couples unable to consummate for months or years from simple lack of knowledge.'], ['Her pleasure', 'Clitoral stimulation, time, rhythm: not intuitive for most men, or even for many women about themselves.'], ['Consent & communication', 'Asking, listening, saying no and hearing no are learned skills.'], ['Meaning', 'Whether sex means covenant, conquest, duty or dirt is taught by family, faith, culture and media.'], ['Contraception & health', 'Fertility, STIs, hygiene: pure knowledge.'], ['Lasting & timing', 'Ejaculation control, pacing, foreplay length.']],
+  both: [['Kissing & touch', 'Some instinct, much refinement.'], ['Positions', 'Bodies find some fit naturally; comfort and variety are learned.'], ['Rhythm with a partner', 'Two nervous systems learn to sync over months and years.']]
+};
+const LANES = [
+  ['Ancient & tribal', 'Small one-room homes: children saw and heard adult sex; initiation rites and elders taught young men.', 'Older women taught brides practical knowledge at puberty and marriage; songs and rituals carried it.'],
+  ['Bible times', 'Fathers taught sons (Proverbs 5-7); the Torah addressed sexual conduct openly; wedding week customs.', 'Mothers and older women prepared brides (cf. Titus 2:3-5 later); the Song of Songs voiced a woman\'s desire.'],
+  ['Classical India', 'Elite men studied the Kamasutra and arts of love; temple carvings; tantric traditions.', 'Courtesans were educated in the 64 arts; ordinary women learned from mothers-in-law and marriage songs.'],
+  ['Medieval & colonial', 'Church and caste rules, the confessional, brothels; colonial-era silence and shame.', 'Married very young, often taught only "obey and endure"; seclusion and theettu.'],
+  ['1950s-80s', 'Friends, cinema, pulp booklets, "blue films", barber-shop talk; often myths (dhat).', 'Almost nothing until marriage; whispered warnings; magazine agony aunts.'],
+  ['1990s-2000s', 'Cable TV, CDs, cyber cafés, internet porn; school biology chapters often skipped.', 'Women\'s magazines, TV serials, older cousins; AIDS awareness ads; still very little.'],
+  ['2010s smartphones', 'Free mobile porn, usually by age 12-13: the dominant teacher for boys.', 'Romance novels, fan fiction, Instagram and YouTube "sex-ed" creators, and also porn.'],
+  ['2020s & AI', 'Algorithmic porn, AI content, influencers selling "alpha" scripts.', 'OTT shows, therapist and doctor influencers, AI chat, dating apps; more open but scattered sources.']
+];
+M.learning = {
+  t: 'How We Learn About Sex', e: 'Foundations',
+  l: 'Do men and women just "know" about sex by design? Partly. God built in desire, arousal and attraction, but understanding, skill and meaning have to be taught. This section shows what is built in, what must be learned, and how men and women have learned through history.',
+  h() {
+    const items = (a, k) => a.map((x, i) => `<button class="vchip ${k}" data-k="${k}" data-i="${i}">${x[0]}</button>`).join('');
+    return `${sec('Built in or learned?', `<div class="stage"><div class="venn"><div class="vc v1"><span class="label">Built in by design</span>${items(VENN.built, 'built')}</div><div class="vc v3"><span class="label">Both</span>${items(VENN.both, 'both')}</div><div class="vc v2"><span class="label">Must be learned</span>${items(VENN.learned, 'learned')}</div></div><div class="info" id="vInfo" style="min-height:0"><span class="label">Tap any item</span><p>Desire and reflexes are automatic. Knowledge, skill, consent and meaning are not.</p></div></div>`, 'Tap an item to see why it belongs where it does.')}
+    ${sec('So, is there "automatic knowing"?', split(panel('What research shows', ul(['In Harry Harlow\'s famous studies, rhesus monkeys raised in isolation could not mate normally as adults, even though their drives were intact. Even primates learn sexual behaviour socially.', 'In humans, desire and arousal are instinctive, but technique, a partner\'s pleasure and the meaning of sex are learned from culture.', 'Couples who never learned can stay unconsummated for months or years. This is common enough that Indian sexual-medicine clinics report it regularly.', 'Women\'s anatomy and pleasure are the most commonly missed knowledge: the clitoris was fully mapped only in 1998.']), 'sky'), panel('What Scripture models', ul(['God designed the drive (Gen 1:28; 2:24) and also expected it to be taught: a father teaching his son about sexual wisdom (Proverbs 5-7).', 'Older women teaching younger women to love their husbands (Titus 2:4).', 'Song of Songs is itself sex education in poetry: desire, anatomy (in metaphor), patience, communication.', 'Silence was never the biblical model. Wise teaching is.']), 'gold')))}
+    ${sec('How men and women learned, era by era', `<div class="lanes-w"><div class="lanes" style="grid-template-columns:90px repeat(${LANES.length}, 220px)"><div class="lh"></div>${LANES.map(l => `<div class="lh">${l[0]}</div>`).join('')}<div class="lt2" style="color:var(--sky)">Men</div>${LANES.map((l, i) => `<div class="lc lm" style="animation-delay:${i * .08}s">${l[1]}</div>`).join('')}<div class="lt2" style="color:var(--rose)">Women</div>${LANES.map((l, i) => `<div class="lc lw" style="animation-delay:${i * .08 + .3}s">${l[2]}</div>`).join('')}</div></div>`, 'Scroll sideways. The two lanes show how the sexes learned differently. Men usually got earlier, cruder and more performance-focused information; women got later, scarcer and more fear-based messages.')}
+    ${sec('The knowledge gap at the wedding', `<div class="stage"><svg viewBox="0 0 620 200" role="img" aria-label="Knowledge gap between bride and groom"><text x="10" y="20" class="ft" style="font-size:11px;fill:var(--muted)">TYPICAL ARRANGED-MARRIAGE COUPLE (ILLUSTRATIVE)</text>
+      ${[['Anatomy', 55, 20], ['Her pleasure', 15, 10], ['Contraception', 40, 30], ['Talking about sex', 20, 15], ['Porn-shaped expectations', 75, 25]].map((r, i) => `<text x="10" y="${52 + i * 30}" class="ft">${r[0]}</text><rect x="200" y="${40 + i * 30}" width="${r[1] * 4}" height="10" rx="5" fill="var(--sky)" class="gbar" style="animation-delay:${i * .12}s"/><rect x="200" y="${52 + i * 30}" width="${r[2] * 4}" height="10" rx="5" fill="var(--rose)" class="gbar" style="animation-delay:${i * .12 + .06}s"/>`).join('')}</svg>
+      <div class="chips"><span class="chip" style="cursor:default"><i class="zdot" style="background:var(--sky)"></i>Groom</span><span class="chip" style="cursor:default"><i class="zdot"></i>Bride</span></div>${note('An illustrative sketch from counselling patterns, not survey data. Notice that the groom often "knows" more, but much of it comes from porn, which is not knowledge of a real woman. Both need teaching.')}</div>`)}
+    ${sec('Stories (composites)', cases([
+      { tag: 'Couple, married 14 months', k: 'gold', t: '"We thought we were having sex"', s: 'A young couple in a small town came to a clinic because no pregnancy had come after a year. The doctor discovered penetration had never happened: they had only been rubbing against each other, believing that was intercourse.', h: 'A gentle explanation with diagrams, some exercises, and reassurance.', o: 'Pregnant within months. Lesson: drive is automatic; knowledge is not.' },
+      { tag: 'Groom, 27', k: 'sky', t: 'Porn as the only teacher', s: 'Vikram had watched porn since 13 and assumed his wife would respond like the actresses: instantly, loudly, with no foreplay. On their honeymoon she cried from pain and he felt like a failure.', h: 'A pre-marital mentor (too late, but better late) taught anatomy, foreplay, and that porn is staged.', o: 'Lesson: exposure is not education. Boys need real teaching before porn teaches them.' },
+      { tag: 'Bride, 23', k: 'rose', t: '"Nobody told me anything"', s: 'Anjali\'s only preparation was her aunt saying "Just let him do what he wants." She froze on the first night.', h: 'Her husband stopped, held her, and they read a Christian marriage book together over the next weeks.', o: 'Lesson: women need knowledge of their own bodies and permission to enjoy, not just instructions to endure.' }
+    ]))}`;
+  },
+  mount() {
+    $('.venn').addEventListener('click', e => { const b = e.target.closest('.vchip'); if (!b) return; $$('.vchip').forEach(x => x.classList.toggle('on', x === b)); const it = VENN[b.dataset.k][+b.dataset.i]; $('#vInfo').innerHTML = `<span class="label">${{ built: 'Built in', learned: 'Must be learned', both: 'Both' }[b.dataset.k]}</span><h3>${it[0]}</h3><p>${it[1]}</p>`; });
+  }
+};
+
+/* ---------- STRUGGLES ---------- */
+const STR = {
+  h: [['Feeling rejected when wife declines', 82, 'Many men experience a "no" as rejection of themselves, not the moment.', 'Learn about responsive desire and brakes; ask what would help; pursue her heart, not just her body.'], ['Porn habit carried into marriage', 74, 'Most Indian men saw porn before marriage; many keep a secret habit.', 'Confess with counsel, use Rewire & Restore, get accountability. A wife cannot cure it.'], ['Performance anxiety & erection worries', 60, 'Pressure to "prove" manhood; porn comparisons.', 'Sensate focus; remove pressure; a doctor if persistent.'], ['Finishing too quickly', 55, 'Very common, especially early in marriage.', 'Stop-start technique, Kegels, pleasure her by hand or mouth regardless.'], ['Not knowing how to pleasure his wife', 70, 'Little real knowledge of female anatomy.', 'Foreplay & Touch, Deeper Pleasure; ask her and listen.'], ['Shame about desire ("Am I lustful?")', 40, 'Church messages that made all male desire sound like lust.', 'Desire for one\'s wife is good (Prov 5:19). When Sex Feels Sinful.'], ['Stress, work, Gulf or long-distance jobs', 50, 'Exhaustion and separation.', 'Plan connection; protect time; safeguards when apart.']],
+  w: [['Pain during sex', 65, 'Penetration before arousal, vaginismus, infections, postpartum or menopause changes.', 'Pain, Cool-down & Aftercare; see a doctor; never endure silently.'], ['Low or no desire', 78, 'Exhaustion, childcare, the mental load, resentment, hormones, never having experienced pleasure.', 'Name the brakes; share chores; responsive desire; medical check.'], ['Never or rarely reaching orgasm', 62, 'Not enough clitoral stimulation or time; shame.', 'Teach husband; guided touch; longer foreplay.'], ['Feeling used or like a "duty"', 70, 'Sex focused on his release only; pressure; Scripture misused.', 'Mutual pleasure; the husband stops pressuring; counselling if coerced.'], ['Body shame', 55, 'Postpartum changes, comparison with screens, upbringing.', 'Affirmation (Song 4); lights and pace she chooses.'], ['Guilt ("sex is dirty")', 45, 'Shame-based upbringing or theology.', 'When Sex Feels Sinful; the Relational Lens.'], ['No privacy (joint family)', 48, 'Thin walls, in-laws, children in the room.', 'Negotiate space and time; weekends away; creativity.']],
+  b: [['Desire mismatch', 80, 'Almost universal at some point.', 'The desire-gap tool (Intimacy Without Sex); schedule; non-sexual touch.'], ['Not talking about sex', 85, 'Neither learned the words.', 'Conversation deck; Sexual Vocabulary; a mentor couple.'], ['Unresolved conflict', 66, 'Resentment is the strongest desire killer.', 'Repair before bed; couples counselling.'], ['Boredom & routine', 58, 'The same few minutes for years.', 'Keeping It Alive section.'], ['Children & exhaustion', 72, 'Young-family years.', 'Quickies, scheduled time, shared load, dates.'], ['Past sexual history or abuse', 40, 'Old wounds surface in the marriage bed.', 'Healing & Freedom; trauma-informed counselling.']]
+};
+M.struggles = {
+  t: 'Struggles in Marriage', e: 'Union',
+  l: 'The common sexual struggles husbands and wives face, how they feed each other, how women in villages and cities experience sex differently, and how people are exploited. Every struggle comes with practical next steps.',
+  h() {
+    return `${sec('Struggle explorer', `<div class="stage"><div class="chips" id="stC"><button class="chip" data-g="h" aria-pressed="true">Husbands</button><button class="chip" data-g="w">Wives</button><button class="chip" data-g="b">Both together</button></div><div class="sbars" id="stB"></div><div class="info" id="stI" style="min-height:0"></div>${note('Bar lengths are illustrative of how often each struggle comes up in Christian marriage-counselling literature and practice. They are not percentages from a single survey.')}</div>`, 'Tap a bar to see why it happens and what helps.')}
+    ${sec('The pursue-withdraw cycle', cycle('pw', 'Pursue &|withdraw', [
+      ['He initiates', 'The higher-desire spouse (often, not always, the husband) reaches for sex.', 'Initiate with warmth and an open hand: "I\'d love to be with you. How are you feeling?"'],
+      ['She feels|pressure', 'Tired, stressed or in pain, the lower-desire spouse feels pressure, not desire.', 'Name the brakes honestly: "I\'m exhausted, not rejecting you."'],
+      ['She declines|or endures', 'A "no", or a reluctant "yes" without pleasure. Duty sex makes the next one harder.', 'Offer an alternative time or a non-sexual closeness option.'],
+      ['He feels|rejected', 'Hurt, he withdraws, sulks or pushes harder. Some turn to porn.', 'Turn hurt into curiosity: "What would help you want this?"'],
+      ['Distance|grows', 'Less affection overall: she avoids touch because touch "always leads to sex".', 'Agree on daily non-sexual touch with no strings.'],
+      ['Both feel|alone', 'Resentment builds on both sides, and the cycle repeats.', 'Couples counselling; read about responsive desire together; sensate focus.']
+    ]))}
+    ${sec('Women in villages and cities', `<div class="stage"><div class="chips" id="vcC"><button class="chip" data-v="v" aria-pressed="true">Village</button><button class="chip" data-v="c">City</button><button class="chip" data-v="x">Compare</button></div><div id="vcO"></div></div>`, 'How women commonly perceive sex, and the pressures they face, in rural and urban India. These are broad patterns; individual lives vary hugely.')}
+    ${sec('How exploitation happens', flow('exp', [
+      ['Vulnerability', 'Poverty, debt, caste discrimination, abuse at home, orphanhood, disability, migration, addiction, a broken relationship, loneliness online.'],
+      ['Approach', 'A "job offer" in the city or the Gulf, a romantic "boyfriend", a marriage proposal without dowry, a film or modelling audition, an online friend, a relative or neighbour.'],
+      ['Deception & isolation', 'Taken away from family; documents and phone taken; false promises; travel to an unknown place.'],
+      ['Control', 'Debt bondage, threats to family, drugs, rape, shame ("your family will never accept you now"), intimate videos used for blackmail.'],
+      ['Exploitation', 'Forced prostitution, forced marriage, sexual servitude in domestic work, online sexual abuse and recorded content, sextortion.'],
+      ['Exit & restoration', 'Rescue (police, IJM, NGOs, Childline 1098, 112), medical care, counselling, legal action, skills and work, and a community that receives survivors without shame.']
+    ]))}
+    ${sec('Case studies (composites)', cases([
+      { tag: 'Village, Tamil Nadu', k: 'gold', t: 'Married at 17', s: 'Selvi was married to a cousin at 17 in a village. There was no privacy in the joint home, sex happened quickly at night in silence, and she never knew it could be pleasurable. After three children she felt nothing but tiredness.', h: 'A church women\'s group led by a nurse taught basic anatomy and health; her husband attended a men\'s session on caring for a wife.', o: 'Small changes (a private hour on Sunday afternoons, slower touch) changed their marriage. Lesson: knowledge reaches villages through trusted local women.' },
+      { tag: 'City, Bengaluru', k: 'sky', t: 'Two careers, no sex', s: 'Rohan and Priya, both in IT, worked late, scrolled phones in bed, and had sex twice in six months. Each assumed the other wasn\'t interested.', h: 'A mentor couple helped them set phone-free bedtimes, a weekly date, and scheduled intimacy.', o: 'Lesson: city couples face a different enemy: busyness and screens.' },
+      { tag: 'Migrant worker', k: 'rose', t: 'The "job" in the city', s: 'A 19-year-old from a northern village was promised hotel work in Hyderabad and sold into a brothel within a week.', h: 'An NGO raid with police, medical care, trauma counselling, legal testimony, and vocational training.', o: 'Lesson: exploitation follows poverty and deception. Teach young people to verify job offers and keep family informed.' }
+    ]))}`;
+  },
+  mount() {
+    let g = 'h';
+    const draw = () => { $('#stB').innerHTML = STR[g].map((s, i) => `<button class="sbar" data-i="${i}"><span>${s[0]}</span><i><b style="width:${s[1]}%;animation-delay:${i * .07}s"></b></i></button>`).join(''); pick(0); };
+    const pick = i => { const s = STR[g][i]; $$('#stB .sbar').forEach((b, j) => b.classList.toggle('on', j === i)); $('#stI').innerHTML = `<h3>${s[0]}</h3>${split(panel('Why it happens', `<p>${s[2]}</p>`, 'gold'), panel('What helps', `<p>${s[3]}</p>`, 'sage'))}`; };
+    $('#stC').addEventListener('click', e => { const c = e.target.closest('[data-g]'); if (!c) return; g = c.dataset.g; $$('#stC .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); draw(); });
+    $('#stB').addEventListener('click', e => { const b = e.target.closest('.sbar'); if (b) pick(+b.dataset.i); });
+    draw();
+    const V = {
+      v: [['How sex is often seen', ul(['A duty of marriage and the way to have children, especially a son', 'Rarely discussed; pleasure for women seldom mentioned', 'Strongly tied to family honour and purity'])], ['Pressures', ul(['Early marriage: 27% of rural women aged 20-24 were married before 18 (NFHS-5; 15% urban)', 'No privacy in joint homes', 'Little access to gynaecologists or counsellors', 'Higher rates of spousal violence than in cities (NFHS-5)'])], ['Exploitation risks', ul(['Child marriage and dowry', 'Caste-based sexual violence', 'Trafficking through fake jobs and marriages', 'Abuse by relatives, landlords or employers, kept silent'])], ['Strengths', ul(['Close community and women\'s groups (self-help groups)', 'Faith communities that can teach', 'Older women who, when trained, become trusted teachers'])]],
+      c: [['How sex is often seen', ul(['More openly discussed among friends and online', 'Pleasure and choice more expected, but also shaped by porn and media', 'Mixed messages: modern freedom alongside family expectations'])], ['Pressures', ul(['Busyness, long commutes, screens: "too tired for sex"', 'Porn-shaped expectations from husbands', 'Dating-app culture and premarital pressure', 'Infertility stress from later marriages'])], ['Exploitation risks', ul(['Workplace harassment (POSH Act protects)', 'Sextortion, leaked images, deepfakes', 'Coercive "boyfriends" and live-in pressure', 'Exploitation of domestic workers from villages'])], ['Strengths', ul(['Access to doctors, counsellors and information', 'More financial independence to leave abuse', 'Churches with marriage ministries'])]]
+    };
+    const vc = k => { $$('#vcC .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.v === k)); $('#vcO').innerHTML = k === 'x' ? tbl(['', 'Village', 'City'], V.v.map((r, i) => [r[0], r[1], V.c[i][1]])) : `<div class="grid">${V[k].map((r, i) => panel(r[0], r[1], ['gold', 'rose', 'rose', 'sage'][i])).join('')}</div>`; };
+    $('#vcC').addEventListener('click', e => { const c = e.target.closest('[data-v]'); if (c) vc(c.dataset.v); }); vc('v');
+    orbit();
+  }
+};
+
+/* ---------- WHEN SEX FEELS SINFUL ---------- */
+const SIM = [
+  { t: '"I feel dirty after we make love."', who: 'Wife, married 2 years, raised in a strict church', steps: [
+    { q: 'She says quietly after sex: "I feel dirty. I think God is unhappy with this." How do you respond?', o: [['"That\'s silly. We\'re married, it\'s fine."', 0, 'Dismissive. Even if true, she feels unheard, and the shame goes underground.'], ['"Thank you for telling me. When did you first start feeling that way about sex?"', 1, 'Curious and safe. Shame shrinks when it is heard without judgement.'], ['"The Bible says your body belongs to me, so you shouldn\'t feel that."', 0, 'Using Scripture as leverage increases fear and makes sex feel even more like an obligation.']] },
+    { q: 'She tells you her youth pastor said impure thoughts send you to hell, and her mother said sex is "something men need". What next?', o: [['"Let\'s read Song of Songs and Genesis 2 together this week and see what God actually says."', 1, 'Good: replace lies with Scripture, together and at her pace.'], ['"Your mother and pastor were wrong. Forget them."', 0, 'Attacking people she loves makes her defend them. Focus on truth, not blame.'], ['"Okay. Let\'s not have sex until you feel better."', 2, 'Possibly helpful as a short no-pressure season, but only if paired with teaching and closeness, not as silent withdrawal.']] },
+    { q: 'Weeks later she still freezes. What is the wisest next step?', o: [['See a Christian counsellor together and try sensate focus with no intercourse for a season.', 1, 'Best: shame trained over years needs patient, guided rebuilding, often with help.'], ['Tell her to pray harder about it.', 0, 'Prayer matters, but "pray harder" alone often adds guilt. Pair prayer with practical help.'], ['Pressure gently: "It will feel better if we just do it more."', 0, 'Pressure confirms her fear that sex is about duty. It usually makes things worse.']] }
+  ] },
+  { t: '"Wanting sex is lust, so I avoid it."', who: 'Husband, devout, married 5 years', steps: [
+    { q: 'Your husband rarely initiates and says, "Desire is the flesh. A spiritual man shouldn\'t want it." You feel unwanted. What do you say?', o: [['"So you don\'t find me attractive?"', 0, 'Understandable, but it turns his belief into an argument about you. Start by understanding him.'], ['"Can you tell me where you learned that desire is the flesh?"', 1, 'Curious: often it comes from teaching that never separated lust (toward others) from desire (for a spouse).'], ['"Real men want sex all the time."', 0, 'Shaming him adds a second layer of shame.']] },
+    { q: 'He says he heard "every desire is lust" in men\'s purity talks. What helps?', o: [['Show him Proverbs 5:18-19 and 1 Corinthians 7:3-5: desire for your wife is commanded, not condemned.', 1, 'Scripture directly calls a husband to delight in his wife.'], ['Wait silently for him to change.', 0, 'Silence lets resentment grow on both sides.'], ['Find a mature older couple or pastor to talk with you both.', 1, 'Excellent: men often accept teaching from respected men more easily.']] }
+  ] },
+  { t: '"Sex is only for having children."', who: 'Couple after their second child', steps: [
+    { q: 'After two children your wife says, "We have our family now. Why do we still need sex?" What\'s your first response?', o: [['"Because I have needs."', 0, 'Makes sex sound like servicing him: the opposite of the design.'], ['"For me it\'s about being close to you. What does sex mean to you?"', 1, 'Opens a conversation about meaning and purpose.'], ['"The Bible says don\'t deprive each other."', 0, 'True verse, wrong use. Lead with love, not law.']] },
+    { q: 'She believes pleasure itself is selfish. What could help her most?', o: [['Learn together: Song of Songs (no mention of children), Proverbs 5:19 (delight), the seven purposes of sex in God\'s Design.', 1, 'Shows that pleasure and union are God\'s ideas.'], ['Make sure she experiences pleasure herself: slow down, learn her body.', 1, 'Many women who think pleasure is unimportant have simply never experienced it.'], ['Tell her she\'s being unspiritual.', 0, 'Shaming never heals shame.']] }
+  ] },
+  { t: '"We can\'t during fasting, Lent or Sundays."', who: 'Couple from a traditional background', steps: [
+    { q: 'Your spouse believes sex is forbidden during church fasts, on Sundays and on holy days. Together these cover nearly half the year. What do you do?', o: [['Respect it fully and say nothing.', 2, 'Respecting conscience matters (Rom 14), but silence can breed resentment. Talk.'], ['Study 1 Corinthians 7:5 together: abstaining for prayer is "by agreement, for a limited time", then come together again.', 1, 'Scripture makes abstinence mutual and temporary. The long medieval calendars came later.'], ['Insist those rules are nonsense.', 0, 'Mocking a sincere conscience damages trust.']] }
+  ] }
+];
+M.sinful = {
+  t: 'When Sex Feels Sinful', e: 'Healing',
+  l: 'Some believers feel that sex, or even wanting it, is sinful, even inside marriage. This is common, painful, and healable. This section maps where the belief comes from, gives a conversation simulator for the spouse who wants to help, and offers practical steps and stories.',
+  h() {
+    return `${sec('Where the belief comes from', `<div class="stage"><svg viewBox="0 0 640 300" role="img" aria-label="Roots of sex-is-sin belief">
+      <circle cx="320" cy="150" r="58" fill="var(--rose-soft)" stroke="var(--rose)" stroke-width="2"/><text x="320" y="146" text-anchor="middle" style="font-family:var(--display);font-weight:700;font-size:17px;fill:var(--ink)">"Sex is</text><text x="320" y="166" text-anchor="middle" style="font-family:var(--display);font-weight:700;font-size:17px;fill:var(--ink)">sinful"</text>
+      ${[['Fear-based purity teaching', 110, 50], ['Silence at home', 530, 50], ['Abuse or early trauma', 80, 160], ['Augustine & dualism', 560, 160], ['Guilt from past sins', 110, 260], ['Cultural purity & honour codes', 520, 260], ['Misread verses', 320, 30], ['Never experienced pleasure', 320, 280]].map((r, i) => `<line x1="320" y1="150" x2="${r[1]}" y2="${r[2]}" stroke="var(--gold)" stroke-width="1.5" class="rootl" style="animation-delay:${i * .12}s"/><g class="rootn" style="animation-delay:${.4 + i * .12}s"><rect x="${r[1] - 92}" y="${r[2] - 15}" width="184" height="30" rx="15" fill="var(--surface)" stroke="var(--gold)"/><text x="${r[1]}" y="${r[2] + 5}" text-anchor="middle" class="ft" style="font-size:12px">${r[0]}</text></g>`).join('')}
+    </svg></div>`, 'These roots often combine. Naming which ones apply helps you pick the right medicine.')}
+    ${sec('What Scripture actually says', verses([['Genesis 1:28, 31', 'Be fruitful and multiply... and it was very good.'], ['Proverbs 5:18-19', 'Rejoice in the wife of your youth... be intoxicated always in her love.'], ['Song of Songs 5:1', 'Eat, friends, drink, and be drunk with love!'], ['1 Corinthians 7:3-5', 'Do not deprive one another, except perhaps by agreement for a limited time.'], ['1 Timothy 4:1-4', 'Teachings of demons... who forbid marriage... everything created by God is good.'], ['Hebrews 13:4', 'Let marriage be held in honour among all, and let the marriage bed be undefiled.']]))}
+    ${sec('Conversation simulator', `<div class="stage"><div class="chips" id="smS">${SIM.map((s, i) => `<button class="chip" data-s="${i}" aria-pressed="${i === 0}">${s.t}</button>`).join('')}</div><div id="smO"></div></div>`, 'Pick a scenario and choose how you would respond. Each choice gets feedback. There is often more than one helpful answer.')}
+    ${sec('A practical path for the helping spouse', flow('sinpath', [
+      ['Listen first', 'Understand the belief and its roots before correcting it. Ask where it came from.'],
+      ['Separate desire from lust', 'Lust reaches for what is not yours or uses a person. Desire for your own spouse is commanded and blessed.'],
+      ['Read together', 'Genesis 1-2, Song of Songs, Proverbs 5, 1 Corinthians 7. Slowly, without pressure.'],
+      ['Remove pressure', 'A season of non-sexual closeness and sensate focus so the body can learn safety.'],
+      ['Invite wise help', 'A pastor or mentor couple with healthy views, and a Christian counsellor for deep shame or trauma.'],
+      ['Pray together', 'Thank God for your bodies and for sex. Gratitude retrains the heart (1 Tim 4:4-5).'],
+      ['Celebrate small steps', 'Progress is slow. Notice and affirm every step toward freedom.']
+    ], true))}
+    ${sec('More stories (composites)', cases([
+      { tag: 'Pastor\'s wife', k: 'rose', t: 'Twenty years of guilt', s: 'Esther, married to a pastor, had felt guilty after sex for twenty years and never told anyone, not even her husband.', h: 'At a women\'s retreat a speaker read Song of Songs aloud and explained it plainly. Esther wept, told her husband, and they read it together.', o: 'Lesson: even leaders carry this. Clear, warm teaching sets people free.' },
+      { tag: 'Young husband', k: 'sky', t: 'Confessing his wife as "lust"', s: 'Joseph confessed to his accountability group every week for desiring his wife, as if it were porn.', h: 'An older man showed him Proverbs 5:19 and said, "That desire is for her. It\'s holy."', o: 'Their intimacy blossomed. Lesson: purity teaching must distinguish desire for a spouse from lust.' }
+    ]))}`;
+  },
+  mount() {
+    let s = 0, st = 0;
+    const draw = () => { const S = SIM[s], P = S.steps[st]; $('#smO').innerHTML = `<div class="sim"><span class="label">${S.who} &middot; step ${st + 1} of ${S.steps.length}</span><div class="bubble">${P.q}</div><div class="sim-o">${P.o.map((o, i) => `<button class="opt" data-o="${i}">${o[0]}</button>`).join('')}</div><div id="smF"></div></div>`; };
+    $('#smS').addEventListener('click', e => { const c = e.target.closest('[data-s]'); if (!c) return; s = +c.dataset.s; st = 0; $$('#smS .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); draw(); });
+    $('#smO').addEventListener('click', e => {
+      const o = e.target.closest('[data-o]'); if (o) { const P = SIM[s].steps[st], r = P.o[+o.dataset.o]; $$('#smO .opt').forEach(b => b.classList.toggle('pick', b === o));
+        $('#smF').innerHTML = note(`<b>${['Not helpful', 'Helpful', 'Partly helpful'][r[1]]}.</b> ${r[2]}`, ['rose', 'sage', ''][r[1]]) + (st < SIM[s].steps.length - 1 ? '<button class="pbtn solid" data-n="1" style="margin-top:10px">Next step</button>' : '<button class="pbtn" data-r="1" style="margin-top:10px">Restart scenario</button>'); }
+      if (e.target.closest('[data-n]')) { st++; draw(); } if (e.target.closest('[data-r]')) { st = 0; draw(); }
+    });
+    draw();
+  }
+};
+
+/* ---------- KEEPING IT ALIVE ---------- */
+const WHEEL = [
+  ['Place', 'var(--rose)', ['A different room of the house', 'A hotel night, even in your own city', 'A weekend at a quiet guesthouse', 'Rearrange the bedroom: new sheets, candles, flowers']],
+  ['Time', 'var(--gold)', ['Morning sex before the kids wake', 'A long, unhurried Sunday afternoon', 'A planned "quickie" during a busy week', 'A lunch-hour date at home']],
+  ['Senses', 'var(--sage)', ['Jasmine flowers, perfume or incense', 'Music chosen together', 'Massage oil and warm towels', 'Candlelight; lights on for once']],
+  ['Pace', 'var(--sky)', ['An extra-slow night: 45 minutes of foreplay', 'No intercourse allowed tonight: only touch', 'Stop and start, building anticipation', 'Fast and playful']],
+  ['Initiation', 'var(--rose)', ['The usual responder initiates this week', 'A coded text during the day', 'A written invitation on the pillow', 'Take turns choosing the plan']],
+  ['Words', 'var(--gold)', ['Describe what you love about their body (Song 4)', 'Whisper what you want', 'Read a Song of Songs chapter aloud', 'Write a love letter and read it in bed']],
+  ['Play', 'var(--sage)', ['A yes/no/maybe list to compare', 'Dress up for each other', 'A shower or bath together', 'A massage game: one receives only']],
+  ['New things', 'var(--sky)', ['A position you haven\'t tried (see Positions)', 'Oral sex, if both want to explore it', 'Take a dance class together', 'Recreate your honeymoon']]
+];
+const OKQ = [
+  ['Do both of you genuinely want it, with no pressure?', 'It must be mutual. Either spouse can say no without penalty (1 Cor 7:4-5; 13:5).'],
+  ['Does it keep it between the two of you only, with no porn, no other people, and no fantasies of others?', 'Exclusivity: nothing and no one else in the marriage bed (Heb 13:4; Matt 5:28).'],
+  ['Is it free from physical or emotional harm?', 'Love does no harm (Rom 13:10). Pain, injury or lasting distress mean stop.'],
+  ['Does it honour both of you, with no humiliation or degradation?', 'Honour one another (Rom 12:10; Eph 5:28-29).'],
+  ['Can you both do it with a clear conscience?', 'Whatever is not from faith is sin for that person (Rom 14:23). Respect a spouse\'s conscience; grow in understanding together.']
+];
+M.variety = {
+  t: 'Keeping It Alive', e: 'Union',
+  l: 'Sex in marriage is meant to grow, not stall. Variety, novelty and play are part of the design, as long as they never contradict love, faithfulness or conscience. Spin the wheel for ideas, then check anything new with the flowchart.',
+  h() {
+    const n = WHEEL.length, st = 360 / n;
+    return `${sec('The variety wheel', `<div class="stage"><div class="wheelw"><div class="vwrap"><svg viewBox="0 0 320 320" role="img" aria-label="Variety wheel"><g id="vWheel" style="transform-origin:160px 160px">${WHEEL.map((w, i) => { const a0 = (i * st - 90) * Math.PI / 180, a1 = ((i + 1) * st - 90) * Math.PI / 180, am = (a0 + a1) / 2; return `<path d="M160 160 L${160 + 150 * Math.cos(a0)} ${160 + 150 * Math.sin(a0)} A150 150 0 0 1 ${160 + 150 * Math.cos(a1)} ${160 + 150 * Math.sin(a1)} Z" fill="${w[1]}" opacity="${i % 2 ? .55 : .8}" stroke="var(--surface)" stroke-width="2"/><text x="${160 + 100 * Math.cos(am)}" y="${164 + 100 * Math.sin(am)}" text-anchor="middle" class="ft" style="font-weight:700;fill:#fff;font-size:13px">${w[0]}</text>`; }).join('')}<circle cx="160" cy="160" r="26" fill="var(--surface)" stroke="var(--line)"/></g><path d="M160 4 L150 24 L170 24 Z" fill="var(--ink)"/></svg></div>
+      <div class="bside"><button class="pbtn solid" id="vSpin">Spin the wheel</button><div class="info" id="vOut" style="min-height:120px"><span class="label">Ready</span><h3>Spin for an idea</h3><p>Each spin picks a category and a suggestion. Talk about it together before trying anything new.</p></div></div></div></div>`)}
+    ${sec('Is this okay for us?', `<div class="stage"><div id="okF" class="okf"></div></div>`, 'A flowchart for any new idea, from a new position to oral sex. It is built on the biblical principles of mutuality, exclusivity, no harm, honour and conscience.')}
+    ${sec('Why variety matters', cards([
+      ['The brain loves novelty', 'Doing new and exciting things together raised relationship satisfaction in experiments (Aron et al., 2000). Novelty releases dopamine, so give it to your spouse, not to a screen.', 'Science'],
+      ['Mystery and familiarity', 'Esther Perel: desire needs some space and surprise; love needs closeness. Healthy marriages make room for both.', 'Desire'],
+      ['Seasons change', 'What worked at 25 may not at 45. Keep exploring as bodies and lives change.', 'Growth'],
+      ['The Song models it', 'Gardens, vineyards, the countryside (Song 7:11-13), new places and new words. "New as well as old" delights are stored up for the beloved (7:13).', 'Scripture']
+    ]))}
+    ${sec('What variety is not', cards([
+      ['Not porn-inspired performance', 'Copying porn imports its scripts of degradation and pressure.', 'Avoid'],
+      ['Not bringing others in', 'Swinging, threesomes, sharing images, or imagining others breaks exclusivity.', 'Avoid'],
+      ['Not pressure dressed up as adventure', '"If you loved me you would..." is coercion.', 'Avoid'],
+      ['Not constant novelty', 'Comfort and familiarity are good too. Variety adds to the base; it doesn\'t replace it.', 'Balance']
+    ]))}
+    ${sec('Story (composite)', cases([{ tag: 'Married 15 years', k: 'gold', t: 'Same Friday, same ten minutes', s: 'Mark and Leela had sex every Friday night for years, in the same way. Neither complained, but both felt it had become a chore.', h: 'They made a "yes / no / maybe" list, took turns planning one evening a month, and started with small things: morning time, music, a long massage.', o: 'Lesson: small variety, chosen together, rekindles desire without crossing any line.' }]))}`;
+  },
+  mount() {
+    let rot = 0;
+    $('#vSpin').addEventListener('click', () => { const n = WHEEL.length, k = Math.floor(Math.random() * n), extra = 360 * (RM ? 1 : 5); rot += extra + (360 - ((rot % 360) + k * 360 / n + 180 / n) % 360); const w = $('#vWheel'); w.style.transition = RM ? 'none' : 'transform 3.2s cubic-bezier(.15,.85,.2,1)'; w.style.transform = `rotate(${rot}deg)`;
+      setTimeout(() => { const W = WHEEL[k], idea = W[2][Math.floor(Math.random() * W[2].length)]; $('#vOut').innerHTML = `<span class="label">${W[0]}</span><h3>${idea}</h3><p>Talk about it first. Does it pass the "Is this okay for us?" flowchart below?</p>`; }, RM ? 50 : 3300); });
+    const ok = (ans) => { const i = ans.length, done = ans.includes(false);
+      $('#okF').innerHTML = ans.map((a, j) => `<div class="okn ans"><b>${OKQ[j][0]}</b><span class="pill ${a ? 'sage' : ''}">${a ? 'Yes' : 'No'}</span><small>${OKQ[j][1]}</small></div><div class="okar">&#8595;</div>`).join('')
+        + (done ? `<div class="okn res bad"><h3>Not right for now</h3><p>One of the principles isn't met. Talk about why, honour the hesitant spouse, and choose something else. Some answers change with time and understanding; some never should.</p><button class="pbtn" data-rs="1">Start again</button></div>`
+          : i < OKQ.length ? `<div class="okn cur"><b>${OKQ[i][0]}</b><div style="display:flex;gap:8px;margin-top:8px"><button class="pbtn solid" data-y="1">Yes</button><button class="pbtn" data-y="0">No</button></div></div>`
+          : `<div class="okn res good"><h3>Freedom to enjoy</h3><p>It passes every principle. Enjoy it with gratitude (1 Tim 4:4-5), and keep checking in with each other.</p><button class="pbtn" data-rs="1">Start again</button></div>`); };
+    let A = []; $('#okF').addEventListener('click', e => { const y = e.target.closest('[data-y]'); if (y) { A.push(y.dataset.y === '1'); ok(A); } if (e.target.closest('[data-rs]')) { A = []; ok(A); } }); ok(A);
+  }
+};
+
+/* ---------- HONEST QUESTIONS ---------- */
+const QA = [
+  ['Oral sex', 'Is oral sex allowed for Christians?', 'Scripture neither commands nor forbids it. Many scholars read Song of Songs 2:3 ("his fruit was sweet to my taste") and 4:16 ("let my beloved come to his garden and eat") as oral imagery. Most Christian sex therapists (Penners, Rosenau, Gregoire) see it as a matter of freedom within marriage if both want it.', 'In a faithful, tested couple, the STI risk is very low. Good hygiene (washing beforehand) matters.'],
+  ['Oral sex', 'Is it "sodomy"?', 'No. In Genesis 19 the sin of Sodom was attempted gang rape and violent inhospitality (cf. Ezek 16:49). Old laws in some places called oral sex "sodomy", but that is a legal term, not a biblical one.', ''],
+  ['Oral sex', 'My spouse wants oral sex but I am uncomfortable. What do we do?', 'Discomfort is valid; no one should be pressured. Talk about why: hygiene, shame, past abuse, taste, or fear. Sometimes understanding grows over time; sometimes it remains a no, and that must be respected.', 'Showering together first resolves many hygiene concerns.'],
+  ['Oral sex', 'How is it done well, for her and for him?', 'For her: gentle, with the tongue around and over the clitoral hood rather than hard on the glans; a steady, consistent rhythm once she likes something; hands can help; listen to her responses. For him: attention to the glans and frenulum, using the hands on the shaft; avoid teeth. In both cases: communicate and go slowly.', 'Never blow air into the vagina during pregnancy.'],
+  ['Oral sex', 'Is swallowing safe or required?', 'Neither required nor forbidden: entirely a matter of mutual comfort. In a monogamous, healthy couple it is medically harmless.', ''],
+  ['Health', 'Can we get infections from oral sex?', 'Yes, if one partner already has an infection: herpes (cold sores can transmit to the genitals), gonorrhoea, syphilis, HPV. Avoid oral sex during cold-sore outbreaks.', 'Both partners being tested before marriage removes most worry.'],
+  ['Practices', 'What about anal sex?', 'Not mentioned in Scripture for married couples; Christians disagree. Medically: higher risk of tears, fissures and infection; it needs lots of lubricant and gentleness; never move from anal to vaginal contact without washing. Many therapists advise caution, and it must never be pressured.', 'Pain or bleeding means stop.'],
+  ['Practices', 'Are vibrators or sex toys okay?', 'Many Christian counsellors see aids used together as acceptable when they serve mutual pleasure (for example, helping a wife reach orgasm), with no imagery of others involved. Others prefer to avoid them. Use the "Is this okay for us?" flowchart.', 'Choose body-safe materials and clean them properly.'],
+  ['Practices', 'Is role-play or dressing up okay?', 'Playfulness between spouses is part of the Song\'s spirit. Avoid scenarios that involve imagining other real people, degradation, or anything that troubles either conscience.', ''],
+  ['Practices', 'Can we photograph or record ourselves?', 'Strongly discouraged. Phones get lost, hacked or shared; marriages sometimes end; leaked images cause lifelong harm (and Indian blackmail cases show the risk).', 'If images exist, delete them, including from the cloud.'],
+  ['Practices', 'Is sexting between spouses okay?', 'Flirty or loving messages between spouses can build anticipation. Avoid explicit images for the same security reasons as recording.', ''],
+  ['Timing', 'Is sex during menstruation sinful?', 'The Levitical purity law (Lev 18:19) belonged to the ritual system most Christians see as fulfilled in Christ. Today it is a matter of preference and hygiene. Some women find it eases cramps; others prefer to wait.', 'Use towels; there is a slightly higher infection risk.'],
+  ['Timing', 'Should we abstain during fasting, Lent or Sundays?', '1 Corinthians 7:5 allows abstaining for prayer only "by agreement and for a limited time". No Sunday or calendar rule is in Scripture; those came from medieval penitential books.', ''],
+  ['Timing', 'How often should a married couple have sex?', 'No biblical number. Studies of married couples often find about weekly on average, with huge variation. The healthy measure is mutual satisfaction, not a statistic.', 'Research (Muise et al., 2016) found well-being rose with frequency up to about once a week, then levelled off.'],
+  ['Timing', 'Is morning sex or a "quickie" okay?', 'Yes. Variety in time and length is healthy. Morning testosterone is highest for men; make sure her pleasure isn\'t always skipped.', ''],
+  ['Bodies', 'Is it okay to have sex with the lights on?', 'Yes. "Naked and not ashamed" (Gen 2:25). If one spouse feels shy, go at their pace.', ''],
+  ['Bodies', 'Is it normal for her to need lubricant?', 'Completely normal, especially with stress, breastfeeding, the pill, or after 40. Lubricant is a tool, not a sign of failure or lack of desire.', 'Water-based lubricants are safe with condoms.'],
+  ['Bodies', 'Is it sinful to fantasise about my own spouse?', 'No. Thinking about, anticipating and longing for your spouse is celebrated in Song of Songs. The problem is fantasy about others.', ''],
+  ['Bodies', 'Can a wife initiate sex?', 'Yes. The woman in the Song often initiates (1:2, 7:11-12). Many husbands find it deeply affirming.', ''],
+  ['Struggles', 'What if one of us has lost all interest?', 'Look for the cause: health, hormones, pain, resentment, exhaustion, depression, porn, or past abuse. See When It Is Hard or Painful, and a doctor.', ''],
+  ['Struggles', 'Is it wrong to masturbate when my spouse is away or ill?', 'Christians disagree (see Masturbation: Deep Study). Most counsellors stress honesty with your spouse, and never porn or fantasies of others.', ''],
+  ['Struggles', 'Should I tell my spouse about my past?', 'Usually yes, before marriage, in general terms rather than graphic detail, ideally with a counsellor present. Secrets eventually harm intimacy.', '']
+];
+M.questions = {
+  t: 'Oral Sex & Honest Questions', e: 'Union',
+  l: 'The questions married Christians ask privately but rarely say aloud: oral sex, other practices, timing, bodies and struggles. Each answer gives biblical counsel and, where relevant, a health note.',
+  h() {
+    const cats = [...new Set(QA.map(q => q[0]))];
+    return `<div class="stage"><div class="field"><input id="qaQ" type="search" placeholder="Search ${QA.length} questions..." aria-label="Search questions"></div><div class="chips" id="qaC"><button class="chip" data-c="" aria-pressed="true">All</button>${cats.map(c => `<button class="chip" data-c="${c}">${c}</button>`).join('')}</div><div id="qaL" class="acc"></div></div>
+    ${sec('The principle behind every answer', `<div class="stage"><svg viewBox="0 0 640 170" role="img" aria-label="Five principles"><line x1="40" x2="600" y1="85" y2="85" stroke="var(--line)" stroke-width="3"/>${['Mutual', 'Exclusive', 'No harm', 'Honouring', 'Clear conscience'].map((t, i) => `<g class="prin" style="animation-delay:${i * .15}s"><circle cx="${70 + i * 125}" cy="85" r="44" fill="${['var(--rose-soft)', 'var(--gold-soft)', 'var(--sage-soft)', 'var(--sky-soft)', 'var(--rose-soft)'][i]}" stroke="${['var(--rose)', 'var(--gold)', 'var(--sage)', 'var(--sky)', 'var(--rose)'][i]}" stroke-width="2"/><text x="${70 + i * 125}" y="${t.includes(' ') ? 82 : 90}" text-anchor="middle" class="ft" style="font-weight:700">${t.split(' ')[0]}</text>${t.includes(' ') ? `<text x="${70 + i * 125}" y="98" text-anchor="middle" class="ft" style="font-weight:700">${t.split(' ').slice(1).join(' ')}</text>` : ''}</g>`).join('')}</svg>${note('Within these five, the marriage bed is a place of great freedom (Heb 13:4). Use the flowchart in Keeping It Alive to apply them to any question.')}</div>`)}`;
+  },
+  mount() {
+    let c = '';
+    const draw = () => { const q = $('#qaQ').value.trim().toLowerCase(); const L = QA.filter(x => (!c || x[0] === c) && (!q || (x[1] + x[2] + x[3]).toLowerCase().includes(q)));
+      $('#qaL').innerHTML = L.map(x => `<details><summary><span class="pill gold">${x[0]}</span> ${x[1]}</summary><div class="ans"><p>${x[2]}</p>${x[3] ? note('<b>Health note:</b> ' + x[3], 'sage') : ''}</div></details>`).join('') || '<p style="padding:12px 0">No questions match.</p>'; };
+    $('#qaQ').addEventListener('input', draw); $('#qaC').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; c = b.dataset.c; $$('#qaC .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); }); draw();
   }
 };
 
