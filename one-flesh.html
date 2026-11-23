@@ -427,6 +427,31 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
 .okar { color: var(--gold); font-size: 20px; animation: rise .4s both; }
 .prin { animation: pop .7s cubic-bezier(.3,1.5,.5,1) both; transform-box: fill-box; transform-origin: center; }
 @media (max-width: 760px) { .venn { grid-template-columns: minmax(0,1fr); gap: 10px; } .vc { border-radius: 24px; min-height: 0; margin: 0 !important; } .sbar { grid-template-columns: minmax(0,1fr); gap: 4px; } }
+
+/* v6 */
+.stp { cursor: pointer; } .stp rect { transition: fill .3s; } .stp.on rect { fill: var(--rose); fill-opacity: .35; }
+#stBall { transition: cx .8s cubic-bezier(.5,0,.5,1.4), cy .8s cubic-bezier(.6,0,.4,1.6); filter: drop-shadow(0 0 6px var(--rose)); }
+.rmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; }
+.rcat { display: grid; gap: 6px; align-content: start; padding: 14px; border-radius: 16px 16px 16px 4px; border: 2px solid var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); animation: pop .6s cubic-bezier(.3,1.4,.5,1) both; }
+.rcat b { font-family: var(--display); font-size: 18px; color: var(--c); }
+.rleaf { text-align: left; padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: 14px; transition: transform .2s, border-color .2s; }
+.rleaf:hover, .rleaf.on { transform: translateX(4px); border-color: var(--c); }
+.domw { overflow-x: auto; } .domw svg { min-width: 560px; width: 100%; }
+.dom { cursor: pointer; transition: transform .7s cubic-bezier(.6,0,.9,.5); transform-box: view-box; }
+.dom.fall { transform: rotate(68deg); }
+.dom.on rect { stroke: var(--ink); stroke-width: 2; }
+.ripple { transform-box: fill-box; transform-origin: center; animation: rip 1.2s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes rip { from { transform: scale(.2); opacity: 0; } }
+.ladw { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.ladder { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column-reverse; gap: 4px; }
+.ladder li { display: flex; gap: 10px; align-items: center; padding: 7px 12px; border-radius: 10px; font-size: 14px; border: 1px solid var(--line); background: var(--surface); margin-left: calc(var(--i) * 6px); transition: background .4s, border-color .4s, opacity .4s; }
+.ladder li span { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 18px; }
+.ladder li.ok { background: var(--sage-soft); border-color: var(--sage); }
+.ladder li.no { opacity: .55; background: var(--rose-soft); }
+.isw rect { fill: var(--ink); fill-opacity: .8; stroke: var(--ink); transition: all .8s; }
+.isn rect { fill: transparent; stroke: var(--sky); stroke-width: 3; stroke-dasharray: 6 4; transition: all .8s; }
+.wwl { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+@media (max-width: 760px) { .ladw { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 <canvas id="bgfx" aria-hidden="true"></canvas>
@@ -518,13 +543,13 @@ function orbit() {
 
 /* ============ navigation ============ */
 const NAV = [
-  { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['learning', 'How We Learn About Sex'], ['myths', 'Myths & Misunderstandings']] },
+  { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['learning', 'How We Learn About Sex'], ['lovelust', 'Love, Lust & Sin'], ['myths', 'Myths & Misunderstandings']] },
   { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan']] },
   { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['struggles', 'Struggles in Marriage'], ['closeness', 'Intimacy Without Sex'], ['foreplay', 'Foreplay & Touch'], ['practice', 'The Act: Process & Safety'], ['positions', 'Positions & Penetration'], ['deeper', 'Deeper Pleasure'], ['variety', 'Keeping It Alive'], ['questions', 'Oral Sex & Honest Questions'], ['pain', 'When It Is Hard or Painful'], ['aftercare', 'Pain, Cool-down & Aftercare']] },
-  { g: 'Shadows', c: 'var(--rose)', items: [['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
+  { g: 'Shadows', c: 'var(--rose)', items: [['falls', 'Why Good People Fall'], ['chains', 'Domino Chains & Consequences'], ['premarital', 'Pre-marital Sex & Dating'], ['affairs', 'Affairs: Anatomy & Recovery'], ['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
   { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['healing', 'Healing & Freedom'], ['sinful', 'When Sex Feels Sinful'], ['energy', 'Creative Power Before Marriage']] },
   { g: 'Teaching', c: 'var(--gold)', items: [['children', 'Teaching Children'], ['teach', 'Curriculum by Age'], ['counsel', 'Counselling Toolkit']] },
-  { g: 'Reference', c: 'var(--muted)', items: [['vocab', 'Sexual Vocabulary'], ['stats', 'Statistics'], ['sources', 'Books & Sources']] }
+  { g: 'Reference', c: 'var(--muted)', items: [['solver', 'Problem Solver'], ['vocab', 'Sexual Vocabulary'], ['stats', 'Statistics'], ['sources', 'Books & Sources']] }
 ];
 const ORDER = NAV.flatMap(g => g.items.map(i => i[0]));
 const TITLE = Object.fromEntries(NAV.flatMap(g => g.items));
@@ -3011,6 +3036,285 @@ M.questions = {
     const draw = () => { const q = $('#qaQ').value.trim().toLowerCase(); const L = QA.filter(x => (!c || x[0] === c) && (!q || (x[1] + x[2] + x[3]).toLowerCase().includes(q)));
       $('#qaL').innerHTML = L.map(x => `<details><summary><span class="pill gold">${x[0]}</span> ${x[1]}</summary><div class="ans"><p>${x[2]}</p>${x[3] ? note('<b>Health note:</b> ' + x[3], 'sage') : ''}</div></details>`).join('') || '<p style="padding:12px 0">No questions match.</p>'; };
     $('#qaQ').addEventListener('input', draw); $('#qaC').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; c = b.dataset.c; $$('#qaC .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); }); draw();
+  }
+};
+
+/* ================= v6 modules ================= */
+/* ---------- WHY GOOD PEOPLE FALL ---------- */
+const STAIR = [
+  ['Unmet need', 'Loneliness, stress, feeling unseen at home, ministry burnout, distance in marriage. Nothing sinful yet; it is a real need.', 'Name the need and bring it to God, your spouse, or a friend (Ps 62:8).'],
+  ['Desire', '"Each person is tempted when he is lured and enticed by his own desire" (James 1:14). A thought, an attraction, a curiosity.', 'Notice it without panic. Desire is not sin; feeding it is the danger.'],
+  ['Secret attention', 'Replaying the thought, checking their profile, saving a photo, finding reasons to talk.', 'Bring it into the light: tell someone. Secrets are the soil of sin.'],
+  ['Small compromises', 'Private chats, sharing marriage problems with them, deleting messages, "just friends" lunches, one drink too many.', 'Build a wall: stop private contact; no deleting; be transparent with your spouse.'],
+  ['Opportunity', 'Travel, a hostel room, an empty house, a late night at the office, a ministry trip.', 'Avoid being alone together. Flee (2 Tim 2:22; Gen 39:12).'],
+  ['The act', '"Desire, when it has conceived, gives birth to sin" (James 1:15).', 'Even now you can stop. Leave. Call someone.'],
+  ['Cover-up', 'Lying, hiding, sometimes making things worse (David arranged Uriah\'s death).', 'Confess early (Prov 28:13). Cover-ups multiply damage.'],
+  ['Consequences', '"Sin when it is fully grown brings forth death" (James 1:15): broken trust, families, ministries, health.', 'Grace is still available: repentance, restoration, and help (1 John 1:9).']
+];
+const REASONS = [
+  ['Inside me', 'var(--rose)', [['Loneliness', 'The most common root. Many affairs start with feeling understood by someone else.'], ['Unhealed trauma', 'Past abuse or family wounds look for comfort in sex.'], ['Pride', '"It could never happen to me." "Let anyone who thinks that he stands take heed lest he fall" (1 Cor 10:12).'], ['Entitlement', '"I deserve this after all I\'ve given." Common in burned-out leaders.']]],
+  ['In the marriage', 'var(--gold)', [['Neglect', 'No time, no dates, no conversations: the marriage runs on autopilot.'], ['Unresolved conflict', 'Resentment makes another person look like rescue.'], ['Sexual disconnection', 'Long dry seasons with no conversation about why.'], ['Separation', 'Gulf jobs, travel, postpartum stays, long-distance work.']]],
+  ['The situation', 'var(--sky)', [['Opportunity', 'Time alone with someone attractive: office, hostel, ministry team.'], ['Phones & social media', 'Private chats, old flames on Facebook, reconnecting in WhatsApp reunion groups.'], ['Alcohol', 'Lowers the prefrontal brakes.'], ['Late marriage', 'In South India many marry at 28-32 after years of studying and working away from home.']]],
+  ['Spiritual life', 'var(--sage)', [['Secret life', 'Porn or fantasy hidden for years erodes conscience.'], ['Performance religion', 'Looking holy without real relationship with God: duty without delight.'], ['No accountability', 'Especially leaders: no one asks hard questions.'], ['Shame-based purity', 'Teaching built on fear and shame leaves people with no skills and no hope after a slip.']]],
+  ['Culture', 'var(--muted)', [['Silence about sex', 'No teaching at home or church, so media teaches instead.'], ['Hostels & IT cities', 'Young people far from family in Bengaluru, Chennai, Hyderabad, Kochi.'], ['Cinema scripts', 'Romance, "stalking hero" and affair plots make sin look exciting and harmless.'], ['Honour pressure', 'A fall must be hidden, so there is no help until disaster.']]]
+];
+const BIB = [
+  ['David', '2 Samuel 11-12', 'Stayed home when he should have been at war; saw Bathsheba bathing; used royal power to take her.', 'Pregnancy, cover-up, the murder of Uriah, the child\'s death, rape and murder among his own children, Absalom\'s rebellion.', 'Idleness plus power plus secrecy is a deadly mix. Yet Psalm 51 shows true repentance and restoration.'],
+  ['Samson', 'Judges 14-16', 'Driven by what "looked right in his eyes"; repeatedly crossed boundaries with women; trusted his strength.', 'Captured, blinded, enslaved.', 'Gifting is not character. Repeated small compromises add up.'],
+  ['Solomon', '1 Kings 11', 'Wisest man; 700 wives and 300 concubines; marriages for alliance.', '"His wives turned away his heart after other gods." The kingdom split after his death.', 'Knowledge without obedience protects no one.'],
+  ['Judah', 'Genesis 38', 'After his wife died, used a woman he thought was a prostitute, while refusing justice to Tamar.', 'Exposed publicly: "She is more righteous than I."', 'Hypocrisy: judging others harshly while hiding your own sin.'],
+  ['Reuben', 'Genesis 35:22; 49:4', 'Slept with his father\'s concubine.', 'Lost his birthright: "unstable as water, you shall not have pre-eminence."', 'One act can cost a lifetime calling.'],
+  ['Eli\'s sons', '1 Samuel 2:22-25', 'Priests who slept with women serving at the tabernacle; their father rebuked them weakly.', 'Death of both sons; judgement on Eli\'s house.', 'Abuse of spiritual position, and leaders who fail to act decisively.'],
+  ['Joseph (who didn\'t fall)', 'Genesis 39', 'Single, far from home, a slave, pursued daily by a powerful woman.', 'Fled, was falsely accused and imprisoned, then raised up to save nations.', 'Faithfulness may cost in the short term, but it is never wasted. "How can I do this great wickedness and sin against God?"']
+];
+M.falls = {
+  t: 'Why Good People Fall', e: 'Shadows',
+  l: 'Many who were raised in good Christian homes, taught purity, and serve in church still fall into pre-marital sex, affairs and other unwanted sexual behaviour. Here is why it happens, how it usually unfolds, what Scripture and real cases show, and where the exits are.',
+  h() {
+    return `${sec('How many fall? The honest picture', cards([
+      ['No reliable South Indian count', 'There is no trustworthy survey of sexual sin among South Indian Christians. Shame and honour culture mean most falls are never reported. Treat any confident number with suspicion.', 'Caveat'],
+      ['Indian youth', 'The national Youth in India study (Population Council & IIPS, 2006-08) found about 15% of unmarried young men and 4% of unmarried young women aged 15-24 reported pre-marital sex, which researchers consider an under-report.', 'Data'],
+      ['Church leaders (US)', 'In a 1988 Leadership Journal survey, 12% of pastors admitted sexual intercourse with someone other than their spouse while in ministry, and 23% admitted some sexually inappropriate behaviour. It is an old survey, but often cited.', 'Data'],
+      ['Affair apps in India', 'Extramarital dating apps report millions of Indian users, with Bengaluru often listed among the top cities. These are company-reported figures, not independent research.', 'Trend']
+    ]) + note('What counsellors in South India consistently report: falls happen across all denominations, among pastors, worship leaders, youth leaders and "good" families. The difference is rarely knowledge of right and wrong, and mostly the conditions described below.', 'rose'))}
+    ${sec('The slide: how a fall unfolds', `<div class="stage"><svg viewBox="0 0 660 330" id="stS" role="img" aria-label="Staircase of temptation">${STAIR.map((s, i) => `<g class="stp" data-i="${i}" tabindex="0" role="button"><rect x="${20 + i * 76}" y="${30 + i * 34}" width="76" height="${300 - (30 + i * 34)}" fill="${i < 5 ? 'var(--gold-soft)' : 'var(--rose-soft)'}" stroke="var(--line)"/><text x="${58 + i * 76}" y="${50 + i * 34}" text-anchor="middle" class="ft" style="font-size:10.5px;font-weight:700">${s[0].split(' ').map((w, k) => `<tspan x="${58 + i * 76}" dy="${k ? 12 : 0}">${w}</tspan>`).join('')}</text><path d="M${58 + i * 76} ${20 + i * 34} l 0 -14" stroke="var(--sage)" stroke-width="2" marker-end="url(#arU)"/></g>`).join('')}<defs><marker id="arU" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--sage)"/></marker></defs><circle id="stBall" r="9" fill="var(--rose)" cx="80" cy="20"/></svg>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="pbtn solid" id="stPlay">Watch the slide</button><span class="label" style="align-self:center">Green arrows are exits: you can step off at any stage</span></div><div class="info" id="stI" style="min-height:0"></div></div>`, 'Based on James 1:14-15. Nobody falls in one step. Tap any step to see what it looks like and how to get off.')}
+    ${sec('Why it happens: a map of reasons', `<div class="stage"><div class="rmap" id="rm">${REASONS.map((r, i) => `<div class="rcat" style="--c:${r[1]};animation-delay:${i * .12}s"><b>${r[0]}</b>${r[2].map((x, k) => `<button class="rleaf" data-r="${i}" data-k="${k}">${x[0]}</button>`).join('')}</div>`).join('')}</div><div class="info" id="rmI" style="min-height:0"><span class="label">Tap a reason</span><p>Most falls involve several of these at once.</p></div></div>`)}
+    ${sec('The purity paradox: why strict upbringing sometimes backfires', `${cards([
+      ['Forbidden fruit', 'When sex is only ever "the forbidden thing", curiosity and secrecy make it more attractive, not less.', '1'],
+      ['No skills', 'Rules without reasons and without practical skills (handling desire, setting boundaries, saying no) leave young people unprepared.', '2'],
+      ['All-or-nothing thinking', 'Psychologists call it the "abstinence violation effect" (Marlatt): after one slip, "I\'ve already ruined it" leads to giving up entirely.', '3'],
+      ['Shame drives hiding', 'If confessing means disgrace, people hide; hidden struggles grow.', '4'],
+      ['Identity in performance', '"I\'m the good one" collapses with a single fall, leading to despair or a double life.', '5'],
+      ['Late, sudden freedom', 'Strict homes, then a hostel or IT job in another city with no supervision and no inner compass.', '6']
+    ])}${note('The answer is not looser standards. It is purity rooted in love and grace, real skills, honest community, and a way back after failure (see The Relational Lens).', 'sage')}`)}
+    ${sec('Bible case files', `<div class="stage"><div class="chips" id="bcC">${BIB.map((b, i) => `<button class="chip" data-b="${i}" aria-pressed="${i === 0}">${b[0]}</button>`).join('')}</div><div id="bcO"></div></div>`, 'Scripture records its heroes\' sexual failures honestly, and one great success.')}
+    ${sec('Documented public cases', cards([
+      ['Ravi Zacharias', 'A world-famous apologist. After his death in 2020, an independent investigation commissioned by his own ministry (2021) found extensive sexual misconduct, hidden for years behind his reputation and lack of accountability.', 'International'],
+      ['Bill Hybels', 'Founder of Willow Creek Church, resigned in 2018 amid multiple allegations of sexual misconduct; later independent review found the allegations credible.', 'International'],
+      ['Carl Lentz', 'Hillsong NYC pastor, dismissed in 2020 for "moral failures"; he publicly admitted unfaithfulness to his wife.', 'International'],
+      ['Kerala, 2018', 'Priests of a Kerala church were accused of sexually exploiting a married woman, allegedly using information from her confession; the case drew national attention to abuse of spiritual trust.', 'South India'],
+      ['Kerala, 2018-22', 'A bishop was accused of repeatedly raping a nun; he was acquitted by the trial court in 2022. The case showed how hard it is for victims inside church hierarchies to be heard.', 'South India'],
+      ['The lesson', 'In every case: celebrity, power, isolation from honest accountability, and institutions protecting reputation. No gift or title protects anyone.', 'Pattern']
+    ]))}
+    ${sec('South Indian scenarios (composites)', cases([
+      { tag: 'Youth leader, Chennai', k: 'rose', t: 'The worship team', s: 'Sam, 26, led worship and was engaged. Late-night rehearsals and rides home with a team member became long chats about his doubts. Within months they were sleeping together.', w: 'Loneliness in a long engagement, emotional intimacy outside the relationship, no accountability, opportunity.', h: 'He confessed to his pastor and fiancée, stepped down from leadership, and entered counselling.', o: 'The engagement ended; he was restored over two years. Lesson: emotional intimacy comes before physical sin.' },
+      { tag: 'IT professional, Bengaluru', k: 'sky', t: 'First job, first freedom', s: 'Grace grew up in a strict pastor\'s home in Kerala. At 23, in a Bengaluru PG, she began dating a colleague; by six months they were living together. She stopped going to church out of shame.', w: 'Late, sudden freedom; no skills; all-or-nothing shame after the first compromise.', h: 'A college friend invited her to a small group where she heard grace before rules.', o: 'She moved out, sought counselling, and slowly rebuilt her faith. Lesson: prepare children for freedom, not only for control.' },
+      { tag: 'Gulf worker\'s wife, Kerala', k: 'gold', t: 'Ten years apart', s: 'Mini\'s husband worked in Dubai for a decade and came home one month a year. A neighbour helped with errands; conversation became comfort, then an affair.', w: 'Long separation, loneliness, a need for help and presence.', h: 'Discovery led to crisis; a pastor helped both. The husband took a lower-paid job in Kerala.', o: 'The marriage survived through counselling. Lesson: long separation needs planned connection and safeguards.' },
+      { tag: 'Pastor, Hyderabad', k: 'rose', t: 'Counselling alone', s: 'A respected pastor counselled a distressed woman alone, weekly, for months. Sympathy became attachment, then an affair.', w: 'Isolation, burnout, emotional neediness on both sides, no boundaries.', h: 'The affair was exposed; elders removed him from ministry and arranged care for the woman and his family.', o: 'Lesson: never counsel the opposite sex alone repeatedly; leaders need accountability.' }
+    ]))}`;
+  },
+  mount() {
+    const pos = i => [80 + i * 76, 20 + i * 34];
+    const show = i => { const s = STAIR[i], [x, y] = pos(i); const b = $('#stBall'); b.setAttribute('cx', x); b.setAttribute('cy', y); $$('#stS .stp').forEach((g, j) => g.classList.toggle('on', j === i)); $('#stI').innerHTML = `<span class="label">Step ${i + 1} of ${STAIR.length}</span><h3>${s[0]}</h3>${split(panel('What it looks like', `<p>${s[1]}</p>`, i < 5 ? 'gold' : 'rose'), panel('The exit', `<p>${s[2]}</p>`, 'sage'))}`; };
+    let t; $('#stS').addEventListener('click', e => { const g = e.target.closest('.stp'); if (g) { clearInterval(t); show(+g.dataset.i); } });
+    $('#stPlay').addEventListener('click', () => { clearInterval(t); let i = 0; show(0); t = setInterval(() => { i++; if (i >= STAIR.length || !$('#stS')) return clearInterval(t); show(i); }, RM ? 400 : 2400); });
+    show(0);
+    $('#rm').addEventListener('click', e => { const b = e.target.closest('.rleaf'); if (!b) return; $$('#rm .rleaf').forEach(x => x.classList.toggle('on', x === b)); const R = REASONS[+b.dataset.r], x = R[2][+b.dataset.k]; $('#rmI').innerHTML = `<span class="label">${R[0]}</span><h3>${x[0]}</h3><p>${x[1]}</p>`; });
+    const bc = i => { const b = BIB[i]; $$('#bcC .chip').forEach((c, j) => c.setAttribute('aria-pressed', j === i)); $('#bcO').innerHTML = `<div class="info" style="min-height:0;margin-top:10px"><span class="label">${b[1]}</span><h3>${b[0]}</h3><div class="grid">${panel('What led to it', `<p>${b[2]}</p>`, 'gold')}${panel('Consequences', `<p>${b[3]}</p>`, i === 6 ? 'sage' : 'rose')}${panel('Lesson', `<p>${b[4]}</p>`, 'sage')}</div></div>`; };
+    $('#bcC').addEventListener('click', e => { const c = e.target.closest('[data-b]'); if (c) bc(+c.dataset.b); }); bc(0);
+  }
+};
+
+/* ---------- DOMINO CHAINS ---------- */
+const CHAINS = [
+  ['King David', 'rose', [['Idle at home', 'Kings went to war; David stayed in Jerusalem (2 Sam 11:1).', 'Be where you are called to be.'], ['Looked', 'Saw a woman bathing and kept looking.', 'Turn away (Job 31:1).'], ['Inquired', 'Asked who she was, though told she was married.', 'A "no" from a friend is a gift.'], ['Took', 'Used royal power to bring her.', 'Power must never override consent.'], ['Pregnancy', '"I am pregnant."', 'Confess now.'], ['Cover-up', 'Tried to make Uriah sleep with her.', 'Lies multiply damage.'], ['Murder', 'Arranged Uriah\'s death in battle.', 'Even here, repentance was possible.'], ['Family fallout', 'The child died; Amnon raped Tamar; Absalom killed Amnon and rebelled.', 'Sin echoes through families.']]],
+  ['Teen sexting', 'sky', [['Bored at night', 'Phone in the bedroom, alone, late.', 'Phones out of bedrooms.'], ['Flirty chat', 'An Instagram DM from someone "cute".', 'Talk to a parent or friend about new online contacts.'], ['Asked for a photo', '"Just one, I won\'t share."', 'Never send. Ever.'], ['Sent', 'The image is now out of your control.', 'Tell a trusted adult immediately.'], ['Shared / blackmail', 'Screenshots spread, or sextortion begins.', 'Report at cybercrime.gov.in or 1930; never pay.'], ['Shame & isolation', 'Depression, dropping grades, self-harm risk.', 'Parents: respond with safety, not shame.']]],
+  ['Office affair', 'gold', [['Distance at home', 'Busy, tired, little conversation with spouse.', 'Protect weekly time with your spouse.'], ['A colleague listens', 'Lunches, coffee, feeling understood.', 'Keep emotional sharing for your spouse.'], ['Sharing marriage problems', 'The single biggest warning sign (Shirley Glass).', 'Never confide marriage problems to a potential partner.'], ['Secret messages', 'Late-night chats, deleted histories.', 'If you are hiding it, stop it.'], ['Business trip', 'Same hotel, dinner, drinks.', 'Pre-decide boundaries before travel.'], ['Affair', 'Emotional becomes physical.', 'End it completely; get help.'], ['Discovery', 'Spouse finds messages; trust shattered.', 'Full honesty, counselling.'], ['Divorce or long repair', 'Children, finances, church, health all affected.', 'Recovery is possible with time and help.']]],
+  ['Porn to affair', 'rose', [['Curiosity at 12', 'A friend\'s phone.', 'Parents: prepare kids early.'], ['Secret habit', 'Years of hidden use.', 'Confess and get help.'], ['Escalation', 'More extreme content, chat sites.', 'Rewire & Restore.'], ['Marriage', 'Hoped marriage would "fix it".', 'Disclose before marriage.'], ['Sexual problems', 'ED or disinterest with his wife.', 'Treat the root.'], ['Paid chat & apps', 'Webcams, then dating apps.', 'Accountability software and partners.'], ['Physical affair', 'Meeting someone.', 'Stop; confess.'], ['Collapse', 'Discovery, separation, shame.', 'Grace and long recovery.']]],
+  ['Chain of restoration', 'sage', [['Honest confession', '"If we confess our sins, he is faithful and just to forgive" (1 John 1:9).', ''], ['Safe people', 'A pastor, counsellor, accountability partner.', ''], ['Consequences accepted', 'Stepping down, making amends, no blame-shifting.', ''], ['Root work', 'Trauma, loneliness, family story healed.', ''], ['Rebuilt trust', 'Transparency over months and years.', ''], ['New habits', 'Rewired brain, boundaries, healthy intimacy.', ''], ['Redeemed story', 'Helping others: "comfort others with the comfort we received" (2 Cor 1:4).', '']]]
+];
+M.chains = {
+  t: 'Domino Chains & Consequences', e: 'Shadows',
+  l: 'Sexual sin rarely stays small. One choice tips the next, and the damage spreads to spouses, children, churches and generations. Push the dominoes to watch real and typical chains fall, see where each could have been stopped, and then watch the chain of restoration.',
+  h() {
+    return `${sec('Push the dominoes', `<div class="stage"><div class="chips" id="dcC">${CHAINS.map((c, i) => `<button class="chip" data-c="${i}" aria-pressed="${i === 0}">${c[0]}</button>`).join('')}</div><div class="domw"><svg viewBox="0 0 680 180" id="dmS" role="img" aria-label="Domino chain"></svg></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="pbtn solid" id="dmGo">Push the first domino</button><button class="pbtn" id="dmRe">Stand them up</button></div><div class="info" id="dmI" style="min-height:0"></div></div>`, 'Tap any domino to see where the chain could have been broken.')}
+    ${sec('The disaster radius', `<div class="stage"><svg viewBox="0 0 640 360" role="img" aria-label="Ripple effect of sexual sin">${[['Self', 40, 'var(--rose)'], ['Spouse', 85, 'var(--rose)'], ['Children', 125, 'var(--gold)'], ['Extended family', 160, 'var(--gold)'], ['Church & ministry', 195, 'var(--sky)'], ['Community & work', 230, 'var(--sky)'], ['Next generation', 265, 'var(--muted)']].reverse().map((r, i) => `<circle cx="320" cy="180" r="${r[1] * .66}" fill="${r[2]}" fill-opacity=".1" stroke="${r[2]}" class="ripple" style="animation-delay:${(6 - i) * .25}s"/><text x="320" y="${180 - r[1] * .66 + 14}" text-anchor="middle" class="ft" style="font-size:11px;font-weight:700">${r[0]}</text>`).join('')}</svg></div>`, 'Consequences ripple outward like a stone in water.')}
+    ${sec('Consequences matrix', tbl(['Area', 'Pre-marital sex', 'Affair', 'Porn / compulsion'], [
+      ['Spiritual', 'Guilt, distance from God, double life', 'Broken covenant, ministry loss', 'Shame cycles, feeling unworthy to pray'],
+      ['Emotional', 'Bonding then heartbreak; comparison later', 'Betrayal trauma for spouse; guilt; depression', 'Isolation, anxiety, numbness'],
+      ['Relational', 'Harder trust in future marriage', 'Divorce risk; children\'s security shaken', 'Objectifying lens; less desire for spouse'],
+      ['Physical', 'Pregnancy, unsafe abortion, STIs', 'STIs brought into marriage', 'Sexual dysfunction, sleep loss'],
+      ['Financial & legal', 'Forced early marriage; pregnancy costs', 'Divorce costs; maintenance; property disputes', 'Paid content, blackmail, job loss'],
+      ['Social (South India)', 'Family honour crisis; caste conflict; sometimes violence', 'Community gossip; church discipline', 'Leaked videos, sextortion'],
+      ['Generational', 'Patterns of secrecy passed on', 'Children repeating patterns', 'Children finding devices early']
+    ]))}`;
+  },
+  mount() {
+    let c = 0, fallen = 0, tm;
+    const draw = () => { const D = CHAINS[c][2], n = D.length, gap = 640 / n; fallen = 0;
+      $('#dmS').innerHTML = `<line x1="10" x2="670" y1="150" y2="150" stroke="var(--line)" stroke-width="3"/>` + D.map((d, i) => `<g class="dom" data-i="${i}" tabindex="0" role="button" aria-label="${d[0]}" style="transform-origin:${30 + i * gap + 20}px 150px"><rect x="${30 + i * gap}" y="58" width="20" height="92" rx="4" fill="var(--${CHAINS[c][1]})" opacity=".8"/><circle cx="${40 + i * gap}" cy="78" r="3" fill="var(--surface)"/><circle cx="${40 + i * gap}" cy="128" r="3" fill="var(--surface)"/></g><text x="${40 + i * gap}" y="170" text-anchor="middle" class="ft" style="font-size:10px">${i + 1}</text>`).join('');
+      info(0); };
+    const info = i => { const d = CHAINS[c][2][i]; $$('#dmS .dom').forEach((g, j) => g.classList.toggle('on', j === i)); $('#dmI').innerHTML = `<span class="label">${CHAINS[c][0]} &middot; ${i + 1} of ${CHAINS[c][2].length}</span><h3>${d[0]}</h3><p>${d[1]}</p>${d[2] ? note('<b>Break the chain here:</b> ' + d[2], 'sage') : ''}`; };
+    $('#dcC').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; c = +b.dataset.c; $$('#dcC .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); clearInterval(tm); draw(); });
+    $('#dmS').addEventListener('click', e => { const g = e.target.closest('.dom'); if (g) info(+g.dataset.i); });
+    $('#dmGo').addEventListener('click', () => { clearInterval(tm); draw(); const doms = $$('#dmS .dom'); let i = 0; const f = () => { if (i >= doms.length || !doms[i].isConnected) return clearInterval(tm); doms[i].classList.add('fall'); info(i); i++; }; f(); tm = setInterval(f, RM ? 300 : 1600); });
+    $('#dmRe').addEventListener('click', () => { clearInterval(tm); draw(); });
+    draw();
+  }
+};
+
+/* ---------- PRE-MARITAL SEX & DATING ---------- */
+const LADDER = ['Talking & friendship', 'Spending time in groups', 'Time alone in public places', 'Holding hands', 'Hugging', 'Brief kiss', 'Prolonged kissing', 'Kissing while lying down', 'Touching over clothes', 'Undressing / touching under clothes', 'Genital touching or oral sex', 'Intercourse'];
+M.premarital = {
+  t: 'Pre-marital Sex & Dating', e: 'Shadows',
+  l: 'Why many committed young Christians end up having sex before marriage, how physical intimacy escalates, how to set boundaries that actually hold, and what to do if you have already crossed the line. The focus is on South Indian realities: hostels, IT cities, long engagements and family pressure.',
+  h() {
+    return `${sec('The escalation ladder', `<div class="stage"><div class="ladw"><ol class="ladder" id="ldL">${LADDER.map((l, i) => `<li data-i="${i}" style="--i:${i}"><span>${i + 1}</span>${l}</li>`).join('')}</ol><div class="bside"><label class="label" for="ldR">Where will our boundary be? Rung <b id="ldV">5</b></label><input type="range" id="ldR" min="1" max="12" value="5" style="width:100%;accent-color:var(--rose)"><div class="info" id="ldI" style="min-height:0"></div></div></div></div>`, 'Physical intimacy is designed to escalate: each step makes the body want the next. Pick where you, as a couple, will draw the line, ideally decided together in daylight, not in the moment.')}
+    ${sec('Why committed Christians still have sex before marriage', cards([
+      ['Long engagements', 'In South India, engagements of 6-12 months and marriages at 28-32 mean years of strong desire with no outlet.', 'Timing'],
+      ['"We\'re getting married anyway"', 'The most common justification among engaged couples.', 'Rationalisation'],
+      ['Privacy in cities', 'PGs, flats, cars and late working hours give opportunity rarely found in villages.', 'Opportunity'],
+      ['Emotional intimacy first', 'Sharing everything emotionally makes physical boundaries feel artificial.', 'Bonding'],
+      ['No plan for desire', 'Couples decide "we won\'t" but have no strategy for when, where and how.', 'Skills'],
+      ['Shame after a slip', '"We\'ve already done it, so what\'s the point now?" (the abstinence violation effect).', 'Spiral']
+    ]))}
+    ${sec('Boundaries that actually hold', steps([
+      ['Decide together, early, in daylight', 'Not in a parked car at midnight. Write your boundary down.'],
+      ['Set the line below the point of no return', 'If prolonged kissing leads you further, your line is before it.'],
+      ['Avoid lying down together and being alone at night', 'Most crossings happen in private, late, horizontal and tired.'],
+      ['Tell a mentor couple', 'Give them permission to ask you directly.'],
+      ['Plan dates with purpose', 'Public places, group time, serving together, families.'],
+      ['Shorten long engagements if you can', 'Many pastors now recommend engagements of under 6 months where possible.'],
+      ['Have a plan for a slip', 'Stop, confess to each other and a mentor, reset the boundary. Don\'t spiral.']
+    ]))}
+    ${sec('If you already have', flow('pmflow', [
+      ['Stop and be honest', 'With God and with each other: "We crossed our line." No blame.'],
+      ['Receive grace', '"There is now no condemnation" (Rom 8:1). Jesus restores, as with the woman in John 8.'],
+      ['Tell a mentor or pastor', 'Bring it into the light. Accountability, not punishment.'],
+      ['Reset boundaries', 'Stricter ones, given what you now know about yourselves.'],
+      ['Consider health', 'If there was intercourse: emergency contraception within 72 hours if needed, and STI testing if either has had other partners.'],
+      ['Decide about the relationship wisely', 'Don\'t marry only because you slept together, and don\'t break up only from shame. Seek counsel.'],
+      ['Future honesty', 'If you marry someone else later, tell your future spouse before marriage, in general terms.']
+    ], true))}
+    ${sec('Pregnancy before marriage: if it happens', cards([
+      ['Panic is normal', 'Fear of family, church and community is intense in South India. Take a breath, and don\'t decide alone.', 'First'],
+      ['Safety first', 'If you fear violence (honour-based threats), contact 181 or 112 and a trusted adult.', 'Safety'],
+      ['Know the options', 'Parenting, marriage (only if wise), adoption through legal channels (CARA in India), and the ethical questions around abortion, which Christians approach with deep seriousness.', 'Options'],
+      ['The church\'s role', 'Respond with support, not exile. Many young women have abortions in secret because they fear the church more than anything.', 'Church']
+    ]))}
+    ${sec('Stories (composites)', cases([
+      { tag: 'Engaged, Kochi', k: 'gold', t: '"We set rules but no plan"', s: 'Jacob and Riya were engaged for 11 months. They promised to wait but spent evenings alone in his flat. By month 4 they were sleeping together, then avoided their pastor and each other\'s eyes in church.', h: 'A mentor couple met them weekly, they stopped being alone in private spaces, and they moved the wedding earlier.', o: 'They married with a clean conscience restored by grace. Lesson: boundaries need logistics.' },
+      { tag: 'College, Coimbatore', k: 'rose', t: 'The hostel relationship', s: 'Two 20-year-olds from strict Christian homes started dating in college; sex followed within weeks. She became pregnant and hid it from everyone for four months.', h: 'A college counsellor and her aunt helped; both families were brought in with a mediator to prevent violence.', o: 'Lesson: fear of family reaction delays help. Children need to know home is safe even after mistakes.' }
+    ]))}`;
+  },
+  mount() {
+    const upd = v => { $('#ldV').textContent = v; $$('#ldL li').forEach((li, i) => { li.classList.toggle('ok', i < v); li.classList.toggle('no', i >= v); });
+      $('#ldI').innerHTML = `<h3>${v <= 3 ? 'Very guarded' : v <= 6 ? 'Affectionate, with clear limits' : v <= 8 ? 'High risk zone' : 'Past the point of no return'}</h3><p>${v <= 3 ? 'Strong protection. Make sure emotional and spiritual intimacy still grow.' : v <= 6 ? 'Many couples choose a line here. It works only if you also avoid privacy, lying down and late nights.' : v <= 8 ? 'Most couples who go this far end up crossing further. Bodies are designed to continue. Move your line down.' : 'This is sexual activity. Scripture reserves it for marriage (1 Thess 4:3-5; Heb 13:4).'}</p>`; };
+    $('#ldR').addEventListener('input', e => upd(+e.target.value)); upd(5);
+  }
+};
+
+/* ---------- AFFAIRS ---------- */
+M.affairs = {
+  t: 'Affairs: Anatomy & Recovery', e: 'Shadows',
+  l: 'Most affairs are not planned. They grow from friendships, neglect and secrecy. This section shows how they form, the warning signs, the types, and the path to recovery if one has happened.',
+  h() {
+    return `${sec('Walls and windows', `<div class="stage"><svg viewBox="0 0 640 260" id="wwS" role="img" aria-label="Walls and windows diagram">
+      <circle cx="320" cy="70" r="40" fill="var(--sky-soft)" stroke="var(--sky)" stroke-width="2"/><text x="320" y="75" text-anchor="middle" class="ft" style="font-weight:700">You</text>
+      <circle cx="140" cy="200" r="40" fill="var(--rose-soft)" stroke="var(--rose)" stroke-width="2"/><text x="140" y="205" text-anchor="middle" class="ft" style="font-weight:700">Spouse</text>
+      <circle cx="500" cy="200" r="40" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/><text x="500" y="205" text-anchor="middle" class="ft" style="font-weight:700">Friend / colleague</text>
+      <g id="wwA"><rect x="198" y="112" width="70" height="46" rx="6" class="wwx" transform="rotate(-35 233 135)"/><text x="196" y="150" class="ft wwl" id="wwAl"></text></g>
+      <g id="wwB"><rect x="372" y="112" width="70" height="46" rx="6" class="wwx" transform="rotate(35 407 135)"/><text x="412" y="150" class="ft wwl" id="wwBl"></text></g>
+    </svg><div class="chips" id="wwC"><button class="chip" data-w="h" aria-pressed="true">Healthy marriage</button><button class="chip" data-w="a">Affair forming</button></div><p id="wwT"></p></div>`, 'Psychologist Shirley Glass (Not "Just Friends", 2003): in a healthy marriage there is a window (openness) between spouses and a wall (boundary) toward others. In an affair, the wall and window swap.')}
+    ${sec('Types of affairs', cards([
+      ['Emotional affair', 'Deep sharing, secrecy and attachment with no sex (yet). Often just as devastating to the spouse.', 'Heart'],
+      ['Online / sexting', 'Chats, images, video calls, AI companions. Increasingly common.', 'Digital'],
+      ['One-night', 'Travel, alcohol, opportunity. Often followed by intense guilt.', 'Impulse'],
+      ['Long-term', 'A parallel relationship over months or years, sometimes a second "family".', 'Double life'],
+      ['Exit affair', 'Used, consciously or not, to end a marriage.', 'Escape'],
+      ['Revenge affair', 'In response to a spouse\'s affair or hurt. Multiplies damage.', 'Retaliation']
+    ]))}
+    ${sec('Warning signs checklist', `<div class="stage" id="awc">${['I share things with them I don\'t share with my spouse', 'I\'ve talked to them about problems in my marriage', 'I look forward to seeing them more than my spouse', 'I\'ve deleted messages or hidden conversations', 'I dress or prepare differently when I\'ll see them', 'I find reasons to be alone with them', 'I compare my spouse unfavourably with them', 'I\'d be uncomfortable if my spouse read our chats'].map((x, i) => `<label class="chk"><input type="checkbox" data-i="${i}"> <span>${x}</span></label>`).join('')}<p id="awR" class="note"></p></div>`, 'For honest self-examination. Tick what is true.')}
+    ${sec('Recovery after an affair', flow('afrec', [
+      ['Discovery or disclosure', 'Shock, rage, numbness. The betrayed spouse often shows trauma symptoms (intrusive images, insomnia, hypervigilance).'],
+      ['End the affair completely', 'No contact. If it was a colleague, this may mean changing jobs.'],
+      ['Safety and support', 'Each spouse needs their own support person and counsellor. STI testing.'],
+      ['Atone', 'Gottman\'s first phase: the unfaithful spouse takes full responsibility, answers questions honestly, and shows remorse without defensiveness or deadlines.'],
+      ['Attune', 'Rebuild emotional connection: listening, understanding what made the marriage vulnerable (without blaming the betrayed spouse).'],
+      ['Attach', 'Gradually restore physical and sexual intimacy, at the betrayed spouse\'s pace.'],
+      ['Long-term transparency', 'Open phones and schedules, accountability, regular check-ins. Usually 1-2 years for trust to rebuild.'],
+      ['Forgiveness', 'A process, not a moment. Forgiveness is possible even when reconciliation is not; reconciliation needs proven change.']
+    ], true))}
+    ${sec('Affair-proofing your marriage', cards([
+      ['Daily connection', '20 minutes of real conversation, a 6-second kiss, regular touch.', 'Habit'],
+      ['Weekly date', 'Protected time, even at home after the kids are asleep.', 'Habit'],
+      ['Guard confidences', 'Never discuss marriage problems with someone who could become a partner.', 'Boundary'],
+      ['Transparency', 'Open phones; no secret accounts; your spouse knows your friendships.', 'Boundary'],
+      ['Travel rules', 'Calls home, no alcohol-fuelled evenings with colleagues of the opposite sex, rooms on different floors.', 'Boundary'],
+      ['Keep sex alive', 'Talk about it, work on it, seek help when it struggles.', 'Intimacy']
+    ]))}
+    ${sec('Stories (composites)', cases([
+      { tag: 'WhatsApp reunion, Madurai', k: 'gold', t: 'The old flame', s: 'At 42, Selvam joined his college batch WhatsApp group and reconnected with a former girlfriend, now also married. Nostalgic chats became daily private calls, then a meeting in Chennai.', h: 'His wife found the chats. Both couples went to counselling; Selvam left the group and changed his number.', o: 'Lesson: nostalgia plus private messaging is a classic emotional-affair route.' },
+      { tag: 'Church choir, Kochi', k: 'rose', t: 'Practice nights', s: 'Two married choir members drove home together after practice for a year. Sharing marriage frustrations led to an affair.', h: 'They confessed; the church helped both families, and changed carpool arrangements.', o: 'Lesson: church settings are not automatically safe; boundaries apply everywhere.' }
+    ]))}`;
+  },
+  mount() {
+    const W = { h: ['WINDOW', 'WALL', 'Openness between spouses (window) and a protective boundary toward others (wall). You share your heart, struggles and secrets with your spouse.'], a: ['WALL', 'WINDOW', 'Secrets build a wall against your spouse while a window opens to the other person: sharing feelings, complaints about home, and private jokes. This swap happens before any physical affair.'] };
+    const set = k => { $$('#wwC .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.w === k)); const w = W[k]; $('#wwAl').textContent = w[0]; $('#wwBl').textContent = w[1]; $('#wwA').setAttribute('class', w[0] === 'WALL' ? 'isw' : 'isn'); $('#wwB').setAttribute('class', w[1] === 'WALL' ? 'isw' : 'isn'); $('#wwT').textContent = w[2]; };
+    $('#wwC').addEventListener('click', e => { const c = e.target.closest('[data-w]'); if (c) set(c.dataset.w); }); set('h');
+    const chk = () => { const n = $$('#awc input:checked').length; $('#awR').innerHTML = n === 0 ? 'Tick any statement that is true for you.' : n <= 2 ? `<b>${n} sign${n > 1 ? 's' : ''}.</b> Take this seriously: tell your spouse or a friend, and rebuild the wall now.` : `<b>${n} signs.</b> This is likely an emotional affair forming or happening. End private contact and seek counsel this week.`; };
+    $$('#awc input').forEach(c => c.addEventListener('change', chk)); chk();
+  }
+};
+
+/* ---------- LOVE, LUST & SIN ---------- */
+const LTYPES = [[0, 0, 0, 'Non-love'], [1, 0, 0, 'Liking (friendship)'], [0, 1, 0, 'Infatuation'], [0, 0, 1, 'Empty love'], [1, 1, 0, 'Romantic love'], [1, 0, 1, 'Companionate love'], [0, 1, 1, 'Fatuous love'], [1, 1, 1, 'Consummate love']];
+const LDESC = { 'Non-love': 'Most casual relationships.', 'Liking (friendship)': 'Closeness and warmth without passion or commitment.', 'Infatuation': '"Love at first sight": intense passion with no knowledge or commitment. Often mistaken for love, and the engine of many affairs.', 'Empty love': 'Commitment only. Some long marriages drift here, and some arranged marriages start here. It can grow into full love.', 'Romantic love': 'Close and passionate but not yet committed: dating and new relationships.', 'Companionate love': 'Close and committed but passion has faded. Common in long marriages; passion can be rekindled.', 'Fatuous love': 'Passion and commitment without real intimacy: whirlwind marriages.', 'Consummate love': 'All three together. The goal of marriage: the picture of Song of Songs and Ephesians 5.' };
+M.lovelust = {
+  t: 'Love, Lust & Sin', e: 'Foundations',
+  l: 'What is love? What is lust? How do they differ from desire and infatuation? And what is sexual sin, and why does Scripture take it so seriously? Explore the love triangle, test love against lust, and see the biblical words.',
+  h() {
+    return `${sec('The love triangle', `<div class="stage"><div class="wheelw"><svg viewBox="0 0 320 300" role="img" aria-label="Sternberg love triangle"><polygon points="160,30 30,270 290,270" fill="none" stroke="var(--line)" stroke-dasharray="4 6"/><polygon id="ltP" fill="var(--rose-soft)" stroke="var(--rose)" stroke-width="2.5" style="transition:all .6s cubic-bezier(.3,1.4,.5,1)"/><text x="160" y="20" text-anchor="middle" class="ft" style="font-weight:700">Intimacy</text><text x="22" y="290" class="ft" style="font-weight:700">Passion</text><text x="298" y="290" text-anchor="end" class="ft" style="font-weight:700">Commitment</text><text id="ltL" x="160" y="190" text-anchor="middle" style="font-family:var(--display);font-weight:700;font-size:16px;fill:var(--ink)"></text></svg>
+      <div class="bside">${['Intimacy (closeness, knowing)', 'Passion (desire, attraction)', 'Commitment (decision, covenant)'].map((l, i) => `<label class="label" for="lt${i}">${l}</label><input type="range" id="lt${i}" min="0" max="10" value="${[7, 3, 8][i]}" style="width:100%;accent-color:var(--rose)">`).join('')}<div class="info" id="ltI" style="min-height:0"></div></div></div></div>`, 'Psychologist Robert Sternberg\'s triangular theory of love. Move the sliders to see what kind of love a relationship has. Marriage aims for all three.')}
+    ${sec('Love, desire, infatuation, lust', tbl(['', 'Love (agape and eros together)', 'Healthy desire', 'Infatuation', 'Lust'], [
+      ['Focus', 'The other person\'s good', 'Union with your spouse', 'A fantasy version of the person', 'Gratifying myself'],
+      ['Time', 'Grows over years', 'Ebbs and flows', 'Fades in months (often 6-24)', 'Gone after release'],
+      ['Knows the person?', 'Deeply', 'Yes', 'Barely', 'Doesn\'t care'],
+      ['Responds to "no"', 'Respects it', 'Respects it', 'Pleads or sulks', 'Overrides or seeks elsewhere'],
+      ['After sex', 'Closer', 'Satisfied, bonded', 'Anxious for more', 'Empty or ashamed'],
+      ['Scripture', '1 Cor 13:4-7', 'Song 7:10; Prov 5:19', 'Amnon "loved" Tamar (2 Sam 13:1)', 'Then "hated her more than he had loved her" (2 Sam 13:15)']
+    ]))}
+    ${sec('Love or lust? A quick check', `<div class="stage" id="llq">${[['I want what is best for them even if I don\'t get what I want', 1], ['I mostly think about their body', 0], ['I\'d be fine waiting, or hearing no', 1], ['I feel entitled to them', 0], ['I want them to grow closer to God', 1], ['I hide this from people who love me', 0], ['I know their struggles and still choose them', 1], ['I lose interest after we\'re physical', 0]].map((q, i) => `<label class="chk"><input type="checkbox" data-v="${q[1]}"> <span>${q[0]}</span></label>`).join('')}<div class="meter" style="margin-top:10px"><i id="llM" style="width:50%"></i></div><p id="llT"></p></div>`, 'Think of a relationship or attraction and tick what is true.')}
+    ${sec('Four Greek words for love', cards([['Eros', 'Romantic, passionate, physical love. Not in the New Testament, but celebrated in Song of Songs. Good when held within covenant.', 'Passion'], ['Philia', 'Friendship love: companionship, shared life. Spouses should be best friends.', 'Friendship'], ['Storge', 'Family affection: belonging, loyalty.', 'Family'], ['Agape', 'Self-giving love that chooses the other\'s good (1 Cor 13; John 15:13). It holds the other three steady.', 'Self-giving']]))}
+    ${sec('What is sexual sin, and why so serious?', split(panel('Biblical words', ul(['<b>Hamartia</b>: "missing the mark", falling short of the design.', '<b>Porneia</b>: sexual immorality, any sex outside covenant marriage.', '<b>Moicheia</b>: adultery, betraying a marriage covenant.', '<b>Aselgeia</b>: sensuality, shameless indulgence.', '<b>Akatharsia</b>: impurity, a defiled inner life.']), 'gold'), panel('Why Scripture treats it seriously', ul(['It is against your own body (1 Cor 6:18), and the body is a temple.', 'It joins people in a "one flesh" bond meant only for covenant (1 Cor 6:16).', 'It breaks trust, which is the foundation of family and community.', 'It distorts the picture of Christ\'s faithful love for the church (Eph 5:32).', 'It is not unforgivable: "such were some of you, but you were washed" (1 Cor 6:11).']), 'rose')))}`;
+  },
+  mount() {
+    const P = [[160, 30], [30, 270], [290, 270]], C = [160, 190];
+    const upd = () => { const v = [0, 1, 2].map(i => +$('#lt' + i).value); const pts = P.map((p, i) => [C[0] + (p[0] - C[0]) * (.15 + v[i] / 10 * .85), C[1] + (p[1] - C[1]) * (.15 + v[i] / 10 * .85)]); $('#ltP').setAttribute('points', pts.map(p => p.join(',')).join(' '));
+      const b = v.map(x => x >= 6 ? 1 : 0), T = LTYPES.find(t => t[0] === b[0] && t[1] === b[1] && t[2] === b[2])[3]; $('#ltL').textContent = T; $('#ltI').innerHTML = `<h3>${T}</h3><p>${LDESC[T]}</p>`; };
+    [0, 1, 2].forEach(i => $('#lt' + i).addEventListener('input', upd)); upd();
+    const ll = () => { const cs = $$('#llq input'), on = cs.filter(c => c.checked); const love = on.filter(c => c.dataset.v === '1').length, lust = on.length - love, sc = on.length ? love / on.length * 100 : 50; $('#llM').style.width = sc + '%';
+      $('#llT').innerHTML = !on.length ? 'Tick statements that are true. Rose means lust, green means love.' : sc >= 75 ? '<b>Leaning toward love.</b> Keep choosing their good.' : sc >= 40 ? '<b>Mixed.</b> Most attraction has both. Be honest about the lust side and bring it into the light.' : '<b>Leaning toward lust.</b> Step back, talk to someone, and examine what need this attraction is trying to meet.'; };
+    $$('#llq input').forEach(c => c.addEventListener('change', ll)); ll();
+  }
+};
+
+/* ---------- PROBLEM SOLVER ---------- */
+const PROB = [
+  ['I can\'t stop watching porn', [['Name it honestly', 'Tell God and one safe person.'], ['Barriers', 'Filters, no phone in bedroom.'], ['Find the root', 'Loneliness? Stress? Trauma?'], ['Rewire', '90-day reset and new habits.'], ['Community & counsel', 'Group or counsellor.']], ['rewire', 'healing', 'porn']],
+  ['I\'m in an emotional affair', [['End private contact', 'Today.'], ['Tell someone', 'A pastor or counsellor.'], ['Decide about disclosure', 'With counsel.'], ['Turn back to your spouse', 'Rebuild the window.']], ['affairs', 'chains']],
+  ['My spouse had an affair', [['Get support', 'Your own counsellor and friend.'], ['Safety & health', 'STI testing; practical safety.'], ['Ask for full honesty', 'Through a guided disclosure.'], ['Take your time', 'Forgiveness is a process.']], ['affairs', 'healing']],
+  ['We had sex before marriage', [['Stop and confess', 'To God and a mentor.'], ['Receive grace', 'Rom 8:1.'], ['Reset boundaries', 'With logistics.'], ['Check health', 'Pregnancy, STIs.']], ['premarital', 'lens']],
+  ['Sex hurts', [['Stop enduring', 'Pain is a signal.'], ['More arousal & lubricant', 'Foreplay first.'], ['See a gynaecologist', 'Infection, vaginismus, endometriosis.'], ['Pelvic physiotherapy', 'Relaxation, dilators.']], ['aftercare', 'pain']],
+  ['No desire', [['Name the brakes', 'Accelerators & brakes tool.'], ['Medical check', 'Hormones, thyroid, depression, medications.'], ['Repair the relationship', 'Resentment kills desire.'], ['Non-demand touch', 'Sensate focus.']], ['pain', 'closeness']],
+  ['My spouse thinks sex is sinful', [['Listen first', 'Where did it come from?'], ['Read Scripture together', 'Genesis 2, Song of Songs, 1 Cor 7.'], ['Remove pressure', 'A season of closeness.'], ['Wise help', 'Pastor or counsellor.']], ['sinful', 'design']],
+  ['We are bored', [['Talk about it kindly', 'No blame.'], ['Spin the wheel', 'Small variety.'], ['Plan, take turns', 'Monthly special night.'], ['Check the flowchart', 'Mutual, exclusive, honouring.']], ['variety', 'deeper']],
+  ['Erection or ejaculation problems', [['Remove pressure', 'Sensate focus.'], ['Quit porn', 'Often a factor.'], ['See a doctor', 'Heart, hormones, medications.'], ['Practice techniques', 'Stop-start, Kegels.']], ['pain', 'foreplay']],
+  ['I was sexually abused', [['You are not to blame', 'Name it as abuse.'], ['Safety', 'Are you safe now?'], ['Trauma-informed help', 'Counsellor, EMDR.'], ['Healing takes time', 'Safety, remembering, reconnection.']], ['abuse', 'healing']],
+  ['My child saw porn', [['Stay calm', 'Thank them for telling.'], ['Explain simply', 'What it is and why it harms.'], ['Safety setup', 'Filters, device rules.'], ['Keep talking', 'Many small conversations.']], ['children', 'porn']],
+  ['We fight about how often', [['Use the desire-gap tool', 'See the middle.'], ['Understand responsive desire', 'Basson cycle.'], ['Schedule', 'Protect time.'], ['Counsellor if stuck', 'Outside help.']], ['closeness', 'response']]
+];
+M.solver = {
+  t: 'Problem Solver', e: 'Reference',
+  l: 'Pick a problem and get a step-by-step path, with links to the sections that go deeper. A quick map for yourself, or for helping someone else.',
+  h() {
+    return `<div class="stage"><div class="chips" id="psC">${PROB.map((p, i) => `<button class="chip" data-p="${i}" aria-pressed="${i === 0}">${p[0]}</button>`).join('')}</div><div id="psO"></div></div>
+    ${sec('The big picture: problem to solution', `<div class="stage"><svg viewBox="0 0 660 220" role="img" aria-label="Universal pathway"><defs><marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--gold)"/></marker></defs>${['Name it', 'Bring to light', 'Find the root', 'Get help', 'New habits', 'Restored'].map((t, i) => `<g class="prin" style="animation-delay:${i * .15}s"><rect x="${10 + i * 110}" y="${i % 2 ? 120 : 50}" width="96" height="50" rx="14" fill="${i === 5 ? 'var(--sage-soft)' : 'var(--surface)'}" stroke="${i === 5 ? 'var(--sage)' : 'var(--gold)'}"/><text x="${58 + i * 110}" y="${i % 2 ? 150 : 80}" text-anchor="middle" class="ft" style="font-weight:700">${t}</text></g>${i < 5 ? `<line x1="${106 + i * 110}" y1="${i % 2 ? 145 : 75}" x2="${120 + i * 110}" y2="${i % 2 ? 75 : 145}" stroke="var(--gold)" stroke-width="2" marker-end="url(#arR)" class="rootl" style="animation-delay:${.3 + i * .15}s"/>` : ''}`).join('')}</svg>${note('Almost every sexual problem follows this pathway. Secrecy and shame keep people stuck at the first step.')}</div>`)}`;
+  },
+  mount() {
+    const show = i => { const P = PROB[i]; $$('#psC .chip').forEach((c, j) => c.setAttribute('aria-pressed', j === i)); $('#psO').innerHTML = `<h3 style="font-size:24px;margin:12px 0 8px">${P[0]}</h3>${flow('psf', P[1], true)}<div class="chips" style="margin-top:10px"><span class="label" style="align-self:center">Go deeper:</span>${P[2].map(id => `<a class="chip" href="#${id}">${TITLE[id]}</a>`).join('')}</div>`; };
+    $('#psC').addEventListener('click', e => { const c = e.target.closest('[data-p]'); if (c) show(+c.dataset.p); }); show(0);
   }
 };
 
