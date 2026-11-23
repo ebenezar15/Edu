@@ -259,15 +259,97 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
   .prog { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+/* ===== v2: glass + motion layer ===== */
+:root { --surface: rgba(255,255,255,.6); --bg2: rgba(228,236,227,.55); --line: rgba(27,35,31,.12); --blur: blur(18px) saturate(1.5); --glow: inset 0 1px 0 rgba(255,255,255,.7); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --surface: rgba(30,42,36,.52); --bg2: rgba(20,30,25,.5); --line: rgba(255,255,255,.1); --glow: inset 0 1px 0 rgba(255,255,255,.06); } }
+:root[data-theme="dark"] { --surface: rgba(30,42,36,.52); --bg2: rgba(20,30,25,.5); --line: rgba(255,255,255,.1); --glow: inset 0 1px 0 rgba(255,255,255,.06); }
+#bgfx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.shell { position: relative; z-index: 1; }
+.top { background: color-mix(in srgb, var(--bg) 55%, transparent); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+.rail { background: color-mix(in srgb, var(--bg) 30%, transparent); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+.card, .stage, .case, .info, .tl-i, .steps li, .panel, .tw, .dcard { backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); box-shadow: var(--glow), 0 10px 30px rgba(10,20,15,.06); }
+.stage { position: relative; isolation: isolate; }
+.stage::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1; background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), var(--rose-soft), transparent 60%); opacity: 0; transition: opacity .4s; }
+.stage:hover::before { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .card { position: relative; transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .35s cubic-bezier(.2,.7,.2,1), border-color .2s, box-shadow .3s; }
+  .card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--ink) 9%, transparent), transparent 50%); opacity: 0; transition: opacity .3s; }
+  .card:hover::after { opacity: 1; }
+  .card:hover { box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--rose) 40%, var(--line)); }
+}
+.rv-in { animation: reveal .75s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes reveal { from { opacity: .15; transform: translateY(24px) scale(.985); filter: blur(5px); } }
+.plate { animation: plateIn .65s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes plateIn { from { opacity: .3; transform: translateY(18px); filter: blur(8px); } }
+.vh h1 { perspective: 600px; }
+.kw { display: inline-block; white-space: nowrap; }
+.ch { display: inline-block; animation: chIn .7s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--i) * 24ms); transform-origin: 50% 100%; }
+@keyframes chIn { from { opacity: .1; transform: translateY(.5em) rotateX(75deg); } }
+.rail a { position: relative; transition: background .25s, color .25s, padding .25s; }
+.rail a[aria-current="page"] { padding-left: 16px; }
+.rail a[aria-current="page"]::before { content: ""; position: absolute; left: 4px; top: 22%; bottom: 22%; width: 3px; border-radius: 3px; background: var(--rose); animation: barIn .4s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes barIn { from { transform: scaleY(0); } }
+.ringw { display: inline-flex; align-items: center; gap: 8px; }
+.ringw svg { width: 28px; height: 28px; flex: none; }
+.chip, .pbtn, .opt { transition: background .2s, border-color .2s, color .2s, transform .15s; }
+.chip:active, .pbtn:active, .opt:active { transform: scale(.96); }
+.chip[aria-pressed="true"], .tabbar button[aria-selected="true"] { box-shadow: 0 0 0 3px var(--rose-soft); }
+
+/* 3D */
+.g3 { height: clamp(380px, 56vw, 560px); padding: 0 !important; display: block !important; overflow: hidden; touch-action: pan-y; }
+.g3 canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+.g3 canvas:active { cursor: grabbing; }
+.g3-l { position: absolute; left: 0; top: 0; font: 600 12px var(--body); color: var(--ink); white-space: nowrap; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 70%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: pointer; will-change: transform; transition: border-color .3s, color .3s, box-shadow .3s; }
+.g3-l.big { font-family: var(--display); font-size: 15px; font-weight: 700; padding: 4px 12px; }
+.g3-l.on { border-color: var(--rose); color: var(--rose); box-shadow: 0 0 0 3px var(--rose-soft); }
+.g3-hint { position: absolute; left: 14px; bottom: 12px; z-index: 120; pointer-events: none; }
+.g3row { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 14px; align-items: stretch; }
+
+/* body flow */
+.bw-top { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; }
+.bodyw { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.bodysvg { width: 100%; max-width: 340px; justify-self: center; overflow: visible; }
+.bodysvg:not(.mode-solo) #b-phone { display: none; }
+.org { opacity: .5; transition: opacity .5s, filter .5s; transform-box: fill-box; transform-origin: center; }
+.org.glow { opacity: 1; filter: drop-shadow(0 0 6px currentColor); animation: throb 1.2s ease-in-out infinite; }
+@keyframes throb { 50% { transform: scale(1.12); } }
+.sil { transition: stroke .5s, stroke-width .5s; }
+.sil.glow { stroke: var(--rose); stroke-width: 2.6; }
+.np { fill: none; stroke-width: 2.2; stroke-linecap: round; opacity: 0; stroke-dasharray: 5 7; transition: opacity .4s; }
+.np.on { opacity: .85; animation: dash 1s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -24; } }
+.pulse { pointer-events: none; filter: drop-shadow(0 0 4px currentColor); }
+.bside { display: grid; gap: 12px; min-width: 0; }
+.vitals { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+.vital { padding: 10px 12px; border-radius: 12px 12px 12px 3px; background: var(--surface); border: 1px solid var(--line); display: grid; gap: 4px; }
+.vital b { font-family: var(--mono); font-size: 22px; font-variant-numeric: tabular-nums; }
+.vital i { display: block; height: 5px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.vital i span { display: block; height: 100%; width: 0; transition: width .9s cubic-bezier(.4,.1,.2,1); }
+.hb { display: inline-block; color: var(--rose); animation: hb var(--hb, 1s) infinite; }
+@keyframes hb { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.35); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } }
+
+/* family tree + generations */
+.ftree { overflow-x: auto; }
+.ftree svg { min-width: 620px; width: 100%; height: auto; display: block; }
+.ft { font-family: var(--body); font-size: 12.5px; fill: var(--ink); }
+.grow { stroke-dasharray: 700; stroke-dashoffset: 700; animation: draw 1.4s ease forwards; }
+.fruit { transform-box: fill-box; transform-origin: center; animation: pop .7s cubic-bezier(.3,1.6,.5,1) both; }
+@keyframes pop { from { transform: scale(0); } }
+.gens { display: grid; gap: 10px; }
+.gen { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 14px; }
+.genbar { display: flex; height: 22px; border-radius: 8px; overflow: hidden; background: var(--line); }
+.genbar i { display: block; height: 100%; animation: grow .9s cubic-bezier(.4,.1,.2,1) both; }
+@media (max-width: 900px) { .g3row, .bodyw { grid-template-columns: minmax(0, 1fr); } .bodysvg { max-width: 260px; } }
 </style>
 
+<canvas id="bgfx" aria-hidden="true"></canvas>
 <header class="top">
   <a class="brand" href="#home" aria-label="One Flesh home">
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 6.5 L13.5 3.5 L16 5.5 L18.5 3.5 L20 6.5" fill="none" stroke="var(--sage)" stroke-width="1.8" stroke-linejoin="round"/><circle cx="16" cy="18" r="11" fill="var(--rose)"/><circle cx="12.5" cy="17" r="1.6" fill="var(--bg)"/><circle cx="17" cy="15" r="1.6" fill="var(--bg)"/><circle cx="19.5" cy="19.5" r="1.6" fill="var(--bg)"/><circle cx="14.5" cy="21.5" r="1.6" fill="var(--bg)"/></svg>
     <b>One <span>Flesh</span></b>
   </a>
   <div class="top-act">
-    <span class="prog" id="prog"></span>
+    <span class="ringw"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" fill="none" stroke="var(--line)" stroke-width="3"/><circle id="ringFg" cx="18" cy="18" r="15" fill="none" stroke="var(--rose)" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.25" stroke-dashoffset="94.25" transform="rotate(-90 18 18)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.2,.7,.2,1)"/></svg><span class="prog" id="prog"></span></span>
     <button class="pbtn" id="menuBtn" aria-label="Open sections">Sections</button>
   </div>
 </header>
@@ -276,6 +358,7 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
   <main id="main"></main>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* ============ helpers ============ */
 const $ = (s, r = document) => r.querySelector(s);
@@ -348,8 +431,8 @@ function orbit() {
 
 /* ============ navigation ============ */
 const NAV = [
-  { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras']] },
-  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['response', 'What Happens Inside']] },
+  { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots']] },
+  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal']] },
   { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['practice', 'The Act: Process & Safety'], ['deeper', 'Deeper Pleasure'], ['pain', 'When It Is Hard or Painful']] },
   { g: 'Shadows', c: 'var(--rose)', items: [['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
   { g: 'Healing', c: 'var(--sage)', items: [['healing', 'Healing & Freedom'], ['energy', 'Creative Power Before Marriage']] },
@@ -390,14 +473,15 @@ M.home = {
     });
     const mm = `<div class="stage mm-wrap"><svg viewBox="0 0 1100 680" role="img" aria-label="Mind map of all sections">${lines}<circle cx="${cx}" cy="${cy}" r="58" fill="var(--surface)" stroke="var(--rose)" stroke-width="2"/><text x="${cx}" y="${cy - 2}" text-anchor="middle" style="font-family:var(--display);font-size:22px;font-weight:700;fill:var(--ink)">One</text><text x="${cx}" y="${cy + 20}" text-anchor="middle" style="font-family:var(--display);font-size:22px;font-weight:700;fill:var(--ink)">Flesh</text>${nodes}</svg></div>`;
     const P = [
-      ['Parents', 'Teaching your children from age 2 to 18, body safety, and spotting abuse.', ['children', 'abuse', 'anatomy']],
-      ['Teens & youth', 'Your body, desire, porn, masturbation, and what to do with sexual energy.', ['anatomy', 'energy', 'porn', 'masturbation']],
+      ['Parents', 'Teaching your children from age 2 to 18, body safety, and spotting abuse.', ['children', 'family', 'abuse', 'bodymap']],
+      ['Teens & youth', 'Your body, desire, porn, masturbation, and what to do with sexual energy.', ['bodymap', 'fantasy', 'energy', 'porn']],
       ['Pre-marital couples', 'Design, the first night, the process, safety, and the conversations to have now.', ['design', 'firstnight', 'practice', 'response']],
       ['Married couples', 'Deeper pleasure, when it is hard or painful, and creative, growing intimacy.', ['deeper', 'pain', 'response', 'healing']],
-      ['Survivors & strugglers', 'Abuse, unwanted behaviour, and the road to healing.', ['abuse', 'healing', 'psych', 'masturbation']],
+      ['Survivors & strugglers', 'Abuse, unwanted behaviour, and the road to healing.', ['family', 'fantasy', 'healing', 'abuse']],
       ['Teachers & counsellors', 'The relational lens, curricula, session outlines, the PLISSIT model, case work, and referral lines.', ['lens', 'teach', 'counsel', 'offenders']]
     ];
-    return `${mm}
+    window.MM2D = mm;
+    return `<div class="stage g3" id="homeG3"><span class="label g3-hint">Drag to rotate &middot; tap any section to open it</span></div>
     ${sec('Learning paths', `<div class="paths">${P.map(p => `<button class="card link" data-go="${p[2][0]}"><span class="label">Path</span><h3>${p[0]}</h3><p>${p[1]}</p><span class="ref">${p[2].map(x => TITLE[x]).join(' &rarr; ')}</span></button>`).join('')}</div>`, 'Pick who you are teaching (or who you are). Each path starts at its first section and suggests the next.')}
     ${sec('How to use this guide', split(panel('The lens', prose(['Everything is read through the life of Jesus: sin is what separates, love is what reunites. Sex is treated here as God\'s good gift: covenantal, mutual, pleasurable, fruitful, and a picture of Christ and his people. Everything that hurts people sexually is a distortion of that design, not the design itself.', 'Research is cited where it exists. Where Christians disagree, the views are laid side by side.']), 'gold'), panel('Read with care', prose(['Some sections describe abuse frankly. Case studies are composites built from published accounts and common counselling patterns, with details changed. They are not real individuals.', 'This is education, not medical or legal advice. If someone is in danger in India call <b>112</b>, for a child call <b>1098</b>, for women call <b>181</b>, for mental-health support call <b>Tele-MANAS 14416</b>.']), 'rose')))}`;
   }
@@ -1589,14 +1673,515 @@ M.sources = {
   }
 };
 
+/* ============ v2 engine: 3D graphs, motion helpers ============ */
+const G3 = [];
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || '#888888';
+const hexA = (h, a) => { h = h.replace('#', ''); if (h.length === 3) h = [...h].map(c => c + c).join(''); const n = parseInt(h, 16); return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`; };
+const kinetic = t => t.split(' ').map((w, wi) => `<span class="kw">${[...w].map((c, ci) => `<span class="ch" style="--i:${wi * 4 + ci}">${c}</span>`).join('')}</span>`).join(' ');
+
+function graph3d(el, o) {
+  if (!window.THREE || !el) { if (el) el.insertAdjacentHTML('beforeend', '<p class="note" style="margin:16px">The 3D view could not load in this browser. The explanations below still work.</p>'); return null; }
+  const T = THREE, W = () => el.clientWidth || 600, H = () => el.clientHeight || 420;
+  let r;
+  try { r = new T.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { el.insertAdjacentHTML('beforeend', '<p class="note" style="margin:16px">3D is not supported on this device.</p>'); return null; }
+  r.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); r.setSize(W(), H());
+  el.prepend(r.domElement);
+  const scene = new T.Scene(), cam = new T.PerspectiveCamera(42, W() / H(), .1, 100);
+  cam.position.set(0, 0, o.dist || 7.5);
+  const grp = new T.Group(); scene.add(grp);
+  grp.rotation.x = o.tilt || 0;
+  const col = c => new T.Color(c.startsWith('--') ? cssv(c) : c);
+  if (o.shell) { const s = new T.Mesh(new T.SphereGeometry(1, 30, 20), new T.MeshBasicMaterial({ color: col(o.shell.c), wireframe: true, transparent: true, opacity: .13 })); s.scale.set(...o.shell.s); grp.add(s); }
+  const byId = {};
+  o.nodes.forEach(n => {
+    const c = col(n.c), rad = n.r || .12;
+    const m = new T.Mesh(new T.SphereGeometry(rad, 22, 16), new T.MeshBasicMaterial({ color: c, transparent: true }));
+    const h = new T.Mesh(new T.SphereGeometry(rad * 2.3, 22, 16), new T.MeshBasicMaterial({ color: c, transparent: true, opacity: .14, depthWrite: false }));
+    m.position.set(...n.p); h.position.copy(m.position); grp.add(m, h); m.userData.id = n.id;
+    const lb = document.createElement('button'); lb.type = 'button'; lb.className = 'g3-l' + (n.big ? ' big' : ''); lb.textContent = n.label;
+    lb.addEventListener('click', () => o.onPick && o.onPick(n)); el.appendChild(lb);
+    byId[n.id] = { n, m, h, lb };
+  });
+  const edges = o.edges.map(([a, b, c]) => {
+    const A = byId[a].m.position, B = byId[b].m.position, mid = A.clone().add(B).multiplyScalar(.5).multiplyScalar(o.bend || 1.25);
+    const curve = new T.QuadraticBezierCurve3(A.clone(), mid, B.clone());
+    const mat = new T.LineBasicMaterial({ color: col(c || byId[a].n.c), transparent: true, opacity: .45 });
+    grp.add(new T.Line(new T.BufferGeometry().setFromPoints(curve.getPoints(32)), mat));
+    const p = new T.Mesh(new T.SphereGeometry(.05, 10, 8), new T.MeshBasicMaterial({ color: col(c || byId[a].n.c) })); grp.add(p);
+    return { a, b, curve, mat, p, t: Math.random(), on: true };
+  });
+  let drag = null, moved = 0, raf;
+  const cv = r.domElement, ray = new T.Raycaster(), mv = new T.Vector2(), v = new T.Vector3();
+  cv.addEventListener('pointerdown', e => { drag = [e.clientX, e.clientY]; moved = 0; });
+  cv.addEventListener('pointermove', e => { if (!drag) return; const dx = e.clientX - drag[0], dy = e.clientY - drag[1]; moved += Math.abs(dx) + Math.abs(dy); grp.rotation.y += dx * .008; grp.rotation.x = Math.max(-1.2, Math.min(1.2, grp.rotation.x + dy * .006)); drag = [e.clientX, e.clientY]; });
+  cv.addEventListener('pointerup', e => { if (drag && moved < 6 && o.onPick) { const b = cv.getBoundingClientRect(); mv.set((e.clientX - b.left) / b.width * 2 - 1, -(e.clientY - b.top) / b.height * 2 + 1); ray.setFromCamera(mv, cam); const hit = ray.intersectObjects(Object.values(byId).map(x => x.m))[0]; if (hit) o.onPick(byId[hit.object.userData.id].n); } drag = null; });
+  cv.addEventListener('pointercancel', () => drag = null); cv.addEventListener('pointerleave', () => drag = null);
+  function frame() {
+    if (!RM && !drag) grp.rotation.y += o.spin || .0025;
+    edges.forEach(ed => { ed.p.visible = ed.on; if (ed.on) { ed.t = (ed.t + (RM ? 0 : .007)) % 1; ed.p.position.copy(ed.curve.getPoint(ed.t)); } });
+    grp.updateMatrixWorld();
+    const w = W(), h = H();
+    Object.values(byId).forEach(x => { v.copy(x.m.position).applyMatrix4(grp.matrixWorld); const z = v.z; v.project(cam);
+      x.lb.style.transform = `translate(${(v.x + 1) / 2 * w}px, ${(1 - v.y) / 2 * h}px) translate(-50%, ${x.n.big ? '-50%' : '-150%'})`;
+      x.lb.style.opacity = x.dim ? .22 : Math.max(.4, Math.min(1, .7 + z * .2)); x.lb.style.zIndex = 50 + Math.round(z * 8); });
+    r.render(scene, cam); raf = requestAnimationFrame(frame);
+  }
+  const ro = new ResizeObserver(() => { r.setSize(W(), H()); cam.aspect = W() / H(); cam.updateProjectionMatrix(); }); ro.observe(el);
+  frame();
+  const api = {
+    focus(ids, eds) {
+      const S = ids ? new Set(ids) : null, E = eds ? new Set(eds.map(e => e.join('>'))) : null;
+      Object.values(byId).forEach(x => { const on = !S || S.has(x.n.id); x.dim = !on; x.m.scale.setScalar(on && S ? 1.45 : 1); x.h.material.opacity = on ? (S ? .34 : .14) : .03; x.m.material.opacity = on ? 1 : .25; x.lb.classList.toggle('on', !!S && on); });
+      edges.forEach(ed => { const on = !E || E.has(ed.a + '>' + ed.b) || E.has(ed.b + '>' + ed.a); ed.on = on; ed.mat.opacity = on ? (E ? .95 : .45) : .05; });
+    },
+    destroy() { cancelAnimationFrame(raf); ro.disconnect(); r.dispose(); }
+  };
+  G3.push(api); return api;
+}
+
+/* ---------- FAMILY ROOTS ---------- */
+const FAM = [
+  { k: 'Silent', tone: 'var(--muted)', roots: ["We don't talk about that", "Cover yourself", "You'll learn after marriage"],
+    learn: "Sex is a secret nobody explains. Curiosity has nowhere safe to go, so it goes to friends, films and porn.",
+    fant: "Often shaped by whatever the first exposure was (a film scene, a pulp booklet, porn). Secrecy itself becomes arousing: the forbidden feels exciting.",
+    fear: "Fear of the unknown: first-night anxiety, fear of pain, performance anxiety, not knowing anatomy.",
+    beh: "Hidden porn from early teens, compulsive masturbation in secret, secret relationships. Rarely asks for help because no one ever modelled talking.",
+    mar: "Couples who cannot talk about sex at all. Mismatched expectations, silent resentment, untreated pain or dysfunction for years.",
+    heal: "Learn words. Give yourself permission to talk. Start the conversations your parents never had, first with a counsellor or mentor, then with your spouse." },
+  { k: 'Shame-based religious', tone: 'var(--rose)', roots: ["Sex is dirty and sinful", "Your body makes men stumble", "Masturbation destroys you"],
+    learn: "Desire = sin. The body is a danger. God is watching to punish. Worth depends on sexual purity.",
+    fant: "Desire often shows up in fantasies where you are not responsible (being overpowered, “it just happened”), because wanting it feels forbidden. Or rebellion fantasies.",
+    fear: "Fear of God's anger, of being “damaged goods”, of your own desires. Guilt even inside marriage.",
+    beh: "Binge-and-purge cycles: porn, then intense shame and vows, then relapse. Research on “moral incongruence” (Grubbs) shows religious users feel more addicted at the same use levels.",
+    mar: "Can't “flip the switch” on the wedding night. Higher rates of pain and vaginismus (Gregoire's survey). Sex experienced as duty.",
+    heal: "Replace a theology of fear with God's design (sex is very good). Separate guilt (I did wrong) from shame (I am wrong). Read the Relational Lens section." },
+  { k: 'Rigid & controlling', tone: 'var(--gold)', roots: ["Obey without questions", "Family honour comes first", "Feelings are weakness"],
+    learn: "Rules matter more than relationships. Inner life must be hidden. Control is how love works.",
+    fant: "Themes of power and control, or of escape and rebellion. Fantasy becomes the one place you get to choose.",
+    fear: "Fear of being found out; fear of authority; fear of disappointing parents.",
+    beh: "A double life: compliant at home, acting out when free (hostel, college, abroad, IT job in another city).",
+    mar: "Control struggles in the bedroom; difficulty with vulnerability; one spouse dominates.",
+    heal: "Learn to name feelings. Practise safe vulnerability. Move from rule-keeping to love (Gal 5:13-14)." },
+  { k: 'Chaotic & exposed', tone: 'var(--rose)', roots: ["No real boundaries", "Adult sex visible or talked about", "Porn or affairs in the home"],
+    learn: "Sex is everywhere and has no limits. Bodies and privacy aren't protected.",
+    fant: "Early imprinting: arousal templates shaped by specific early images or experiences. Fantasies may feel out of control.",
+    fear: "Fear of abandonment and chaos; difficulty trusting stability.",
+    beh: "Early sexual debut, multiple partners, compulsivity, sometimes risky behaviour.",
+    mar: "Difficulty with faithfulness and boundaries; repeating parents' patterns.",
+    heal: "Build structure and boundaries. Trauma-informed counselling. Learn what safe love feels like." },
+  { k: 'Enmeshed', tone: 'var(--sky)', roots: ["You are my everything", "Tell me all your secrets", "No one will love you like me"],
+    learn: "Love means looking after a parent's emotional needs. Often a lonely mother leaning on a son (or a father on a daughter) as an emotional partner, common when fathers are absent (for example, working in the Gulf).",
+    fant: "Jay Stringer found that being triangulated into a parent's marriage predicted specific fantasy themes: being needed, rescuing, or escaping someone's control.",
+    fear: "Fear of disappointing the parent; guilt when choosing your spouse.",
+    beh: "Emotional affairs; porn as a private space nobody can enter; ambivalence toward the spouse.",
+    mar: "The mother-in-law triangle. A husband who can't “leave” his mother (Gen 2:24). A wife who feels second.",
+    heal: "Differentiation: honour parents without being their partner. Couples counselling to establish the marriage as first." },
+  { k: 'Disengaged / absent', tone: 'var(--sky)', roots: ["You're on your own", "Don't bother us", "Busy, away, or neglectful"],
+    learn: "Comfort comes from yourself, not people. Nobody is looking.",
+    fant: "Fantasies of being desired, chosen, nurtured, seen. Research also links father absence to earlier sexual debut in daughters (Ellis, 2003).",
+    fear: "Fear of rejection; feeling unlovable.",
+    beh: "Self-soothing masturbation from a young age; seeking validation online; porn as company.",
+    mar: "Avoidance of closeness, or anxious clinging; sex used for reassurance.",
+    heal: "Attachment repair: safe friendships, counselling, and learning to receive care. God as a Father who sees (Gen 16:13)." },
+  { k: 'Abusive', tone: 'var(--rose)', roots: ["Your body isn't yours", "Secrets keep the family safe", "Love hurts"],
+    learn: "Sex is danger and power. Your body can be taken.",
+    fant: "Sometimes trauma re-enactment themes appear in fantasy, which is confusing and shame-producing. This is a known trauma pattern, not proof that you wanted it.",
+    fear: "Fear of touch, of men or women, of being trapped; flashbacks.",
+    beh: "Either compulsive sexual behaviour or total avoidance; dissociation during sex.",
+    mar: "Triggers in the bedroom; difficulty trusting; sometimes repeating abuse patterns.",
+    heal: "Trauma therapy (see Healing & Freedom). Safety first, then telling the story, then reconnection." },
+  { k: 'Warm & open', tone: 'var(--sage)', roots: ["Your body is good", "You can ask me anything", "Sex is beautiful in marriage"],
+    learn: "Sex is good, private, and worth waiting for. Parents are safe to ask. Desire is normal.",
+    fant: "Fantasies tend to be more partner-focused and less driven by shame. Desire can be named and stewarded.",
+    fear: "Ordinary nerves, without terror.",
+    beh: "Research: parent-child sexual communication is linked to later first sex and safer choices (Widman et al., JAMA Pediatrics, 2016). Not immune, but more able to ask for help.",
+    mar: "Able to talk, laugh, learn, and repair.",
+    heal: "Keep going, and pass it on. This is the family you can build, whatever family you came from." }
+];
+const MSG = [
+  ["Sex is dirty", "God called his creation, sex included, “very good” (Gen 1:31).", "Guilt during married sex; inability to relax; vaginismus."],
+  ["You'll learn after marriage", "Knowledge protects. Ignorance is not innocence.", "First-night panic, pain, porn as teacher."],
+  ["Boys will be boys", "Men are responsible for their eyes and hands (Job 31:1).", "Entitlement, harassment, porn excused."],
+  ["Cover up or men will stumble", "Your body is not a weapon; lust belongs to the one who looks (Matt 5:28).", "Body shame; women hiding from their husbands."],
+  ["Good girls don't want sex", "Women's desire is designed and celebrated (Song of Songs).", "Women unable to express or even feel desire."],
+  ["A wife can never refuse", "Authority over bodies is mutual (1 Cor 7:4).", "Duty sex, coercion, resentment, pain."],
+  ["Losing semen makes you weak", "Semen is constantly made; the fear (dhat) causes the harm.", "Anxiety, fatigue, erectile and ejaculation problems."],
+  ["Periods make you impure", "Menstruation is healthy design; Jesus honoured the bleeding woman (Mark 5).", "Shame about the female body; theettu seclusion."],
+  ["What happens in the family stays in the family", "Secrets that hurt must be told; abuse is not honour.", "Abuse hidden for decades."],
+  ["Your worth is your virginity", "Your worth is being made and loved by God.", "Despair after a fall; staying in abuse; hiding the past."],
+  ["Love marriage brings shame", "Choosing a spouse wisely is not rebellion.", "Secret relationships; honour-based violence."],
+  ["Men need it, women tolerate it", "Both were made for mutual delight.", "The orgasm gap; women feeling used; men feeling rejected."]
+];
+const DEC = [
+  ['1920s-30s', 'Self-Respect Movement (Periyar, 1925) attacks caste and women\'s subjugation; promotes widow remarriage, contraception, priest-free “self-respect marriages”. Sarda Act (1929) against child marriage. Dr Muthulakshmi Reddy campaigns against devadasi dedication.', 'A girl is married around puberty; her chastity is the family\'s honour.', 'Widowhood, barrenness, ritual pollution (theettu).', 'Almost none in print. Temple art, folk songs, village talk. First sex often at 13-16 with no information.'],
+  ['1940s-50s', 'Madras Devadasis (Prevention of Dedication) Act 1947. Independence. Hindu Marriage Act 1955 brings monogamy and divorce. Mission schools and hospitals (e.g. CMC Vellore) expand women\'s education and medicine.', 'Marriage is duty. Endure.', 'Dowry, having no son, the husband\'s anger.', 'Talkie film songs, novels, whispered advice from aunts.'],
+  ['1960s-70s', 'Dravidian parties take power (1967) and legalise self-respect marriages. Family planning: “We two, ours two”. Forced sterilisations during the Emergency (1975-77). Gulf migration from Kerala begins, leaving many wives alone for years.', 'Don\'t bring shame. Study, marry within caste.', 'Love across caste; reputation.', 'Cinema romance, cheap Tamil erotic booklets, magazines.'],
+  ['1980s', 'VCRs and video parlours; Malayalam adult films; dowry deaths; female infanticide exposed in Usilampatti (TN). “Gulf wives” and absent fathers shape a generation.', 'Boys can roam; girls stay home.', 'Rumours, scandal, being seen with a boy.', 'Blue films on VCR, pulp books, double-meaning film songs.'],
+  ['1990s', 'Liberalisation and satellite TV. Kerala\'s “soft-porn” film wave. HIV peaks in South Indian states and AIDS ads break the silence. Suryanelli case (1996). IT industry begins.', 'Don\'t talk about AIDS or sex at home.', 'HIV, scandal, exam failure.', 'Cable TV, CDs, the first cyber cafés.'],
+  ['2000s', 'Cyber cafés and mobile phones; online matrimony (founded in Chennai, 1997) changes matchmaking; IT corridors in Bengaluru, Hyderabad and Chennai bring co-ed workplaces and live-in relationships. School sex education opposed (2007).', 'Get settled. Parents will choose.', 'Caste mixing, workplace romance, MMS scandals.', 'Bluetooth-shared clips in schools, online comics, first home internet.'],
+  ['2010s', 'Smartphones and cheap data (2016). Caste honour killings (Ilavarasan 2013, Udumalaipettai 2016). #MeToo India (2018) reaches the Tamil film industry. Sabarimala verdict (2018) reopens menstrual-purity debates. Section 377 read down (2018). Pollachi sexual-abuse and blackmail case (2019).', 'Be modern, but don\'t shame us.', 'Leaked videos, blackmail, “what will people say”.', 'Unlimited mobile porn, Instagram, dating apps.'],
+  ['2020s', 'Lockdown screen time, OTT shows, dating apps in small towns, deepfakes of South Indian actresses (2023), the Hema Committee report (2024) on harassment in Malayalam cinema, rising POCSO awareness, doctors and churches speaking openly online.', 'Shifting: some parents open, many still silent.', 'Sextortion, deepfakes, infertility, loneliness.', 'AI porn, algorithmic feeds, often before age 12.']
+];
+const GENS = [['Born 1930s', [45, 30, 5, 20, 0, 0]], ['Born 1950s', [35, 25, 15, 25, 0, 0]], ['Born 1970s', [20, 20, 25, 30, 0, 5]], ['Born 1990s', [8, 12, 20, 30, 25, 5]], ['Born 2010s', [3, 7, 10, 20, 50, 10]]];
+const GSRC = [['Elders & whispers', 'var(--gold)'], ['Religion', 'var(--sky)'], ['Films & books', 'var(--rose)'], ['Friends', 'var(--muted)'], ['Porn & internet', '#7a1f30'], ['Parents & school, openly', 'var(--sage)']];
+function famTree(F) {
+  const R = [[170, 398], [380, 412], [590, 398]], B = [[140, 82], [300, 50], [460, 50], [620, 82]], BL = ['Fantasies', 'Fears', 'Behaviours', 'Marriage'];
+  return `<svg viewBox="0 0 760 448" role="img" aria-label="Family roots and adult fruit tree">
+    <line x1="40" x2="720" y1="300" y2="300" stroke="var(--line)" stroke-width="2" stroke-dasharray="3 6"/>
+    <text x="48" y="290" class="ft" style="fill:var(--muted)">&#8593; ADULTHOOD (FRUIT)</text><text x="48" y="322" class="ft" style="fill:var(--muted)">&#8595; CHILDHOOD (ROOTS)</text>
+    ${R.map((r, i) => `<path class="grow" style="animation-delay:${i * .15}s" d="M380 300 C 380 ${r[1] - 40} ${r[0]} ${r[1] - 70} ${r[0]} ${r[1]}" stroke="var(--gold)" stroke-width="6" fill="none" stroke-linecap="round"/><text x="${r[0]}" y="${r[1] + 22}" text-anchor="middle" class="ft">“${F.roots[i]}”</text>`).join('')}
+    <path class="grow" style="animation-delay:.45s" d="M380 300 L380 170" stroke="var(--gold)" stroke-width="16" stroke-linecap="round"/>
+    <text x="396" y="244" class="ft" style="fill:var(--muted)">the child</text>
+    ${B.map((b, i) => `<path class="grow" style="animation-delay:${.7 + i * .12}s" d="M380 172 C 380 120 ${b[0]} ${b[1] + 60} ${b[0]} ${b[1]}" stroke="var(--sage)" stroke-width="5" fill="none" stroke-linecap="round"/><circle class="fruit" style="animation-delay:${1.3 + i * .15}s" cx="${b[0]}" cy="${b[1]}" r="18" fill="${F.tone}" opacity=".85"/><text x="${b[0]}" y="${b[1] - 28}" text-anchor="middle" class="ft" style="font-weight:700">${BL[i]}</text>`).join('')}
+  </svg>`;
+}
+M.family = {
+  t: 'Family Roots', e: 'Foundations',
+  l: 'Most of what we feel about sex was planted before we could choose: by what our families said, did not say, and did. This section traces how upbringing shapes fantasies, fears, exposure, desires and unwanted behaviour, with South Indian families over the last 100 years as the focus.',
+  h() {
+    return `${sec('Roots and fruit', `<div class="stage"><div class="chips" id="famC">${FAM.map((f, i) => `<button class="chip" data-f="${i}" aria-pressed="${i === 0}">${f.k}</button>`).join('')}</div><div class="ftree" id="famT"></div><div id="famD"></div></div>`, 'Pick a family climate. The tree grows from the messages a child absorbs (roots) into adult patterns (fruit). Most real families mix two or three of these.')}
+    ${sec('Messages we heard, and what replaces them', `<div class="stage"><div class="chips" id="msgC">${MSG.map((m, i) => `<button class="chip" data-m="${i}" aria-pressed="${i === 0}">“${m[0]}”</button>`).join('')}</div><div id="msgD"></div></div>`, 'Tap a message you grew up with.')}
+    ${sec('What research says about upbringing and sexuality', cards([
+      ['Talking protects', 'Teens whose parents talk with them about sex start later and use protection more (Widman et al., 2016 meta-analysis of 52 studies).', 'Communication'],
+      ['Childhood adversity', 'The ACE study (Felitti et al., 1998, 17,000 adults) linked adverse childhood experiences (abuse, neglect, household dysfunction) to risky sexual behaviour, early pregnancy and STIs, rising with each additional ACE.', 'Trauma'],
+      ['Family structure & warmth', 'Jay Stringer\'s survey of 3,800 people found rigid or chaotic families, disengaged or enmeshed parenting, and abuse predicted unwanted sexual behaviour. Fantasies often “mapped” unresolved family stories.', 'Unwanted'],
+      ['Attachment', 'Mikulincer & Shaver: anxious attachment links to sex for reassurance and compliance; avoidant attachment to emotionally distant or casual sex and more porn use.', 'Attachment'],
+      ['Fathers', 'Father absence was linked to earlier sexual activity and teen pregnancy in daughters across two countries (Ellis et al., 2003).', 'Fathers'],
+      ['Religious shame', 'Fear- and shame-based teaching is associated with more sexual guilt, pain and perceived addiction. Faith itself is not the problem; the way it is taught is.', 'Faith']
+    ]))}
+    ${sec('Attachment style in the bedroom', cards([
+      ['Secure', 'Comfortable with closeness and independence. Can ask for what they want and hear no. Sex expresses connection.', 'About 50-60% of adults'],
+      ['Anxious', 'Fears rejection. Uses sex for reassurance, may comply with things they don\'t want, reads a “not tonight” as “I don\'t love you”. Fantasies of being desired.', 'Needs: reassurance, self-worth'],
+      ['Avoidant', 'Uncomfortable with emotional closeness. Separates sex from intimacy; prefers porn or casual sex; withdraws after sex.', 'Needs: safety in vulnerability'],
+      ['Disorganised', 'Wants closeness and fears it at once, usually after trauma. Sex can trigger panic, numbness, or chaotic patterns.', 'Needs: trauma-informed care']
+    ]))}
+    ${sec('South India: 100 years of family and sex', `<div class="tl">${DEC.map(d => `<article class="tl-i" style="--c:var(--rose)"><span class="label">${d[0]}</span><p>${d[1]}</p><div class="od"><div style="background:var(--gold-soft)"><b>Family message:</b> ${d[2]}</div><div style="background:var(--rose-soft)"><b>Fears:</b> ${d[3]}</div><div style="background:var(--sky-soft)"><b>Exposure:</b> ${d[4]}</div></div></article>`).join('')}</div>`, 'Swipe through the decades. Each card shows what was happening, the typical family message, the fears, and where young people were exposed to sex.')}
+    ${sec('Where each generation learned about sex', `<div class="stage"><div class="chips">${GSRC.map(s => `<span class="chip" style="cursor:default"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${s[1]};margin-right:6px"></i>${s[0]}</span>`).join('')}</div><div class="gens">${GENS.map((g, gi) => `<div class="gen"><span>${g[0]}</span><div class="genbar">${g[1].map((v, i) => v ? `<i style="width:${v}%;background:${GSRC[i][1]};animation-delay:${gi * .15 + i * .08}s" title="${GSRC[i][0]}: ${v}%"></i>` : '').join('')}</div></div>`).join('')}</div>${note('These shares are illustrative estimates, drawn from Indian surveys and counselling experience to show the trend. They are not measured data. The direction is clear: elders and religion have given way to porn and the internet as the main teacher.')}</div>`)}
+    ${sec('South Indian family realities', cards([
+      ['Theettu & seclusion', 'Menstrual seclusion (sleeping apart, not entering the kitchen or prayer room) teaches girls their bodies are polluting. Still practised in many homes.', 'Body shame'],
+      ['Manjal neerattu vizha', 'The puberty ceremony publicly announces a girl is marriageable, then usually comes strict guarding and silence. It could instead be a moment of dignified teaching.', 'Puberty'],
+      ['Maanam & mariyadhai', 'Honour and respect come before the individual. Abuse, pregnancy, or a love affair become threats to family name, so silence wins.', 'Honour'],
+      ['Amma\'s boy', 'Close mother-son bonds, intensified by Gulf-absent fathers, can become enmeshment, later felt as the mother-in-law triangle.', 'Enmeshment'],
+      ['Joint families', 'Warm and supportive, but with little privacy for couples, and relatives (cousins, uncles) are the most common abusers.', 'Home'],
+      ['Jathagam & strangers', 'Horoscope-matched arranged marriages can put two near-strangers in one bed within weeks. Knowledge and patience matter even more.', 'Marriage'],
+      ['Church families', 'South Indian churches often teach strict purity with little practical teaching, and abuse is sometimes hushed to protect reputation. Pre-marital counselling is growing.', 'Christian'],
+      ['Caste & choice', 'Sexuality is policed to protect caste lines: honour killings, banned love marriages, gossip as control.', 'Caste']
+    ]))}
+    ${sec('Breaking generational patterns', steps([
+      ['Draw a genogram', 'Map three generations: grandparents, parents, you. Note marriages, affairs, abuse, secrets, addictions, and the messages about sex in each.'],
+      ['Name the roots', 'Which family climates and messages from this page apply to you? Write them down.'],
+      ['Grieve what you didn\'t get', 'Grief, not blame. Your parents often passed on what was done to them.'],
+      ['Replace the lies', 'For each message, write the truth (see the message tool above) and read it aloud for 30 days.'],
+      ['Heal with others', 'A counsellor, a mentor couple, a group. Patterns learned in relationship heal in relationship.'],
+      ['Choose a new climate', 'Decide what your home will say about bodies and sex, and start early with your children (Teaching Children).'],
+      ['Honour without copying', 'Exodus 20:12 asks us to honour parents, not to repeat them. Genesis 2:24: leave, then cleave.']
+    ]))}`;
+  },
+  mount() {
+    const show = i => { const F = FAM[i]; $('#famT').innerHTML = famTree(F); $$('#famC .chip').forEach(c => c.setAttribute('aria-pressed', +c.dataset.f === i));
+      $('#famD').innerHTML = `<p style="margin:8px 0 12px;font-size:17px"><b>What the child learns:</b> ${F.learn}</p><div class="grid">${[['Fantasies', F.fant, 'sky'], ['Fears', F.fear, 'gold'], ['Behaviours', F.beh, 'rose'], ['Marriage', F.mar, 'rose']].map(x => panel(x[0], `<p>${x[1]}</p>`, x[2])).join('')}</div>${note('<b>Healing direction:</b> ' + F.heal, 'sage')}`; };
+    $('#famC').addEventListener('click', e => { const c = e.target.closest('[data-f]'); if (c) show(+c.dataset.f); }); show(0);
+    const msg = i => { const m = MSG[i]; $$('#msgC .chip').forEach(c => c.setAttribute('aria-pressed', +c.dataset.m === i)); $('#msgD').innerHTML = `<div class="lrow" style="margin-top:10px"><div class="lt">“${m[0]}”</div><div class="l-leg"><span class="label">Shows up as</span><br>${m[2]}</div><div class="l-rel"><span class="label">Truth that replaces it</span><br>${m[1]}</div></div>`; };
+    $('#msgC').addEventListener('click', e => { const c = e.target.closest('[data-m]'); if (c) msg(+c.dataset.m); }); msg(0);
+  }
+};
+
+/* ---------- WHOLE BODY ---------- */
+const BOD = {
+  m: { sil: 'M138 98 L162 98 L164 118 C 190 122 214 128 222 146 L 236 250 L 246 330 C 248 342 236 346 232 334 L 214 254 L 204 190 L 202 300 C 204 320 206 340 200 360 L 196 560 C 196 574 178 576 176 562 L 160 380 L 150 372 L 140 380 L 124 562 C 122 576 104 574 104 560 L 100 360 C 94 340 96 320 98 300 L 96 190 L 86 254 L 68 334 C 64 346 52 342 54 330 L 64 250 L 78 146 C 86 128 110 122 136 118 Z', hand: [240, 336], arm: [216, 205], hp: 'M240 336 L 222 150 L 164 120 L 150 100 L 150 60' },
+  f: { sil: 'M140 98 L160 98 L162 118 C 184 122 204 128 210 146 L 224 248 L 236 326 C 238 338 226 342 222 330 L 204 252 L 196 196 C 192 220 188 240 192 262 C 206 290 214 320 208 360 L 194 560 C 194 574 176 576 174 562 L 158 380 L 150 372 L 142 380 L 126 562 C 124 576 106 574 106 560 L 92 360 C 86 320 94 290 108 262 C 112 240 108 220 104 196 L 96 252 L 78 330 C 74 342 62 338 64 326 L 76 248 L 90 146 C 96 128 116 122 138 118 Z', hand: [230, 332], arm: [206, 205], hp: 'M230 332 L 210 150 L 162 120 L 150 100 L 150 60' }
+};
+const NP = sx => ({
+  eyes: ['M140 58 Q 144 48 150 46', 'var(--sky)'], ears: ['M121 62 Q 132 48 150 46', 'var(--sky)'], lips: ['M150 80 L150 50', 'var(--sky)'], hand: [BOD[sx].hp, 'var(--sky)'],
+  screen: ['M54 56 L 138 58', 'var(--gold)'], seek: ['M150 44 C 112 18 72 26 54 50', 'var(--gold)'], pit: ['M150 46 L150 64', 'var(--gold)'],
+  down: ['M150 66 L150 362', 'var(--sage)'], up: ['M150 362 L150 66', 'var(--sky)'], blood: ['M160 176 C 176 240 166 300 150 362', 'var(--rose)'],
+  heartL: ['M160 176 C 110 160 84 220 68 320', 'var(--rose)'], heartR: ['M160 176 C 200 160 218 220 232 320', 'var(--rose)'],
+  oxy1: ['M150 64 C 172 100 168 140 160 172', 'var(--gold)'], oxy2: ['M150 64 C 116 108 116 140 130 162', 'var(--gold)'], oxy3: ['M150 64 C 196 170 186 300 150 362', 'var(--gold)'], oxy4: ['M150 64 C 212 110 232 230 ' + BOD[sx].hand.join(' '), 'var(--gold)'],
+  adr: ['M138 236 C 126 190 138 110 150 64', 'var(--gold)']
+});
+function bodySVG(sx) {
+  const f = sx === 'f', P = NP(sx);
+  return `<defs><linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky)" stop-opacity=".22"/><stop offset="1" stop-color="var(--rose)" stop-opacity=".18"/></linearGradient></defs>
+  <g id="b-phone"><rect x="24" y="30" width="30" height="52" rx="5" fill="var(--surface)" stroke="var(--gold)" stroke-width="2"/><rect x="28" y="36" width="22" height="38" rx="2" fill="var(--gold-soft)"/><text x="39" y="98" text-anchor="middle" class="ft" style="font-size:9px">SCREEN</text></g>
+  <ellipse cx="150" cy="56" rx="30" ry="38" fill="url(#skinG)" stroke="var(--line)" stroke-width="1.5"/>
+  <path id="o-skin" class="sil" d="${BOD[sx].sil}" fill="url(#skinG)" stroke="var(--line)" stroke-width="1.5"/>
+  <g id="o-lungs" class="org" style="color:var(--sky)"><ellipse cx="133" cy="174" rx="13" ry="26" fill="var(--sky-soft)" stroke="var(--sky)"/><ellipse cx="167" cy="174" rx="13" ry="26" fill="var(--sky-soft)" stroke="var(--sky)"/></g>
+  ${f ? `<g id="o-breast" class="org" style="color:var(--rose)"><circle cx="130" cy="164" r="15" fill="var(--rose-soft)" stroke="var(--rose)"/><circle cx="170" cy="164" r="15" fill="var(--rose-soft)" stroke="var(--rose)"/><circle cx="130" cy="167" r="2.4" fill="var(--rose)"/><circle cx="170" cy="167" r="2.4" fill="var(--rose)"/></g>`
+      : `<g id="o-breast" class="org" style="color:var(--rose)"><circle cx="131" cy="160" r="2.6" fill="var(--rose)"/><circle cx="169" cy="160" r="2.6" fill="var(--rose)"/></g>`}
+  <path id="o-heart" class="org" style="color:var(--rose)" fill="var(--rose)" d="M160 192 C 140 178 144 162 154 164 C 157 165 160 169 160 172 C 160 169 163 165 166 164 C 176 162 180 178 160 192 Z"/>
+  <line id="o-spine" class="org" style="color:var(--sage)" x1="150" y1="96" x2="150" y2="346" stroke="var(--sage)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 4"/>
+  <g id="o-adrenal" class="org" style="color:var(--gold)"><circle cx="138" cy="236" r="5" fill="var(--gold)"/><circle cx="162" cy="236" r="5" fill="var(--gold)"/></g>
+  ${f ? `<g id="o-gen" class="org" style="color:var(--rose)"><path d="M150 318 C 162 318 166 326 162 336 L 155 346 L 145 346 L 138 336 C 134 326 138 318 150 318 Z" fill="var(--rose-soft)" stroke="var(--rose)"/><ellipse cx="150" cy="364" rx="4" ry="9" fill="var(--rose)" opacity=".7"/></g>`
+      : `<g id="o-gen" class="org" style="color:var(--rose)"><ellipse cx="150" cy="368" rx="8" ry="15" fill="var(--rose-soft)" stroke="var(--rose)"/><circle cx="143" cy="384" r="6" fill="var(--rose-soft)" stroke="var(--rose)"/><circle cx="157" cy="384" r="6" fill="var(--rose-soft)" stroke="var(--rose)"/></g>`}
+  <ellipse id="o-brain" class="org" style="color:var(--sky)" cx="150" cy="44" rx="24" ry="19" fill="var(--sky-soft)" stroke="var(--sky)" stroke-width="1.5"/>
+  <circle id="o-pit" class="org" style="color:var(--gold)" cx="150" cy="64" r="4" fill="var(--gold)"/>
+  <g id="o-eyes" class="org" style="color:var(--sky)"><circle cx="140" cy="58" r="3" fill="var(--sky)"/><circle cx="160" cy="58" r="3" fill="var(--sky)"/></g>
+  <ellipse id="o-lips" class="org" style="color:var(--rose)" cx="150" cy="80" rx="7" ry="3" fill="var(--rose)"/>
+  <g id="paths">${Object.entries(P).map(([k, p]) => `<path class="np" data-k="${k}" d="${p[0]}" stroke="${p[1]}"/>`).join('')}</g>`;
+}
+const PARTS = [
+  ['brain', 'Brain: the largest sex organ', 'Desire, arousal, fantasy, meaning and memory all start here. The brain decides whether a touch feels loving, neutral or threatening. Change the brain\'s state (safety, attention, love) and the whole body responds differently.', [150, 34]],
+  ['pit', 'Hypothalamus & pituitary', 'The hormone command centre, the size of a pea. It releases oxytocin (bonding, contractions), prolactin (satiety), and signals the testes and ovaries to make testosterone and oestrogen. Design: it links emotion and body into one system.', [150, 66]],
+  ['eyes', 'Eyes', 'Attraction and connection. On average men\'s brains respond more strongly to visual sexual images (Hamann et al., 2004), though women respond visually too. Eye contact during sex deepens intimacy. The eyes are also the main door for porn (Job 31:1).', [162, 57]],
+  ['', 'Ears & voice', 'Tone of voice, whispered words, names, laughter. Song of Songs 2:14: “let me hear your voice, for your voice is sweet.” Many women rate words and voice among the strongest turn-ons.', [181, 62]],
+  ['lips', 'Lips & mouth', 'Among the most densely innervated skin in the body. Kissing raises bonding hormones, lowers stress hormones and, researchers suggest, lets partners “sample” each other chemically. Song 1:2: “Let him kiss me with the kisses of his mouth.”', [150, 82]],
+  ['', 'Neck & ears (skin)', 'Thin, sensitive skin with many nerve endings. Light kisses and breath here are arousing for many people.', [140, 110]],
+  ['breast', 'Breasts & chest', 'Designed for nourishment and pleasure. Brain imaging shows nipple stimulation activates the same sensory-cortex region as genital touch (Komisaruk et al., 2011), and it releases oxytocin. Many men\'s nipples are sensitive too. Proverbs 5:19.', [130, 164]],
+  ['heart', 'Heart & lungs', 'Heart rate can double during sex, from about 70 to 140-150 bpm at orgasm, roughly the effort of climbing two flights of stairs. Slow, deep breathing calms anxiety, helps arousal, and helps men control ejaculation.', [166, 182]],
+  ['skin', 'Skin', 'The largest organ, about 2 m². Special nerve fibres (C-tactile afferents) respond best to slow, gentle stroking at about 3 cm per second, and they register as affection (Löken et al., 2009). Non-sexual touch lowers stress and builds desire.', 'arm'],
+  ['', 'Hands', 'Packed with touch receptors: the tool of tenderness and guidance. Most women need manual or oral clitoral stimulation; hands are where much good sex happens. “His left hand is under my head, and his right hand embraces me” (Song 2:6).', 'hand'],
+  ['adrenal', 'Adrenal glands', 'They make adrenaline and cortisol, the stress system. Designed for danger, they shut arousal down: anxiety, fear, rushing and conflict all press the brakes. This is why safety matters so much.', [162, 236]],
+  ['spine', 'Spinal cord', 'Carries signals both ways and contains reflex centres: the sacral segments (S2-S4) drive erection and lubrication; the lower thoracic and lumbar segments drive ejaculation. That is why some people with spinal injuries can still have sexual responses.', [150, 290]],
+  ['gen', 'Genitals', 'Designed for pleasure, union and new life. See The Body section for detailed anatomy of the clitoris, vagina, uterus, penis, testes and prostate.', [150, 368]],
+  ['', 'Inner thighs', 'Sensitive skin near the genitals. Slow touch here builds anticipation, a key part of foreplay.', [128, 410]],
+  ['', 'Feet', 'On the brain\'s touch map (Penfield\'s homunculus) the feet sit right next to the genitals. Neuroscientist V.S. Ramachandran suggested this explains why some people feel foot touch as sexual. A foot massage is also deeply relaxing.', [116, 562]]
+];
+const FLOWS2 = {
+  union: [
+    { t: 'Senses gather', p: ['eyes', 'ears', 'lips', 'hand'], g: ['eyes', 'lips', 'brain', 'skin'], v: [75, 30, 25, 5, 20], d: 'With a spouse, all five senses feed the brain at once: their face, voice, smell, the taste of kissing, and above all touch. Slow stroking activates nerve fibres that the brain reads as affection.' },
+    { t: 'Brain checks: am I safe?', p: [], g: ['brain'], v: [80, 45, 35, 5, 8], d: 'The limbic system appraises the situation. With a trusted spouse the amygdala (threat detector) quiets and the self-monitoring “watcher” relaxes. Fear, shame or hurry would release adrenaline instead and stop arousal.' },
+    { t: 'Hormone command', p: ['pit'], g: ['brain', 'pit'], v: [88, 60, 40, 5, 6], d: 'The hypothalamus coordinates desire and signals the pituitary. Dopamine (wanting) rises. Testosterone and oestrogen set the stage in both sexes.' },
+    { t: 'Signals down the spine', p: ['down', 'blood'], g: ['spine', 'gen', 'heart'], v: [100, 70, 45, 5, 5], d: 'Parasympathetic nerves from the sacral spine release nitric oxide; arteries to the genitals open and blood rushes in.', f: 'Her: the clitoris, labia and vestibular bulbs swell; lubrication appears; the vagina lengthens and balloons.', m: 'Him: the erectile chambers fill and veins are compressed. Erection.' },
+    { t: 'The whole body joins', p: ['heartL', 'heartR', 'blood'], g: ['heart', 'lungs', 'breast', 'lips', 'skin'], v: [120, 78, 55, 5, 5], d: 'Breathing deepens, the skin flushes, nipples become erect, lips swell. Touch to the breasts lights up the genital area of the brain\'s touch map.' },
+    { t: 'Feedback loop', p: ['up', 'hand', 'lips'], g: ['gen', 'spine', 'brain'], v: [135, 88, 65, 5, 4], d: 'Sensation travels back up to the brain, which raises arousal further. Two nervous systems start to synchronise. Talking and guiding each other tunes the loop.' },
+    { t: 'Orgasm', p: ['down', 'up', 'oxy1', 'oxy2', 'oxy3', 'oxy4'], g: ['brain', 'pit', 'gen', 'spine', 'heart'], v: [150, 100, 100, 60, 4], d: 'A spinal reflex triggers rhythmic contractions every 0.8 seconds. The pituitary floods the blood with oxytocin. The brain\'s self-monitoring regions go quiet for a few seconds.', f: 'Her: 3-15 contractions of the pelvic floor and uterus; often able to have more than one orgasm.', m: 'Him: emission, then ejaculation. A refractory period follows.' },
+    { t: 'Bonding & rest', p: ['oxy1', 'oxy2', 'oxy4'], g: ['brain', 'heart', 'pit', 'skin'], v: [78, 30, 90, 100, 2], d: 'Prolactin brings satisfaction and sleepiness. Oxytocin and vasopressin attach you to the person in your arms. Each union strengthens the bond (the afterglow lasts about 48 hours, Meltzer 2017).' }
+  ],
+  solo: [
+    { t: 'A feeling, not lust', p: ['adr'], g: ['brain', 'adrenal'], v: [85, 20, 10, 5, 60], d: 'It usually starts with a feeling (bored, lonely, angry, stressed, tired) and stress hormones are high. The behaviour promises relief.' },
+    { t: 'One sense only', p: ['screen', 'eyes'], g: ['eyes', 'brain'], v: [90, 70, 10, 5, 45], d: 'Input narrows to one sense: images on a screen, or images in the imagination. Each new clip or scene is novel, and novelty spikes dopamine.' },
+    { t: 'The brakes go offline', p: ['seek'], g: ['brain'], v: [92, 82, 10, 5, 35], d: 'Craving overrides the prefrontal cortex (planning, values, self-control). Time distorts; an hour passes like minutes.' },
+    { t: 'Signals down the spine', p: ['down'], g: ['spine', 'gen'], v: [105, 85, 12, 5, 30], d: 'The physical arousal is the same machinery as with a spouse.', f: 'Her: arousal is often driven by fantasy scripts or romance stories rather than visual porn alone.', m: 'Him: erection, often conditioned to particular images, speed or grip, which can later make a real partner feel less arousing.' },
+    { t: 'Seeking the next hit', p: ['seek', 'screen', 'eyes'], g: ['eyes', 'brain'], v: [115, 95, 12, 5, 30], d: 'Scrolling, new tabs, edging, escalating to new content. Dopamine “wanting” outruns actual “liking”, which is the signature of a compulsion.' },
+    { t: 'Orgasm', p: ['down', 'up', 'pit'], g: ['gen', 'brain', 'pit'], v: [130, 100, 55, 60, 20], d: 'The same spinal reflex. Oxytocin is released, but there is no person to bond with, so attachment forms to the screen, the fantasy and the ritual.' },
+    { t: 'The crash', p: ['adr'], g: ['brain', 'adrenal'], v: [76, 10, 8, 100, 55], d: 'Prolactin plus guilt or emptiness. The original feeling (loneliness, stress) returns, often stronger, which sets up the next cycle. See Fantasy, Triggers & Arousal for how to break it.' }
+  ]
+};
+const VIT = [['Heart rate', 'bpm', 'var(--rose)', 160], ['Dopamine', '', 'var(--gold)', 100], ['Oxytocin', '', 'var(--sage)', 100], ['Prolactin', '', 'var(--sky)', 100], ['Stress', '', 'var(--muted)', 100]];
+let pulseRaf;
+function runPulses(svg) {
+  cancelAnimationFrame(pulseRaf); $$('.pulse', svg).forEach(c => c.remove());
+  const act = $$('.np.on', svg).map(p => ({ p, L: p.getTotalLength(), dots: [0, .33, .66].map(o => { const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); c.setAttribute('r', 3.4); c.setAttribute('class', 'pulse'); c.setAttribute('fill', p.getAttribute('stroke')); svg.appendChild(c); return { c, o }; }) }));
+  const t0 = performance.now();
+  const tick = t => { if (!svg.isConnected) return; act.forEach(a => a.dots.forEach(d => { const pt = a.p.getPointAtLength(((t - t0) / 1700 + d.o) % 1 * a.L); d.c.setAttribute('cx', pt.x); d.c.setAttribute('cy', pt.y); })); if (!RM) pulseRaf = requestAnimationFrame(tick); };
+  pulseRaf = requestAnimationFrame(tick);
+}
+M.bodymap = {
+  t: 'The Whole Body', e: 'Body & Mind',
+  l: 'Sex is not only genital. Brain, hormones, heart, skin, breath and nerves all take part. Explore each part\'s purpose and design, then watch the signals flow through the body during sex with a spouse and during masturbation with porn or fantasy.',
+  h() {
+    return `<div class="stage" id="bw"><div class="bw-top"><div class="chips" id="bSex"><button class="chip" data-s="f" aria-pressed="true">Female</button><button class="chip" data-s="m">Male</button></div><div class="chips" id="bMode"><button class="chip" data-md="explore" aria-pressed="true">Explore the body</button><button class="chip" data-md="union">Flow: with a spouse</button><button class="chip" data-md="solo">Flow: alone with porn or fantasy</button></div></div>
+      <div class="bodyw"><svg viewBox="0 0 300 600" class="bodysvg" id="bsvg" role="img" aria-label="Human body diagram"></svg><div class="bside"><div class="info" id="binfo"></div><div id="bflow"></div></div></div></div>
+    ${sec('Compare the two flows', tbl(['', 'With a spouse', 'Alone with porn or fantasy'], [
+      ['Senses', 'All five: sight, voice, smell, taste, touch', 'Mostly one: images (screen or imagination)'],
+      ['Starts from', 'Connection, desire, or willingness', 'Usually a feeling to escape (BLAST: bored, lonely, angry, stressed, tired)'],
+      ['Brain', 'Safety and trust; reward attached to a person', 'Novelty-driven dopamine; brakes offline; escalation'],
+      ['Bonding hormones attach to', 'Your spouse', 'The screen, the fantasy, the ritual'],
+      ['Afterwards', 'Afterglow, closeness, security', 'Often emptiness, shame, the original feeling returning'],
+      ['Over time', 'Deeper bond; desire focused on spouse', 'Tolerance; spouse can feel less arousing than the screen']
+    ]) + note('This compares partnered sex with masturbation tied to porn or fantasy about others. Christians hold different views on masturbation itself (see Masturbation: Deep Study). The physical machinery is identical; what differs is where the senses, the dopamine and the bonding are pointed.'))}
+    ${sec('Body awareness: designed with purpose', cards([
+      ['Every part has a purpose', 'Nothing about the sexual body is accidental or shameful. The clitoris exists only for pleasure; bonding hormones exist to attach you; the refractory period slows a man down to rest with his wife.', 'Design'],
+      ['Know your normal', 'Look at and know your own body: breast and testicle self-exams monthly, noticing discharge, cycles, and changes. Awareness protects health.', 'Health'],
+      ['The brakes are part of the design', 'Stress and fear shut sex down because the body was designed to prioritise safety. Treat a “no” from the body with respect, not force.', 'Safety'],
+      ['Teach children the names', 'Children who know correct names for all their parts are better protected from abuse (see Teaching Children).', 'Protection']
+    ]))}`;
+  },
+  mount() {
+    let sx = 'f', md = 'explore', st = 0, timer = null; const svg = $('#bsvg'), vals = [70, 0, 0, 0, 0];
+    const glow = ids => { $$('.org, .sil', svg).forEach(o => o.classList.toggle('glow', ids.includes(o.id.slice(2)))); };
+    const part = i => { const p = PARTS[i]; glow(p[0] ? [p[0]] : []); $$('.spot', svg).forEach((s, j) => s.classList.toggle('on', j === i)); $('#binfo').innerHTML = `<span class="label">Body part ${i + 1} of ${PARTS.length}</span><h3>${p[1]}</h3><p>${p[2]}</p>`; };
+    const xy = p => p[3] === 'arm' ? BOD[sx].arm : p[3] === 'hand' ? BOD[sx].hand : p[3];
+    const vitals = v => { $$('#bflow .vital', document).forEach((el, i) => { const from = vals[i], to = v[i], t0 = performance.now(); const b = $('b', el), bar = $('i span', el);
+      bar.style.width = Math.min(100, to / VIT[i][3] * 100) + '%'; if (i === 0) $('.hb', el).style.setProperty('--hb', (60 / to).toFixed(2) + 's');
+      const step = t => { const k = Math.min(1, (t - t0) / 800); b.textContent = Math.round(from + (to - from) * k) + (i === 0 ? '' : '%'); if (k < 1 && el.isConnected) requestAnimationFrame(step); }; requestAnimationFrame(step); vals[i] = to; }); };
+    const stage = i => { st = i; const S = FLOWS2[md][i];
+      $$('.np', svg).forEach(p => p.classList.toggle('on', S.p.includes(p.dataset.k))); glow(S.g); runPulses(svg);
+      $('#binfo').innerHTML = `<span class="label">${md === 'union' ? 'With a spouse' : 'Alone with porn or fantasy'} &middot; stage ${i + 1} of ${FLOWS2[md].length}</span><h3>${S.t}</h3><p>${S.d}</p>${S[sx] ? `<p style="color:var(--rose)">${S[sx]}</p>` : ''}`;
+      $$('#bSt .chip').forEach((c, j) => c.setAttribute('aria-pressed', j === i)); vitals(S.v); };
+    const draw = () => {
+      clearInterval(timer); svg.innerHTML = bodySVG(sx); svg.setAttribute('class', 'bodysvg mode-' + md);
+      if (md === 'explore') {
+        svg.insertAdjacentHTML('beforeend', PARTS.map((p, i) => { const c = xy(p); return `<g class="spot" data-p="${i}" tabindex="0" role="button" aria-label="${p[1]}"><circle class="h" cx="${c[0]}" cy="${c[1]}" r="6"/><circle class="p" cx="${c[0]}" cy="${c[1]}" r="5"/></g>`; }).join(''));
+        $('#bflow').innerHTML = ''; part(0);
+      } else {
+        $('#bflow').innerHTML = `<div class="chips" id="bSt">${FLOWS2[md].map((s, i) => `<button class="chip" data-st="${i}">${i + 1}. ${s.t}</button>`).join('')}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button class="pbtn solid" id="bPlay">Play the flow</button></div><div class="vitals">${VIT.map((v, i) => `<div class="vital"><span class="label">${i === 0 ? '<span class="hb">&#9829;</span> ' : ''}${v[0]}</span><b>0</b><i><span style="background:${v[2]}"></span></i></div>`).join('')}</div>`;
+        stage(0);
+      }
+    };
+    $('#bw').addEventListener('click', e => {
+      const s = e.target.closest('[data-s]'); if (s) { sx = s.dataset.s; $$('#bSex .chip').forEach(c => c.setAttribute('aria-pressed', c === s)); draw(); }
+      const m = e.target.closest('[data-md]'); if (m) { md = m.dataset.md; $$('#bMode .chip').forEach(c => c.setAttribute('aria-pressed', c === m)); draw(); }
+      const sp = e.target.closest('.spot'); if (sp) part(+sp.dataset.p);
+      const sc = e.target.closest('[data-st]'); if (sc) { clearInterval(timer); stage(+sc.dataset.st); }
+      if (e.target.id === 'bPlay') { clearInterval(timer); stage(0); timer = setInterval(() => { if (!svg.isConnected || st >= FLOWS2[md].length - 1) return clearInterval(timer); stage(st + 1); }, RM ? 800 : 3600); }
+    });
+    svg.addEventListener('keydown', e => { const sp = e.target.closest('.spot'); if (sp && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); part(+sp.dataset.p); } });
+    draw();
+  }
+};
+
+/* ---------- FANTASY, TRIGGERS & AROUSAL ---------- */
+const BR = [
+  { id: 'pfc', label: 'Prefrontal cortex', p: [0, .55, 1.05], c: '--sage', d: 'The brakes: planning, values, choice, self-control. Strengthened by sleep, practice and purpose; weakened by fatigue, alcohol, stress and repeated giving-in.' },
+  { id: 'ofc', label: 'Orbitofrontal', p: [0, -.1, 1.05], c: '--sage', d: 'Weighs value and consequence, and monitors yourself. It goes quiet at orgasm (Holstege): the moment you stop watching yourself.' },
+  { id: 'nacc', label: 'Nucleus accumbens', p: [.32, -.15, .5], c: '--gold', d: 'The reward hub. Dopamine here creates “wanting”, the craving and pull, which is different from “liking”.' },
+  { id: 'vta', label: 'VTA (dopamine source)', p: [0, -.55, -.3], c: '--gold', d: 'The ventral tegmental area produces dopamine and fires hardest at novelty and anticipation, which is why the next image always feels more promising.' },
+  { id: 'hip', label: 'Hippocampus', p: [.72, -.3, -.15], c: '--sky', d: 'Memory and context. It stores triggers: places, times, apps and moods linked to past sexual experiences, and replays them as cues.' },
+  { id: 'amy', label: 'Amygdala', p: [-.7, -.35, .1], c: '--rose', d: 'Emotional alarm and salience. It flags sexual cues as important and fires in fear. A frightened amygdala shuts arousal down.' },
+  { id: 'hyp', label: 'Hypothalamus', p: [0, -.38, .25], c: '--gold', d: 'Drive and hormones. It links desire to the body: heart rate, genital blood flow, hormone release.' },
+  { id: 'pit', label: 'Pituitary', p: [0, -.78, .3], c: '--gold', d: 'Releases oxytocin (bonding) and prolactin (satiety) into the blood.' },
+  { id: 'ins', label: 'Insula', p: [-.92, .05, .2], c: '--sky', d: 'Feels the inside of the body: heartbeat, arousal, emotion. Mindfulness strengthens it, which helps you notice urges early.' },
+  { id: 'vis', label: 'Visual cortex', p: [0, .1, -1.18], c: '--sky', d: 'Processes images, from your spouse\'s face to a screen. Porn feeds this region with endless novelty.' },
+  { id: 'som', label: 'Touch map', p: [0, .98, -.15], c: '--rose', d: 'The somatosensory cortex maps the body. Genitals, nipples and feet sit close together on it.' },
+  { id: 'sp', label: 'Spinal cord', p: [0, -1.55, -.5], c: '--sage', d: 'Carries signals between brain and genitals and holds the reflex centres for erection, lubrication and orgasm.' }
+];
+const BRE = [['vis', 'hip'], ['vis', 'amy'], ['hip', 'vta'], ['vta', 'nacc'], ['nacc', 'pfc'], ['pfc', 'nacc'], ['amy', 'hyp'], ['hyp', 'pit'], ['hyp', 'sp'], ['sp', 'som'], ['som', 'ins'], ['ins', 'pfc'], ['ofc', 'pfc'], ['vta', 'pfc'], ['nacc', 'hyp']];
+const BRS = {
+  'A trigger hits': [['vis', 'hip', 'amy', 'vta', 'nacc'], [['vis', 'hip'], ['vis', 'amy'], ['hip', 'vta'], ['vta', 'nacc']], 'An image, a place, a mood. The hippocampus recognises the cue from past experience, the amygdala flags it as important, and the VTA releases dopamine into the reward hub. Craving begins within seconds, before any decision.'],
+  'Fantasy loop': [['hip', 'vta', 'nacc', 'hyp', 'sp'], [['hip', 'vta'], ['vta', 'nacc'], ['nacc', 'hyp'], ['hyp', 'sp']], 'Imagination replays and remixes memories. Each new twist gives a fresh dopamine hit, the hypothalamus drives the body, and arousal follows. The prefrontal brakes sit quietly unless engaged.'],
+  'Brakes engaged': [['pfc', 'ofc', 'nacc', 'ins'], [['pfc', 'nacc'], ['ofc', 'pfc'], ['ins', 'pfc']], 'You notice the urge (insula), name it, and choose (prefrontal). The prefrontal cortex calms the reward pull. Like a muscle, this circuit gets stronger with practice, sleep and purpose.'],
+  'Union with spouse': [['vis', 'som', 'ins', 'hyp', 'pit', 'nacc', 'pfc'], [['som', 'ins'], ['ins', 'pfc'], ['hyp', 'pit'], ['vta', 'nacc'], ['nacc', 'hyp']], 'Many senses at once. Touch maps light up, the insula feels connection, the reward system attaches to a real person, and the pituitary releases oxytocin. Values (prefrontal) and desire point the same way, with no inner conflict.'],
+  'Orgasm': [['hyp', 'pit', 'nacc', 'sp', 'som'], [['hyp', 'pit'], ['hyp', 'sp'], ['sp', 'som']], 'The orbitofrontal self-monitor goes quiet, the spinal reflex fires, and the pituitary floods oxytocin and prolactin.']
+};
+const NET = [
+  ['story', 'Story & wounds', 'Your history: family climate, abuse, rejection, early exposure. It shapes what you long for and what you fear.', 'Get to know your story (Family Roots). Talk it through with a counsellor.'],
+  ['need', 'Unmet need', 'To be wanted, comforted, significant, free, safe, rested.', 'Name the need in plain words: “I want to feel wanted.”'],
+  ['emo', 'Emotion', 'BLAST: Bored, Lonely, Angry, Stressed, Tired. Usually the real starting point.', 'Feel it on purpose for 90 seconds; emotions crest and pass.'],
+  ['trig', 'Trigger', 'External (images, apps, places, times, people) or internal (a mood, a memory, a hormone surge).', 'Map your top 5 triggers and change the environment around them.'],
+  ['mem', 'Memory & imprint', 'Early images and experiences form an “arousal template” the brain returns to.', 'Templates fade when not fed; new experiences with a spouse rewrite them.'],
+  ['fan', 'Fantasy', 'The imagined scene that promises to meet the need.', 'Ask: what is this fantasy about? What is it really offering me?'],
+  ['aro', 'Arousal', 'The body responds. Arousal is automatic and does not equal consent or desire (non-concordance).', 'No shame for a body response. Arousal passes if not fed.'],
+  ['urge', 'Urge', 'The pull to act. It rises, peaks and falls within about 20-30 minutes.', 'Urge-surf (below): ride the wave without obeying it.'],
+  ['ch', 'Choice point', 'The moment where the prefrontal brakes can engage.', 'Pause, breathe, move, call someone, pray.'],
+  ['act', 'Acting out', 'Porn, masturbation with fantasy, chatting, hookups.', 'If you slip, come into the light quickly. Don\'t spiral.'],
+  ['rel', 'Brief relief', 'Numbness or release for a short time.', 'Notice how short it is. Write it down for next time.'],
+  ['sh', 'Shame', '“I\'m disgusting.” Shame becomes the next emotional trigger.', 'Separate guilt from shame. Receive grace (Rom 8:1).'],
+  ['heal', 'Healthy response', 'Meeting the real need directly.', 'Connection, rest, movement, creativity, honesty, prayer.'],
+  ['conn', 'Real connection', 'The need is actually met, by people and by God.', 'This is what breaks the loop over time.']
+];
+const NETE = [['story', 'need'], ['need', 'emo'], ['emo', 'trig'], ['trig', 'mem'], ['mem', 'fan'], ['fan', 'aro'], ['aro', 'urge'], ['urge', 'ch'], ['ch', 'act'], ['act', 'rel'], ['rel', 'sh'], ['sh', 'emo'], ['ch', 'heal', '--sage'], ['heal', 'conn', '--sage'], ['conn', 'need', '--sage']];
+M.fantasy = {
+  t: 'Fantasy, Triggers & Arousal', e: 'Body & Mind',
+  l: 'Fantasies, triggers and arousal are connected, and none of them is random. This section shows how they link in the brain and in your story, and gives practical ways to handle them: with curiosity rather than panic, and with grace rather than shame.',
+  h() {
+    return `${sec('The brain circuit in 3D', `<div class="g3row"><div class="stage g3" id="brainG3"><span class="label g3-hint">Drag to rotate &middot; tap a region</span></div><div class="info" id="brainInfo"><span class="label">Scenario</span><h3>Pick a scenario</h3><p>Watch which regions and pathways light up.</p></div></div><div class="chips" id="brainS">${Object.keys(BRS).map((k, i) => `<button class="chip" data-b="${k}" aria-pressed="${i === 0}">${k}</button>`).join('')}<button class="chip" data-b="">Show all</button></div>`, 'A simplified map of the regions involved in sexual cues, craving, choice and bonding. Positions are approximate.')}
+    ${sec('How it all connects', `<div class="g3row"><div class="stage g3" id="netG3"><span class="label g3-hint">Drag to rotate &middot; tap a node</span></div><div class="info" id="netInfo"><span class="label">The loop</span><h3>Story, need, emotion, trigger, fantasy, arousal</h3><p>Tap any node. Red pathways form the unwanted loop; green ones are the way out, from the choice point to a real need met.</p></div></div><div class="chips" id="netS"><button class="chip" data-n="loop" aria-pressed="true">The unwanted loop</button><button class="chip" data-n="heal">The way out</button><button class="chip" data-n="">Show all</button></div>`)}
+    ${sec('Urge surfing', `<div class="stage"><svg viewBox="0 0 700 230" id="wave" role="img" aria-label="Urge wave"><defs><linearGradient id="wG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--rose)" stop-opacity=".35"/><stop offset="1" stop-color="var(--rose)" stop-opacity="0"/></linearGradient></defs>
+      <path d="M0 210 C 120 206 200 160 260 70 C 290 28 320 28 350 70 C 420 160 560 206 700 210 L700 230 L0 230 Z" fill="url(#wG)"/>
+      <path id="wPath" d="M0 210 C 120 206 200 160 260 70 C 290 28 320 28 350 70 C 420 160 560 206 700 210" fill="none" stroke="var(--rose)" stroke-width="3"/>
+      ${[['0', 20], ['5 min', 130], ['peak ~10-15', 305], ['20', 480], ['30 min', 660]].map(x => `<text x="${x[1]}" y="226" class="ft" style="font-size:10px">${x[0]}</text>`).join('')}
+      <circle id="surfer" r="10" fill="var(--sage)" stroke="var(--surface)" stroke-width="3" cx="0" cy="210"/></svg>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="pbtn solid" id="surfGo">Ride an urge (30 seconds)</button><span class="tol-stage" id="surfT">An urge is a wave, not a command.</span></div></div>`, 'Developed by psychologist Alan Marlatt for addictions. Urges rise, peak and fall, usually within 20-30 minutes, if you don\'t feed them and don\'t fight them in panic. Press the button and follow the prompts.')}
+    ${sec('Fantasy decoder', `${cards([
+      ['Being intensely desired or pursued', 'May point to a longing to be wanted and chosen, common in people who felt overlooked growing up. <b>Handle:</b> tell your spouse, “I want to feel wanted”, and ask to be pursued.', 'Theme 1'],
+      ['Power and control', 'May point to powerlessness or anger elsewhere (work, family, injustice). <b>Handle:</b> address the anger directly; learn healthy assertiveness.', 'Theme 2'],
+      ['Being overpowered, “not my choice”', 'Often seen after shame-based upbringings: desire feels allowed only if you are not responsible for it. <b>Handle:</b> heal shame; affirm that your desire is good.', 'Theme 3'],
+      ['Rescue and caretaking', 'May point to enmeshment: worth comes from being needed. <b>Handle:</b> differentiation and boundaries.', 'Theme 4'],
+      ['Forbidden or someone else\'s person', 'Novelty, rule-breaking, sometimes resentment toward a rigid upbringing or a spouse. <b>Handle:</b> bring novelty into marriage; name resentment.', 'Theme 5'],
+      ['Specific images from early porn', 'Imprinting: the first exposures often shape the arousal template. <b>Handle:</b> stop feeding it; templates weaken over months; be present with your spouse.', 'Theme 6'],
+      ['Watching rather than being seen', 'Intimacy without the risk of being seen. <b>Handle:</b> practise being seen: lights on, eye contact, honest words.', 'Theme 7'],
+      ['Romantic, emotional-affair scripts', 'Loneliness in the marriage, or longing to be understood. <b>Handle:</b> name the need to your spouse; seek couples help.', 'Theme 8']
+    ])}${note('In a US survey of 4,175 adults (Lehmiller, 2018) nearly everyone reported sexual fantasies. Common themes were multiple partners, power and control, novelty, taboo, and passion and romance. Fantasies are not random, but they are not literal wishes either. Jay Stringer\'s phrase: they are often a “roadmap” to the wound. Use these as questions to explore, not diagnoses.')}`)}
+    ${sec('Important distinctions', cards([
+      ['Fantasy vs. intrusive thought', 'A fantasy is entertained and enjoyed. An intrusive thought is unwanted and distressing, often a sexual image you find horrifying. Intrusive thoughts are common, especially with OCD; having one is not wanting it. Fighting them hard makes them stronger, while letting them pass weakens them.', 'Not the same'],
+      ['Arousal vs. desire', 'Genital arousal can happen without wanting anything (arousal non-concordance). Meta-analysis (Chivers et al., 2010): genital response and reported arousal overlap only modestly, especially in women. A body response never equals consent, and never proves what you “really” want.', 'Body ≠ will'],
+      ['Temptation vs. sin', '“You can\'t stop birds flying over your head, but you can stop them nesting in your hair” (attributed to Luther). A passing thought is not sin; cultivating it is where it turns (James 1:14-15).', 'Thoughts'],
+      ['Fantasy within marriage', 'Imagining your own spouse, anticipating time together, and sharing desires with each other is healthy (Song of Songs is full of it). Fantasies involving other people pull desire away from the marriage.', 'Direction']
+    ]))}
+    ${sec('Map your triggers', cards([
+      ['External', 'Images, apps, music, places, times (late night), certain people, being alone with a device, travel.', 'Around you'],
+      ['Emotional', 'BLAST: Bored, Lonely, Angry, Stressed, Tired. Also rejection, failure, celebration.', 'Inside you'],
+      ['Relational', 'Conflict with your spouse, feeling criticised, sexual rejection, distance.', 'Between people'],
+      ['Physical', 'Hormone cycles (around ovulation; morning testosterone), alcohol, illness, exhaustion.', 'In the body'],
+      ['Memory', 'Anniversaries of trauma, old places, smells, songs.', 'From the past']
+    ]))}
+    ${sec('How to handle a fantasy or urge', steps([
+      ['Notice without panic', '“This is a thought and a feeling, not a command.” Panic and self-hatred feed the loop.'],
+      ['Name it', 'Trigger? Emotion? Need? Say it in one sentence: “I\'m lonely and it\'s late.”'],
+      ['Breathe', 'A physiological sigh (two inhales through the nose, one long exhale) calms the stress system fast (Balban et al., 2023).'],
+      ['Get curious', 'What is this fantasy offering me? To be wanted? In control? Free of responsibility? Escape?'],
+      ['Redirect the body', 'Stand up, change rooms, go outside, cold water, exercise. Movement interrupts the trance.'],
+      ['Meet the real need', 'Call someone, rest, eat, pray, create, talk to your spouse.'],
+      ['Take thoughts captive', '2 Corinthians 10:5. Then Philippians 4:8: fill the mind with what is true, honourable, lovely.'],
+      ['Bring desire home', 'If married, turn desire toward your spouse; share healthy desires with them.'],
+      ['Track and get help', 'Write down patterns weekly. If fantasies are intrusive, compulsive, or involve harm or minors, see a professional now.']
+    ]))}`;
+  },
+  mount() {
+    const bInfo = (h, d) => $('#brainInfo').innerHTML = `<span class="label">Brain</span><h3>${h}</h3><p>${d}</p>`;
+    const br = graph3d($('#brainG3'), { nodes: BR.map(b => ({ ...b, p: b.p.map(v => v * 1.45), r: .11 })), edges: BRE, shell: { c: '--sky', s: [2.3, 1.7, 1.9] }, dist: 7.4, tilt: .2, bend: 1.15, spin: .002, onPick: n => bInfo(n.label, n.d) });
+    const scen = k => { $$('#brainS .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.b === k)); if (!k) { br && br.focus(null, null); return bInfo('All regions', 'Every region and pathway in this simplified model.'); } const S = BRS[k]; br && br.focus(S[0], S[1]); bInfo(k, S[2]); };
+    $('#brainS').addEventListener('click', e => { const c = e.target.closest('[data-b]'); if (c) scen(c.dataset.b); }); scen('A trigger hits');
+    const loopIds = NET.slice(0, 12).map(n => n[0]);
+    const nodes = NET.map((n, i) => { const inner = i >= 12, a = (inner ? (i - 12) * 1.6 + .6 : i / 12 * Math.PI * 2); const R = inner ? 1.1 : 2.6; return { id: n[0], label: n[1], p: [Math.cos(a) * R, inner ? .9 : Math.sin(i * 1.3) * .6, Math.sin(a) * R], c: inner ? '--sage' : (i >= 9 ? '--rose' : i >= 5 ? '--gold' : '--sky'), r: inner ? .14 : .11, d: n[2], fix: n[3] }; });
+    const net = graph3d($('#netG3'), { nodes, edges: NETE, dist: 7.6, tilt: .45, bend: 1.08, spin: .0018, onPick: n => $('#netInfo').innerHTML = `<span class="label">Node</span><h3>${n.label}</h3><p>${n.d}</p><div class="note n-sage"><b>Handle it:</b> ${n.fix}</div>` });
+    const ns = k => { $$('#netS .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.n === k)); if (!net) return; if (k === 'loop') net.focus(loopIds, NETE.slice(0, 12)); else if (k === 'heal') net.focus(['ch', 'heal', 'conn', 'need', 'urge'], NETE.slice(12)); else net.focus(null, null); };
+    $('#netS').addEventListener('click', e => { const c = e.target.closest('[data-n]'); if (c) ns(c.dataset.n); }); ns('loop');
+    const P = [[0, 'Notice: “an urge is starting.” No panic.'], [.15, 'Breathe slowly. Feel where it sits in your body.'], [.3, 'Name it: what emotion is underneath?'], [.42, 'It is peaking. Peaks feel permanent. They aren\'t.'], [.55, 'Stay with it. Don\'t feed it with images.'], [.7, 'It is already falling.'], [.86, 'Almost through. Move your body; meet the real need.'], [.99, 'You surfed it. Each wave you ride makes the next one smaller.']];
+    let raf; $('#surfGo').addEventListener('click', () => { cancelAnimationFrame(raf); const path = $('#wPath'), L = path.getTotalLength(), s = $('#surfer'), t0 = performance.now(), dur = RM ? 3000 : 30000;
+      const tick = t => { if (!s.isConnected) return; const k = Math.min(1, (t - t0) / dur), pt = path.getPointAtLength(k * L); s.setAttribute('cx', pt.x); s.setAttribute('cy', pt.y); $('#surfT').textContent = [...P].reverse().find(p => k >= p[0])[1]; if (k < 1) raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick); });
+  }
+};
+
+/* ---------- background motion ---------- */
+(function bgfx() {
+  const cv = document.getElementById('bgfx'); if (!cv) return; const cx = cv.getContext('2d'); let w, h, C = [], fr = 0;
+  const size = () => { w = cv.width = Math.round(innerWidth / 2); h = cv.height = Math.round(innerHeight / 2); };
+  size(); addEventListener('resize', size);
+  const seeds = Array.from({ length: 36 }, () => ({ x: Math.random(), y: Math.random(), r: .8 + Math.random() * 2.2, v: .0001 + Math.random() * .00028, ph: Math.random() * 6.28 }));
+  function draw(t) {
+    if (fr++ % 90 === 0) C = ['--rose', '--sage', '--sky', '--gold'].map(cssv);
+    cx.clearRect(0, 0, w, h);
+    [[.15, .2, .55, 0], [.85, .15, .5, 1], [.75, .85, .6, 2], [.12, .82, .45, 3]].forEach(([bx, by, br, ci], i) => {
+      const x = (bx + Math.sin(t / 9000 + i * 1.7) * .09) * w, y = (by + Math.cos(t / 11000 + i) * .09) * h, r = br * Math.max(w, h);
+      const g = cx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, hexA(C[ci], .17)); g.addColorStop(1, hexA(C[ci], 0)); cx.fillStyle = g; cx.fillRect(0, 0, w, h);
+    });
+    seeds.forEach(s => { s.y -= s.v; if (s.y < -.05) s.y = 1.05; cx.beginPath(); cx.arc((s.x + Math.sin(t / 3000 + s.ph) * .012) * w, s.y * h, s.r, 0, 6.3); cx.fillStyle = hexA(C[0], .3); cx.fill(); });
+    if (!RM && !document.hidden) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && !RM) requestAnimationFrame(draw); });
+})();
+
+/* ---------- tilt, spotlight, reveal ---------- */
+if (matchMedia('(hover: hover) and (pointer: fine)').matches && !RM) {
+  document.addEventListener('pointermove', e => {
+    const c = e.target.closest && e.target.closest('.card, .stage'); if (!c) return;
+    const b = c.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+    c.style.setProperty('--mx', x * 100 + '%'); c.style.setProperty('--my', y * 100 + '%');
+    if (c.classList.contains('card')) { c.style.setProperty('--rx', ((.5 - y) * 7).toFixed(2) + 'deg'); c.style.setProperty('--ry', ((x - .5) * 9).toFixed(2) + 'deg'); }
+  });
+  document.addEventListener('pointerout', e => { const c = e.target.closest && e.target.closest('.card'); if (c && !c.contains(e.relatedTarget)) { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); } });
+}
+let revObs;
+function reveal() {
+  if (revObs) revObs.disconnect();
+  if (RM || !('IntersectionObserver' in window)) return;
+  revObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('rv-in'); revObs.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px' });
+  $$('#main .sec-h, #main .card, #main .stage:not(.g3), #main .case, #main .steps li, #main .verse, #main .tl-i').forEach(el => { el.style.animationDelay = Math.min([...el.parentElement.children].indexOf(el), 8) * 55 + 'ms'; revObs.observe(el); });
+}
+function homeMap(el) {
+  const nodes = [{ id: 'c', p: [0, 0, 0], c: '--rose', r: .28, label: 'One Flesh', big: 1 }], edges = [];
+  NAV.slice(0, 6).forEach((g, gi) => {
+    const a = gi / 6 * Math.PI * 2, gc = g.c.replace('var(', '').replace(')', ''), gp = [Math.cos(a) * 1.8, gi % 2 ? .5 : -.5, Math.sin(a) * 1.8];
+    nodes.push({ id: 'g' + gi, p: gp, c: gc, r: .18, label: g.g, big: 1 }); edges.push(['c', 'g' + gi]);
+    const its = g.items.filter(i => i[0] !== 'home');
+    its.forEach(([id, t], k) => { const b = a + (k - (its.length - 1) / 2) * .34, R = 3.9 + (k % 2) * .7; nodes.push({ id, p: [Math.cos(b) * R, gp[1] * 1.4 + (k % 2 ? .65 : -.65), Math.sin(b) * R], c: gc, r: .08, label: t }); edges.push(['g' + gi, id]); });
+  });
+  return graph3d(el, { nodes, edges, dist: 10.6, tilt: .3, bend: 1.05, spin: .0016, onPick: n => { if (TITLE[n.id]) location.hash = n.id; } });
+}
+
+M.home.mount = () => { if (!homeMap($('#homeG3'))) $('#homeG3').innerHTML = window.MM2D; };
 /* ============ router ============ */
 function render() {
+  G3.splice(0).forEach(g => g.destroy());
   let id = (location.hash || '#home').slice(1);
   if (!M[id]) id = 'home';
   const m = M[id];
   seen.add(id); try { localStorage.setItem('sia-seen', JSON.stringify([...seen])); } catch (e) {}
   const i = ORDER.indexOf(id), prev = ORDER[i - 1], next = ORDER[i + 1];
-  $('#main').innerHTML = `<div class="plate"><header class="vh"><span class="label">${m.e}</span><h1>${m.t}</h1><p class="lede">${m.l}</p></header>${m.h()}
+  $('#main').innerHTML = `<div class="plate"><header class="vh"><span class="label">${m.e}</span><h1>${kinetic(m.t)}</h1><p class="lede">${m.l}</p></header>${m.h()}
     <nav class="pager">${prev ? `<a class="pbtn" href="#${prev}">&larr; ${TITLE[prev]}</a>` : '<span></span>'}${next ? `<a class="pbtn solid" href="#${next}">${TITLE[next]} &rarr;</a>` : ''}</nav></div>
     <footer class="foot"><p>One Flesh is an educational resource for personal study, teaching, and counselling. It is not a substitute for medical, psychological, or legal care. Case studies are composites.</p><p>In danger in India: 112 &middot; Child: 1098 &middot; Women: 181 &middot; Mental health: 14416</p></footer>`;
   $('#rail').innerHTML = railHTML(id);
@@ -1605,6 +2190,8 @@ function render() {
   closeMenu();
   window.scrollTo(0, 0);
   if (m.mount) m.mount();
+  reveal();
+  { const done = [...seen].filter(x => x !== 'home' && M[x]).length; $('#ringFg').style.strokeDashoffset = 94.25 * (1 - done / (ORDER.length - 1)); }
   if ($('.cyc')) orbit();
 }
 function closeMenu() { $$('.scrim, .msheet').forEach(x => x.remove()); }
