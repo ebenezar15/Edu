@@ -475,6 +475,45 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
 .heat td i, .hk { display: block; height: 26px; border-radius: 6px; animation: pop .5s both; }
 .hk { display: inline-block; width: 14px; height: 14px; margin-right: 6px; vertical-align: middle; animation: none; }
 .h0 { background: var(--line); } .h1 { background: color-mix(in srgb, var(--rose) 25%, transparent); } .h2 { background: color-mix(in srgb, var(--rose) 55%, transparent); } .h3 { background: var(--rose); }
+
+/* v8 */
+.snn { cursor: pointer; } .snn.on circle { fill: var(--gold-soft); stroke-width: 4; }
+.snl { opacity: .25; transition: opacity .4s; } .snl.on { opacity: 1; animation: dash 1s linear infinite reverse; }
+.brainP { animation: capPulse 2.4s ease-in-out infinite; }
+.encw { overflow-x: auto; padding-bottom: 6px; }
+.enc { position: relative; display: grid; gap: 6px; min-width: 900px; }
+.enh { position: relative; z-index: 2; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 8px 6px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; color: var(--muted); }
+.enh.on { color: var(--ink); border-color: var(--rose); }
+.enl { font-family: var(--display); font-weight: 700; font-size: 15px; align-self: stretch; display: flex; align-items: center; position: sticky; left: 0; z-index: 3; padding: 0 6px; background: color-mix(in srgb, var(--bg) 85%, transparent); border-radius: 10px; }
+.enc-c { position: relative; z-index: 2; font-size: 13px; line-height: 1.4; padding: 9px 10px; border-radius: 10px 10px 10px 3px; background: color-mix(in srgb, var(--c) 8%, transparent); border: 1px solid transparent; opacity: .5; transition: opacity .4s, background .4s, border-color .4s, transform .4s; }
+.enc-c.on { opacity: 1; background: color-mix(in srgb, var(--c) 20%, transparent); border-color: var(--c); transform: translateY(-2px); }
+#encHead { position: absolute; top: 0; bottom: 0; left: 0; width: 0; border-radius: 12px; background: var(--gold-soft); box-shadow: 0 0 0 2px var(--gold) inset; z-index: 1; transition: left .6s cubic-bezier(.3,.7,.2,1), width .6s; pointer-events: none; }
+.fitr { cursor: pointer; } .fitr.on rect { stroke-width: 3; }
+.fitl { stroke-dasharray: 260; stroke-dashoffset: 260; animation: draw 1.2s ease forwards; }
+.clb { transform-box: fill-box; transform-origin: bottom; transition: opacity .3s; }
+.cap { animation: capPulse 1.6s ease-in-out infinite; transition: stroke-width .5s; }
+@keyframes capPulse { 50% { opacity: .5; } }
+.drop { transition: opacity .6s; animation: drip 2.2s ease-in infinite; }
+@keyframes drip { 0% { transform: translateY(0); } 70% { transform: translateY(26px); } 100% { transform: translateY(30px); opacity: 0; } }
+#frS { width: 100%; max-width: 360px; }
+.frTop { transition: transform .6s; }
+.frTop.glide { animation: glide 2s ease-in-out infinite alternate; }
+@keyframes glide { from { transform: translate(-8px, -6px); } to { transform: translate(8px, -6px); } }
+#frHeat { transition: opacity .5s; }
+.spark { animation: spark .8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes spark { 50% { transform: scale(1.8); opacity: .3; } }
+
+/* v9 */
+.rootg { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 8px; margin: 12px 0; }
+.rootb { display: grid; gap: 6px; text-align: left; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; transition: border-color .3s, box-shadow .3s, transform .3s; }
+.rootb b { font-size: 14px; }
+.rootb i { display: block; height: 6px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.rootb i span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--gold), var(--rose)); transition: width .6s cubic-bezier(.3,.7,.2,1); }
+.rootb.hot { border-color: var(--rose); box-shadow: 0 0 0 4px var(--rose-soft); transform: translateY(-2px); }
+.dbal { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.dbc { padding: 12px; border-radius: 14px 14px 14px 4px; border: 1px solid var(--line); display: grid; gap: 6px; }
+.dbc textarea { width: 100%; min-height: 90px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: inherit; font-size: 15px; padding: 10px; }
+@media (max-width: 640px) { .dbal { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 <canvas id="bgfx" aria-hidden="true"></canvas>
@@ -567,10 +606,10 @@ function orbit() {
 /* ============ navigation ============ */
 const NAV = [
   { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['learning', 'How We Learn About Sex'], ['lovelust', 'Love, Lust & Sin'], ['myths', 'Myths & Misunderstandings']] },
-  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan'], ['drive', 'Desire, Drive & Widowhood'], ['benefits', 'Benefits of Sex'], ['ssa', 'Same-Sex Attraction']] },
+  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['climax', 'Intercourse, Climax & Lubrication'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan'], ['drive', 'Desire, Drive & Widowhood'], ['benefits', 'Benefits of Sex'], ['ssa', 'Same-Sex Attraction']] },
   { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['struggles', 'Struggles in Marriage'], ['closeness', 'Intimacy Without Sex'], ['foreplay', 'Foreplay & Touch'], ['practice', 'The Act: Process & Safety'], ['positions', 'Positions & Penetration'], ['deeper', 'Deeper Pleasure'], ['variety', 'Keeping It Alive'], ['questions', 'Oral Sex & Honest Questions'], ['pain', 'When It Is Hard or Painful'], ['aftercare', 'Pain, Cool-down & Aftercare']] },
   { g: 'Shadows', c: 'var(--rose)', items: [['falls', 'Why Good People Fall'], ['chains', 'Domino Chains & Consequences'], ['premarital', 'Pre-marital Sex & Dating'], ['casual', 'Sex Without Commitment'], ['affairs', 'Affairs: Anatomy & Recovery'], ['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
-  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['addictions', 'Addictions & Statistics'], ['healing', 'Healing & Freedom'], ['sinful', 'When Sex Feels Sinful'], ['energy', 'Creative Power Before Marriage']] },
+  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['addictions', 'Addictions & Statistics'], ['helping', 'Helping Someone Struggling'], ['healing', 'Healing & Freedom'], ['sinful', 'When Sex Feels Sinful'], ['energy', 'Creative Power Before Marriage']] },
   { g: 'Teaching', c: 'var(--gold)', items: [['children', 'Teaching Children'], ['teach', 'Curriculum by Age'], ['counsel', 'Counselling Toolkit']] },
   { g: 'Reference', c: 'var(--muted)', items: [['solver', 'Problem Solver'], ['vocab', 'Sexual Vocabulary'], ['stats', 'Statistics'], ['sources', 'Books & Sources']] }
 ];
@@ -3498,6 +3537,231 @@ M.addictions = {
   },
   mount() {
     $('svg [data-a]') && $('#adI').parentElement.querySelector('svg').addEventListener('click', e => { const g = e.target.closest('.anode'); if (!g) return; const a = ADD[+g.dataset.a]; $$('.anode').forEach(x => x.classList.toggle('on', x === g)); $('#adI').innerHTML = `<span class="label">${a[3]}</span><h3>${a[0]}</h3><p style="font-size:30px;font-family:var(--display);font-weight:700;color:${a[4]}">${a[1]}</p><p>${a[2]}</p>`; });
+  }
+};
+
+/* ================= v8: intercourse, climax, lubrication ================= */
+const SENS = [
+  ['Sight', 'eye', 238, 150, 'var(--sky)', 'Visual cortex, then amygdala and reward system', 'Dopamine', 'Seeing your spouse\'s face, body, expressions and eyes. Men on average respond more strongly to visual cues, though women do too. Eye contact during sex raises intimacy. Sight is also the main channel porn hijacks.'],
+  ['Hearing', 'ear', 180, 170, 'var(--gold)', 'Auditory cortex, then limbic system', 'Oxytocin, dopamine', 'Their voice, whispered words, breathing, laughter, sounds of pleasure. Many women rate words as one of the strongest turn-ons. "Let me hear your voice" (Song 2:14).'],
+  ['Smell', 'nose', 250, 185, 'var(--sage)', 'Olfactory bulb, which connects directly to the amygdala and hippocampus', 'Memory and emotion', 'Natural body scent, hair, perfume, jasmine flowers. Smell is the only sense wired straight into the brain\'s emotion and memory centres, which is why a scent can instantly bring back a moment (Song 1:12; 4:10).'],
+  ['Taste', 'mouth', 236, 215, 'var(--rose)', 'Gustatory cortex and insula', 'Oxytocin', 'Kissing: taste, texture and chemistry. "Your lips drip nectar, my bride; honey and milk are under your tongue" (Song 4:11).'],
+  ['Touch', 'skin', 150, 300, 'var(--rose)', 'Somatosensory cortex (the touch map), insula, spinal reflexes', 'Oxytocin, endorphins', 'The most powerful sense in sex. Slow stroking activates affection nerves; genital, nipple and lip touch light up dense areas of the touch map. Touch alone can lead to orgasm.'],
+  ['Inner sense (interoception)', 'heart', 150, 250, 'var(--gold)', 'Insula', 'Norepinephrine', 'Feeling your own heartbeat, breath, warmth and arousal rising inside you. Being present to these sensations, rather than anxious, is what turns arousal into pleasure.']
+];
+
+const ENC_PH = ['Connect', 'Foreplay', 'Entry', 'Plateau', 'Climax', 'Resolution', 'Afterglow'];
+const ENC = [
+  ['Her body', 'var(--rose)', ['Relaxing; breathing slows', 'Clitoris and labia swell; lubrication begins; nipples harden', 'Vagina lengthens; outer third grips; she guides', 'Orgasmic platform forms; clitoris retracts under hood; flush on chest', '3-15 contractions every 0.8 s in pelvic floor and uterus', 'Swelling drains over 10-30 min; can often climax again', 'Warm, heavy, relaxed']],
+  ['His body', 'var(--sky)', ['Calmer heart rate; attention on her', 'Erection; pre-ejaculate may appear', 'Penetration; pressure and warmth sensations', 'Testes lift; glans swells; point of no return approaches', 'Emission, then 3-7 strong contractions with ejaculation', 'Erection fades; refractory period begins', 'Drowsy, satisfied']],
+  ['Brain', 'var(--gold)', ['Amygdala calms; safety', 'Dopamine rises; parasympathetic "rest" system active', 'Touch maps flood with signal', 'Norepinephrine and endorphins; pain threshold rises', 'Oxytocin surge; self-monitoring regions go quiet', 'Prolactin rises; satiety', 'Oxytocin and vasopressin bond you']],
+  ['Feelings', 'var(--sage)', ['Seen, wanted, safe', 'Anticipation, playfulness', 'Vulnerability, union', 'Absorption; time disappears', 'Release, ecstasy, "losing yourself"', 'Tenderness; sometimes tears', 'Closeness, gratitude, security']],
+  ['Spirit', 'var(--muted)', ['"Naked and not ashamed" (Gen 2:25)', 'Delight in each other (Song 4)', '"One flesh" (Gen 2:24)', 'Self-giving: each seeking the other\'s joy', 'Ekstasis: standing outside yourself', 'Rest, like Sabbath', 'Thanksgiving (1 Tim 4:4)']]
+];
+const FIT = [
+  ['Penis', 'Vagina', 'Shaped to receive and hold; the vagina lengthens and balloons with arousal to fit.'],
+  ['Glans', 'Clitoris', 'Same embryonic origin; both are the most nerve-dense pleasure points.'],
+  ['Pre-ejaculate & semen', 'Cervical mucus', 'Around ovulation, mucus becomes thin and channelled to guide sperm upward.'],
+  ['Testosterone', 'Oestrogen & testosterone', 'Hormones that awaken desire in both, timed to fertility in her.'],
+  ['Refractory period', 'Multi-orgasmic capacity', 'He rests; she can continue, so his finishing need not end her pleasure.'],
+  ['Oxytocin', 'Oxytocin', 'The same bonding hormone in both, released most at orgasm and in close touch.']
+];
+const LUBE = {
+  condom: ['Using latex condoms', 'Water-based or silicone-based', 'Oil-based (coconut oil, baby oil, petroleum jelly): weakens latex and can cause condoms to break.'],
+  ttc: ['Trying to conceive', 'Sperm-friendly ("fertility-friendly") lubricants with suitable pH, or none', 'Most regular lubricants, saliva and oils can slow or damage sperm.'],
+  dry: ['Breastfeeding or menopause', 'Long-lasting silicone lubricant for sex, plus a vaginal moisturiser 2-3 times a week; ask a doctor about local oestrogen', 'Scented, warming or tingling products, which irritate thin tissue.'],
+  yeast: ['Prone to yeast or bacterial infections', 'Glycerin-free, paraben-free water-based, or silicone', 'Glycerin-rich lubes (sugar feeds yeast); petroleum jelly (linked with bacterial vaginosis in a study by Brown et al., 2013).'],
+  long: ['Long sessions', 'Silicone-based (stays slippery longer)', 'Plain water-based dries out; reapply often.'],
+  sensitive: ['Sensitive skin or allergies', 'Simple, unscented, low-ingredient water-based; patch test first', 'Flavoured, coloured, numbing or warming products.'],
+  first: ['First times / vaginismus', 'Plenty of water-based or silicone lubricant on both partners', 'Numbing creams: they hide pain signals and can cause injury.']
+};
+M.climax = {
+  t: 'Intercourse, Climax & Lubrication', e: 'Body & Mind',
+  l: 'What God designed intercourse to be, how two bodies are made to connect, what happens moment by moment in body, brain, feelings and spirit, the signs of climax in men and women, how orgasm differs between masturbation and intercourse, and everything about lubrication: why it happens, when it is needed, and what to use.',
+  h() {
+    return `${sec('One encounter, five layers', `<div class="stage"><div class="encw"><div class="enc" id="enc" style="grid-template-columns:110px repeat(${ENC_PH.length}, minmax(150px,1fr))"><div></div>${ENC_PH.map((p, i) => `<button class="enh" data-p="${i}">${p}</button>`).join('')}${ENC.map(L => `<div class="enl" style="color:${L[1]}">${L[0]}</div>${L[2].map((c, i) => `<div class="enc-c" data-p="${i}" style="--c:${L[1]}">${c}</div>`).join('')}`).join('')}<i id="encHead"></i></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="pbtn solid" id="encGo">Play the encounter</button><span class="label" style="align-self:center">or tap a phase</span></div></div>`, 'Read down a column to see everything happening at once; read across a row to follow one layer through the whole encounter. Scroll sideways on a phone.')}
+    ${sec('Designed to fit', `<div class="stage"><svg viewBox="0 0 640 ${FIT.length * 54 + 20}" id="fitS" role="img" aria-label="Complementary design matching diagram"><text x="120" y="16" text-anchor="middle" class="ft" style="fill:var(--sky);font-weight:700">HIM</text><text x="520" y="16" text-anchor="middle" class="ft" style="fill:var(--rose);font-weight:700">HER</text>${FIT.map((f, i) => { const y = 44 + i * 54; return `<g class="fitr" data-i="${i}" tabindex="0" role="button"><rect x="20" y="${y - 18}" width="200" height="36" rx="18" fill="var(--sky-soft)" stroke="var(--sky)"/><text x="120" y="${y + 5}" text-anchor="middle" class="ft">${f[0]}</text><path d="M220 ${y} C 320 ${y - 22} 320 ${y + 22} 420 ${y}" fill="none" stroke="var(--gold)" stroke-width="2.5" class="fitl" style="animation-delay:${i * .2}s"/><rect x="420" y="${y - 18}" width="200" height="36" rx="18" fill="var(--rose-soft)" stroke="var(--rose)"/><text x="520" y="${y + 5}" text-anchor="middle" class="ft">${f[1]}</text></g>`; }).join('')}</svg><div class="info" id="fitI" style="min-height:0"><span class="label">Tap a pair</span><p>Male and female bodies develop from the same embryonic blueprint and are made to complement each other: physically, hormonally and relationally.</p></div></div>`)}
+    ${sec('Senses and brain: what happens inside you', `<div class="stage"><div class="wheelw"><svg viewBox="0 0 320 340" id="snS" role="img" aria-label="Senses feeding the brain"><path d="M150 40 C 230 40 270 95 262 160 C 258 190 270 200 262 214 C 256 224 246 224 246 236 C 246 256 230 262 214 262 L 200 262 L 200 300 L 100 300 L 100 250 C 70 230 52 190 56 140 C 62 80 100 40 150 40 Z" fill="var(--sky-soft)" stroke="var(--line)" stroke-width="2"/><ellipse cx="150" cy="105" rx="70" ry="50" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2" class="brainP"/><text x="150" y="102" text-anchor="middle" class="ft" style="font-weight:700">Brain</text><text x="150" y="118" text-anchor="middle" class="ft" style="font-size:10px">reward &middot; bonding &middot; touch map</text>${SENS.map((x, i) => `<path class="snl" data-i="${i}" d="M${x[2]} ${x[3]} Q ${(x[2] + 150) / 2 + 20} ${(x[3] + 105) / 2} 150 120" fill="none" stroke="${x[4]}" stroke-width="2.5" stroke-dasharray="5 6"/><g class="snn" data-i="${i}" tabindex="0" role="button" aria-label="${x[0]}"><circle cx="${x[2]}" cy="${x[3]}" r="15" fill="var(--surface)" stroke="${x[4]}" stroke-width="2.5"/><text x="${x[2]}" y="${x[3] + 4}" text-anchor="middle" class="ft" style="font-size:9px;font-weight:700">${x[0].slice(0, 5)}</text></g>`).join('')}</svg><div class="bside"><div class="info" id="snI"></div><button class="pbtn solid" id="snAll">Show all senses together</button></div></div>${note('In loving sex all six channels fire at once, and the brain blends them into one experience of the person. Porn narrows input to sight and sound; masturbation with fantasy narrows it to imagination. To see the full-body signal flow, open <a href="#bodymap">The Whole Body</a>; for the 3D brain circuit, open <a href="#fantasy">Fantasy, Triggers & Arousal</a>.', 'sage')}</div>`, 'Tap a sense to see what it contributes, which brain region processes it, and the chemicals involved.')}
+    ${sec('Biological connections', cards([
+      ['One shared blueprint', 'Until about week 7 in the womb, every embryo has the same genital structures. Each part has a counterpart in the other sex. "Male and female he created them" (Gen 1:27).', 'Embryology'],
+      ['Bodies sync', 'Studies of couples show heart rates and breathing can synchronise during close contact; partnered touch calms the nervous system faster than being alone.', 'Physiology'],
+      ['Chemistry of kissing', 'Kissing exchanges saliva and scent. Researchers suggest it helps partners "assess" each other and raises bonding.', 'Senses'],
+      ['The sperm journey', 'Of tens of millions of sperm, a few hundred reach the egg. Thin fertile mucus around ovulation channels them; the cervix filters; the uterus helps transport.', 'Fertility'],
+      ['Shared microbiome', 'Couples share skin, mouth and genital bacteria over time, a literal "one flesh" at microscopic scale. This is also why infections pass between partners.', 'Microbes'],
+      ['Bonding loop', 'Each loving encounter releases oxytocin and vasopressin, which strengthen attachment, which makes the next encounter safer and better.', 'Hormones']
+    ]))}
+    ${sec('Signs of climax', `<div class="stage"><div class="chips" id="clC"><button class="chip" data-s="f" aria-pressed="true">Her</button><button class="chip" data-s="m">Him</button></div><svg viewBox="0 0 640 170" id="clS" role="img" aria-label="Orgasm contraction pulses"></svg><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="pbtn solid" id="clGo">Play the climax pulse</button><span class="vital" style="min-width:140px"><span class="label"><span class="hb" id="clHb">&#9829;</span> Heart rate</span><b id="clBpm">90</b></span></div><div id="clT"></div></div>`, 'Orgasm is a reflex of rhythmic contractions, roughly every 0.8 seconds in both sexes, starting strong and fading. Press play to see the rhythm.')}
+    ${sec('Masturbation vs. intercourse: how orgasm differs', `<div class="stage">${tbl(['', 'Masturbation', 'Intercourse with a spouse'], [
+      ['The reflex', 'Same spinal reflex and contractions', 'Same spinal reflex and contractions'],
+      ['Speed', 'Usually faster, especially for men', 'Usually longer, with more build-up'],
+      ['Her orgasm', 'Often more reliable (direct clitoral control)', 'Needs clitoral stimulation, time and communication'],
+      ['Prolactin after orgasm', 'Lower', 'About 400% higher than after masturbation (Brody & Krüger, 2006), which means more satiety'],
+      ['Bonding', 'Oxytocin released with no person to attach to', 'Oxytocin and vasopressin attach you to your spouse'],
+      ['Senses', 'Mostly imagination or images', 'All five senses, two nervous systems'],
+      ['Afterwards', 'Often quick return to tasks, sometimes emptiness', 'Afterglow, closeness, sleep']
+    ])}<div class="bars" style="margin-top:12px"><div class="bar"><div class="bar-h"><span>Prolactin rise after masturbation (relative)</span><b>1x</b></div><div class="bar-t"><i style="width:20%;background:var(--muted)"></i></div></div><div class="bar"><div class="bar-h"><span>Prolactin rise after intercourse (relative)</span><b>~5x</b></div><div class="bar-t"><i style="width:100%;background:var(--rose)"></i></div><small>Brody & Krüger, Biological Psychology, 2006: a small study, but a striking difference</small></div></div></div>`)}
+    ${sec('How natural lubrication works', `<div class="stage"><svg viewBox="0 0 640 220" role="img" aria-label="Vaginal lubrication by transudation"><text x="10" y="18" class="ft" style="font-size:10px;fill:var(--muted)">CROSS-SECTION OF THE VAGINAL WALL (SCHEMATIC)</text>
+      <rect x="20" y="40" width="600" height="70" rx="10" fill="var(--rose-soft)" stroke="var(--rose)"/><text x="30" y="60" class="ft" style="font-size:11px">blood vessels in the wall</text>
+      ${Array.from({ length: 8 }, (_, i) => `<path d="M${50 + i * 75} 85 q 18 -16 36 0 t 36 0" fill="none" stroke="var(--rose)" stroke-width="${3}" class="cap" style="animation-delay:${i * .1}s"/>`).join('')}
+      <rect x="20" y="110" width="600" height="12" fill="var(--rose)" opacity=".35"/><text x="30" y="140" class="ft" style="font-size:11px">inner surface</text>
+      <g id="drops">${Array.from({ length: 16 }, (_, i) => `<ellipse cx="${40 + i * 37}" cy="128" rx="4" ry="6" fill="var(--sky)" class="drop" style="animation-delay:${(i % 5) * .35}s"/>`).join('')}</g>
+      <text x="620" y="205" text-anchor="end" class="ft" id="lubT" style="font-family:var(--mono)"></text></svg>
+      <label class="label" for="lubR">Arousal level</label><input type="range" id="lubR" min="0" max="100" value="20" style="width:100%;accent-color:var(--sky)"><p id="lubP"></p></div>`, 'Drag the arousal level and watch moisture appear.')}
+    ${sec('Is lubricant needed? Why?', split(panel('Often, yes, and that\'s normal', ul(['Natural lubrication depends on arousal, oestrogen, hydration, stress and medications, so it varies day to day.', 'Common reasons it falls short: not enough foreplay, nerves (first times), breastfeeding, the contraceptive pill, menopause, antihistamines and antidepressants, long sessions, and condoms (which absorb moisture).', 'Wetness is not the same as readiness: a woman can be lubricated and not yet aroused, or aroused but dry.', 'There is no natural lubrication in the anus, so lubricant is essential there.', 'Using lubricant is not a sign of low attraction or of failure. Many couples use it every time.']), 'sky'), panel('What friction does', `<svg viewBox="0 0 300 150" id="frS" role="img" aria-label="Friction dry versus lubricated"><path d="M10 60 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14" fill="none" stroke="var(--sky)" stroke-width="3" class="frTop"/><rect id="frFilm" x="10" y="64" width="280" height="12" rx="6" fill="var(--sky)" opacity="0"/><path d="M10 92 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14 l 20 14 l 20 -14" fill="none" stroke="var(--rose)" stroke-width="3"/><g id="frHeat">${[60, 130, 200, 250].map((x, i) => `<circle cx="${x}" cy="78" r="5" fill="var(--gold)" class="spark" style="animation-delay:${i * .2}s"/>`).join('')}</g></svg><div class="chips" id="frC"><button class="chip" data-f="dry" aria-pressed="true">Dry</button><button class="chip" data-f="wet">Lubricated</button></div><p id="frT"></p>`, 'rose')))}
+    ${sec('Choosing a lubricant', `<div class="stage"><div class="chips" id="luC">${Object.entries(LUBE).map(([k, v], i) => `<button class="chip" data-l="${k}" aria-pressed="${i === 0}">${v[0]}</button>`).join('')}</div><div id="luO"></div></div>${tbl(['Type', 'Pros', 'Cons', 'Condom-safe?'], [
+      ['Water-based', 'Easy to wash, feels natural, widely available', 'Dries out; some contain glycerin or irritants', 'Yes'],
+      ['Silicone-based', 'Long-lasting, very slippery, good for dryness and water', 'Harder to wash off; damages silicone toys', 'Yes'],
+      ['Oil-based (coconut oil, etc.)', 'Cheap, natural, popular in India; good for massage', 'Breaks latex condoms; some link to infections; stains', 'No'],
+      ['Hybrid (water + silicone)', 'Creamy, longer-lasting than water', 'Varies by brand', 'Usually'],
+      ['Saliva', 'Always available', 'Dries fast; carries mouth bacteria; can trigger yeast', 'Yes, but not ideal'],
+      ['Avoid', 'Petroleum jelly, lotions, soap, butter, numbing or warming gels', 'Irritation, infection, condom breakage, hidden injuries', 'n/a']
+    ])}`, 'Choose a situation for a recommendation.')}
+    ${sec('Questions people ask', acc([
+      ['How do I know she has climaxed?', '<p>Rhythmic pulsing around the penis or fingers, a peak in breathing or sounds, tension then sudden release, a flush on her chest, and sensitivity to further touch. But signs vary hugely and can be subtle, so the only reliable way is to ask, kindly and without pressure.</p>'],
+      ['Do women fake orgasm?', '<p>Often. In one study about two-thirds of women and over a quarter of men had faked at least once (Muehlenhard & Shippee, 2010), usually to protect a partner\'s feelings or to end sex. Faking teaches the partner the wrong things, so create a marriage where honesty is safe.</p>'],
+      ['Can a man orgasm without ejaculating?', '<p>Yes. Orgasm and ejaculation are separate processes that usually happen together. "Dry orgasm" can happen with frequent orgasms, some medications, or after prostate surgery. Ejaculation can also happen with weak pleasure.</p>'],
+      ['What is "female ejaculation" or squirting?', '<p>Some women release fluid at orgasm. Studies suggest it is mostly fluid from the bladder plus secretions from Skene\'s glands (the female counterpart of the prostate). It is normal and harmless, and so is not doing it.</p>'],
+      ['Is it bad if we don\'t climax together?', '<p>No. Simultaneous orgasm is uncommon and not the goal. Many couples prefer her climax first (by hand, mouth or during intercourse) and his after.</p>'],
+      ['Does orgasm help conception?', '<p>Her orgasm is not needed for pregnancy. Some researchers propose uterine contractions help transport sperm, but evidence is mixed. His ejaculation is what matters for conception.</p>'],
+      ['Is it normal to feel sad or cry after climax?', '<p>Yes, it happens to many people at least once (postcoital dysphoria). Hold each other; if it is frequent and distressing, talk with a counsellor, especially if there is a history of trauma.</p>'],
+      ['What if lubricant is needed even when I\'m aroused?', '<p>Very normal. Hormones, medication, hydration and stress all affect lubrication independently of desire. If dryness is new and persistent, see a gynaecologist.</p>']
+    ]))}`;
+  },
+  mount() {
+    let ph = 0, tm;
+    const head = $('#encHead');
+    const show = i => { ph = i; $$('#enc .enh').forEach((b, j) => b.classList.toggle('on', j === i)); $$('#enc .enc-c').forEach(c => c.classList.toggle('on', +c.dataset.p === i)); const b = $$('#enc .enh')[i]; head.style.left = b.offsetLeft + 'px'; head.style.width = b.offsetWidth + 'px'; b.scrollIntoView({ block: 'nearest', inline: 'center', behavior: RM ? 'auto' : 'smooth' }); };
+    $('#enc').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (b) { clearInterval(tm); show(+b.dataset.p); } });
+    $('#encGo').addEventListener('click', () => { clearInterval(tm); let i = 0; show(0); tm = setInterval(() => { i++; if (i >= ENC_PH.length || !head.isConnected) return clearInterval(tm); show(i); }, RM ? 500 : 2600); });
+    requestAnimationFrame(() => show(0));
+    const sn = i => { $$('#snS .snn').forEach((g, j) => g.classList.toggle('on', i === -1 || j === i)); $$('#snS .snl').forEach((l, j) => l.classList.toggle('on', i === -1 || j === i));
+      if (i === -1) { $('#snI').innerHTML = '<span class="label">All senses</span><h3>One experience of one person</h3><p>Sight, sound, smell, taste, touch and inner sensation converge on the reward and bonding systems at once. This is why married sex engages far more of the brain than any screen.</p>'; return; }
+      const x = SENS[i]; $('#snI').innerHTML = `<span class="label">${x[5]}</span><h3>${x[0]}</h3><p>${x[7]}</p><p><b>Key chemistry:</b> ${x[6]}</p>`; };
+    $('#snS').addEventListener('click', e => { const g = e.target.closest('.snn'); if (g) sn(+g.dataset.i); }); $('#snAll').addEventListener('click', () => sn(-1)); sn(4);
+    $('#fitS').addEventListener('click', e => { const g = e.target.closest('.fitr'); if (!g) return; $$('#fitS .fitr').forEach(x => x.classList.toggle('on', x === g)); const f = FIT[+g.dataset.i]; $('#fitI').innerHTML = `<span class="label">${f[0]} &harr; ${f[1]}</span><p>${f[2]}</p>`; });
+    const CL = {
+      f: [12, 'var(--rose)', ['Breathing quickens, then catches or peaks', 'A flush across the chest, neck and face', 'Muscle tension: back arching, toes curling, hands gripping', 'Rhythmic pulsing of the vagina and pelvic floor (3-15 contractions)', 'Heart rate up to 110-180', 'Then sudden release: relaxation, sighing, sometimes laughter or tears', 'The clitoris may become too sensitive to touch for a short time', 'Often able to climax again with continued stimulation']],
+      m: [8, 'var(--sky)', ['The "point of no return" (emission): a feeling that ejaculation is coming and can\'t be stopped', 'Breathing and thrusting intensify', '3-7 strong contractions with spurts of semen, then weaker ones', 'Muscle tension, facial grimace, sounds', 'Heart rate up to 110-180', 'Then release and relaxation', 'The glans becomes very sensitive; the erection fades', 'A refractory period: minutes in youth, hours or longer with age']]
+    };
+    let sx = 'f', ct = [];
+    const drawCl = () => { const [n, col, signs] = CL[sx]; $('#clS').innerHTML = `<line x1="20" x2="620" y1="140" y2="140" stroke="var(--line)"/>` + Array.from({ length: n }, (_, i) => { const h = 110 * Math.pow(.86, i), x = 40 + i * (560 / n); return `<rect class="clb" x="${x}" y="${140 - h}" width="${Math.min(34, 400 / n)}" height="${h}" rx="5" fill="${col}" opacity=".18"/><text x="${x + 8}" y="158" class="ft" style="font-size:9px;fill:var(--muted)">${(i * .8).toFixed(1)}s</text>`; }).join('');
+      $('#clT').innerHTML = `<div class="grid" style="margin-top:10px">${signs.map((s, i) => `<div class="card"><span class="label">Sign ${i + 1}</span><p style="color:var(--ink)">${s}</p></div>`).join('')}</div>`; $('#clBpm').textContent = 90; };
+    $('#clC').addEventListener('click', e => { const c = e.target.closest('[data-s]'); if (!c) return; sx = c.dataset.s; $$('#clC .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); ct.forEach(clearTimeout); drawCl(); });
+    $('#clGo').addEventListener('click', () => { ct.forEach(clearTimeout); ct = []; drawCl(); const bars = $$('#clS .clb'); let bpm = 90; const up = setInterval(() => { bpm = Math.min(165, bpm + 6); if (!$('#clBpm')) return clearInterval(up); $('#clBpm').textContent = bpm; $('#clHb').style.setProperty('--hb', (60 / bpm).toFixed(2) + 's'); if (bpm >= 165) clearInterval(up); }, 90);
+      bars.forEach((b, i) => ct.push(setTimeout(() => { b.style.opacity = 1; b.animate([{ transform: 'scaleY(.6)' }, { transform: 'scaleY(1.08)' }, { transform: 'scaleY(1)' }], { duration: 400, easing: 'ease-out' }); }, (RM ? 100 : 800) * i + 1300)));
+      ct.push(setTimeout(() => { let b2 = 165; const dn = setInterval(() => { b2 -= 5; if (!$('#clBpm') || b2 <= 80) return clearInterval(dn); $('#clBpm').textContent = b2; }, 120); }, 1300 + 800 * bars.length)); });
+    drawCl();
+    const lub = v => { $$('#drops .drop').forEach((d, i) => { d.style.opacity = i < Math.round(v / 100 * 16) ? 1 : 0; }); $$('.cap').forEach(c => c.setAttribute('stroke-width', 2 + v / 100 * 5)); $('#lubT').textContent = v < 25 ? 'little moisture' : v < 60 ? 'moisture appearing' : 'well lubricated';
+      $('#lubP').innerHTML = v < 25 ? 'Low arousal: little blood flow, little moisture. Penetration now would cause friction and pain.' : v < 60 ? 'As arousal builds, blood vessels in the vaginal wall swell (vasocongestion) and fluid seeps through the wall as droplets that merge into a slippery film. This is called transudation, first described by Masters & Johnson. The Bartholin glands add a little at the opening.' : 'Full arousal: the wall is engorged and moisture covers it. Even so, stress, hormones or medication can reduce it, which is when added lubricant helps.'; };
+    $('#lubR').addEventListener('input', e => lub(+e.target.value)); lub(20);
+    const fr = k => { $$('#frC .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.f === k)); $('#frFilm').setAttribute('opacity', k === 'wet' ? .45 : 0); $('#frHeat').style.opacity = k === 'dry' ? 1 : 0; $('.frTop').style.transform = k === 'wet' ? 'translateY(-6px)' : 'none'; $('.frTop').classList.toggle('glide', k === 'wet'); $('#frT').textContent = k === 'dry' ? 'Dry: surfaces catch and rub, causing heat, micro-tears, burning, and later infections or pain.' : 'Lubricated: a film separates the surfaces so they glide; sensations are smoother and more pleasurable.'; };
+    $('#frC').addEventListener('click', e => { const c = e.target.closest('[data-f]'); if (c) fr(c.dataset.f); }); fr('dry');
+    const lu = k => { const L = LUBE[k]; $$('#luC .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.l === k)); $('#luO').innerHTML = split(panel('Use', `<p>${L[1]}</p>`, 'sage'), panel('Avoid', `<p>${L[2]}</p>`, 'rose')); };
+    $('#luC').addEventListener('click', e => { const c = e.target.closest('[data-l]'); if (c) lu(c.dataset.l); }); lu('condom');
+  }
+};
+
+/* ================= v9: helping someone struggling ================= */
+const ROOTS = [
+  ['Pain & trauma', 'Abuse, loss, violence, humiliation. The behaviour numbs pain the person can\'t face.', 'Trauma-informed counselling (EMDR, trauma-focused CBT).'],
+  ['Loneliness', 'No one truly knows them. The habit is a counterfeit connection.', 'Real friendship, small groups, family repair.'],
+  ['Stress & overload', 'Work, exams, debt, caregiving. The behaviour is a fast escape valve.', 'Stress skills, rest, exercise, practical help.'],
+  ['Boredom & aimlessness', 'No purpose or meaningful goals. Stringer found futility predicted unwanted sexual behaviour.', 'Purpose: work, service, creativity, goals.'],
+  ['Shame', '"I am bad" drives hiding, and hiding drives repetition.', 'Grace, confession in safe community, separating guilt from shame.'],
+  ['Anger & entitlement', 'Resentment ("I deserve this") fuels affairs, porn, binges.', 'Name and process anger; forgiveness work; accountability.'],
+  ['Family patterns', 'Addiction, secrecy or chaos at home; parents who drank or had affairs.', 'Family Roots work; genogram; breaking patterns.'],
+  ['Mental illness', 'Depression, anxiety, ADHD, bipolar disorder often co-exist with addiction (self-medication).', 'Psychiatric assessment and treatment alongside recovery.'],
+  ['Biology', 'Genetics (alcoholism runs in families), early exposure, a sensitised reward system.', 'Medical treatment where available; earlier, stronger safeguards.'],
+  ['Access & culture', 'Cheap data, easy alcohol, peer groups, travel, work culture.', 'Change the environment; new peer groups.']
+];
+const SIGNS = [
+  ['Uses it when stressed', [2]], ['Uses it when alone or at night', [1, 3]], ['History of abuse or trauma', [0]], ['Very harsh on themselves', [4]],
+  ['Complains of being treated unfairly', [5]], ['Parent had similar struggles', [6, 8]], ['Low mood, poor sleep, worry', [7]], ['No clear goals or meaning', [3]],
+  ['Started very young', [8, 9]], ['Friends or workplace normalise it', [9]], ['Recently lost someone or something', [0, 1]], ['Isolated from family or church', [1, 4]]
+];
+const STAGES = [
+  ['Pre-|contemplation', '"I don\'t have a problem." Not considering change.', 'Don\'t argue or lecture. Build the relationship. Ask permission to share concerns. Gently raise doubt: "What do you think about how often it happens?"'],
+  ['Contemplation', '"Maybe I should cut down, but..." Ambivalent.', 'Explore both sides (the pros-and-cons worksheet below). Let them voice their own reasons for change. Avoid pushing; ambivalence is normal.'],
+  ['Preparation', '"I\'m going to do something soon."', 'Help make a concrete plan: who, what, when. Remove access. Book an appointment. Find a group.'],
+  ['Action', 'Actively changing.', 'Encourage, celebrate small wins, check in often, help with triggers. This is the most demanding stage.'],
+  ['Maintenance', 'Change sustained for 6+ months.', 'Keep safeguards, build a new life (purpose, friends, faith), prepare for high-risk situations.'],
+  ['Relapse|(common)', 'A return to old behaviour, which is common and not failure.', 'No shame: "What did we learn?" Return to preparation or action quickly. Most people cycle several times before lasting change.']
+];
+const MI = [
+  { q: 'Your friend says: "I know I watch too much porn, but it\'s the only thing that helps me sleep."', o: [['"That\'s disgusting. You need to stop now."', 0, 'Shame and commands trigger defensiveness and hiding.'], ['"It sounds like it helps you relax, and part of you is also worried about how much you use it."', 1, 'A double-sided reflection: it captures both sides of their ambivalence and invites them to say more.'], ['"Just pray more and it will go away."', 0, 'Prayer matters, but this dismisses the real struggle and offers no practical help.']] },
+  { q: 'A husband caught in an affair says: "My wife never listens. At least she [the other woman] understands me."', o: [['"So the affair is your wife\'s fault?"', 0, 'Sarcasm creates defensiveness.'], ['"Feeling understood matters a lot to you. What would it look like to feel understood at home?"', 1, 'An affirming reflection that names the real need and turns toward the marriage.'], ['"You\'re going to hell if you continue."', 0, 'Threats rarely produce lasting change.']] },
+  { q: 'Your brother says: "I only drink on weekends. Everyone does."', o: [['"Can I share something I\'ve noticed? You\'re free to disagree."', 1, 'Asking permission respects autonomy and makes them far more likely to listen.'], ['"You\'re an alcoholic, just admit it."', 0, 'Labels provoke resistance. The goal is change, not winning the argument.'], ['"Okay, as long as it\'s just weekends."', 2, 'Respectful, but it avoids the concern entirely. Gentle honesty is kinder.']] }
+];
+M.helping = {
+  t: 'Helping Someone Struggling', e: 'Healing',
+  l: 'How to help someone caught in an addiction or compulsion, whether affairs, lust, porn, compulsive masturbation, alcohol, drugs, gambling or gaming: finding the real reasons, helping them see the effects for themselves, and the practical approaches that research and experience show actually work.',
+  h() {
+    return `${note('<b>Urgent help in India:</b> National de-addiction helpline <b>14446</b> &middot; Tele-MANAS <b>14416</b> &middot; Emergency <b>112</b>. <b>Never stop heavy drinking or certain drugs suddenly without medical help:</b> alcohol withdrawal can cause seizures and can be fatal.', 'rose')}
+    ${sec('Step 1: find the root', `<div class="stage"><span class="label">Tap what you notice about the person</span><div class="chips" id="sgC">${SIGNS.map((s, i) => `<button class="chip" data-s="${i}">${s[0]}</button>`).join('')}</div><div class="rootg" id="rtG">${ROOTS.map((r, i) => `<button class="rootb" data-r="${i}"><b>${r[0]}</b><i><span></span></i></button>`).join('')}</div><div class="info" id="rtI" style="min-height:0"><span class="label">Likely roots light up</span><p>Behaviours are usually solutions to a problem. Find the problem the behaviour is solving. Tap a root for what it means and what helps.</p></div></div>`, '"The addiction is not the problem; it is the person\'s attempt to solve a problem." Ask what the behaviour does for them, not just what it does to them.')}
+    ${sec('Questions that uncover the root', cards([
+      ['When?', '"When do you usually find yourself doing it? What time, where, after what?"', 'Pattern'],
+      ['Feeling before?', '"What were you feeling just before? Bored, lonely, angry, stressed, tired?"', 'Emotion'],
+      ['What does it give you?', '"What does it do for you, even briefly? Relief, escape, comfort, power?"', 'Function'],
+      ['When did it start?', '"What was happening in your life when it began?"', 'History'],
+      ['What\'s missing?', '"If this habit disappeared tomorrow, what would you need instead?"', 'Need'],
+      ['What do you want?', '"What kind of person do you want to be in five years?"', 'Values']
+    ]))}
+    ${sec('Step 2: meet them where they are (stages of change)', cycle('soc', 'Stages|of change', STAGES), 'Prochaska & DiClemente\'s model, used worldwide in addiction treatment. Pushing someone in pre-contemplation to take action usually backfires. Tap a stage for what helps.')}
+    ${sec('Step 3: talk so they can hear (motivational interviewing)', `<div class="stage">${split(panel('OARS: the core skills', ul(['<b>O</b>pen questions: "How do you feel about it?" rather than "Do you feel bad?"', '<b>A</b>ffirmations: "You\'ve been honest with me; that takes courage."', '<b>R</b>eflective listening: repeat back their meaning, including both sides of their ambivalence.', '<b>S</b>ummaries: pull together what they\'ve said, especially their own reasons for change.']), 'gold'), panel('Why it works', ul(['People believe what they hear themselves say. MI helps them argue for change in their own words.', 'Meta-analyses show MI reduces substance use and increases engagement in treatment.', 'It respects freedom (autonomy), which reduces defensiveness.', 'It matches Jesus\' way of asking questions ("What do you want me to do for you?" Mark 10:51).']), 'sage'))}<div id="miO"></div></div>`, 'Practise below: choose the most helpful response.')}
+    ${sec('Step 4: help them see the effects themselves', `<div class="stage"><div class="dbal"><div class="dbc k-gold"><span class="label">Good things about the habit</span><textarea id="db0" aria-label="Good things about the habit" placeholder="e.g. relief, sleep, excitement..."></textarea></div><div class="dbc k-rose"><span class="label">Costs of the habit</span><textarea id="db1" aria-label="Costs of the habit" placeholder="e.g. guilt, money, marriage, health..."></textarea></div><div class="dbc k-rose"><span class="label">Costs of changing</span><textarea id="db2" aria-label="Costs of changing" placeholder="e.g. withdrawal, losing friends, boredom..."></textarea></div><div class="dbc k-sage"><span class="label">Benefits of changing</span><textarea id="db3" aria-label="Benefits of changing" placeholder="e.g. trust, freedom, health, peace..."></textarea></div></div>${note('This "decisional balance" grid is a standard motivational-interviewing tool. Let the person fill it in themselves. Notice the good things the habit gives them: you will need healthy replacements for those. Saved only in this browser.')}</div>`)}
+    ${sec('Effects worth knowing, by addiction', tbl(['Addiction', 'Brain & body', 'Relationships', 'Money & life'], [
+      ['Porn & compulsive masturbation', 'Tolerance, escalation, sexual dysfunction, sleep loss', 'Secrecy, less desire for spouse, betrayal trauma', 'Lost time and focus, paid content, blackmail risk'],
+      ['Affairs & lust', 'Dopamine highs and crashes; anxiety; STIs', 'Broken trust, divorce, children harmed', 'Legal costs, maintenance, reputation, ministry loss'],
+      ['Alcohol', 'Liver disease, brain damage, depression, accidents', 'Domestic violence, neglect', 'Job loss, debt'],
+      ['Drugs (cannabis, opioids, etc.)', 'Psychosis risk, overdose, dependence', 'Crime, family breakdown', 'Legal problems, debt'],
+      ['Gambling & betting apps', 'Stress, depression, suicide risk', 'Lies, theft from family', 'Severe debt'],
+      ['Gaming & phone', 'Sleep loss, anxiety, poor focus', 'Withdrawal from family', 'Failing studies or work']
+    ]))}
+    ${sec('Step 5: what actually works', cards([
+      ['Cognitive Behavioural Therapy (CBT)', 'Identifies triggers and thoughts, builds coping skills. Strong evidence across substance and behavioural addictions.', 'Therapy'],
+      ['Acceptance & Commitment Therapy (ACT)', 'Learning to notice urges without obeying them and to live by values. A small trial for problematic porn use found large reductions in viewing (Crosby & Twohig, 2016).', 'Therapy'],
+      ['12-step & mutual-help groups', 'AA, NA, SA, Celebrate Recovery and church recovery groups. A 2020 Cochrane review found AA and 12-step facilitation as effective as, or better than, other treatments for sustained alcohol abstinence.', 'Community'],
+      ['Medication (alcohol & opioids)', 'Naltrexone and acamprosate for alcohol; buprenorphine or methadone for opioids (available at Indian de-addiction centres). These save lives.', 'Medical'],
+      ['Family approach: CRAFT', 'Community Reinforcement and Family Training teaches families to reward sobriety, allow natural consequences, and invite treatment. In studies about two-thirds of resistant loved ones entered treatment, far more than with confrontational "interventions".', 'Family'],
+      ['Environment change', 'Filters and accountability software, no alcohol at home, blocking betting apps, changing routes and friends, phone out of the bedroom.', 'Practical'],
+      ['Accountability & honesty', 'A trusted partner or group who asks direct questions weekly. Secrecy is the oxygen of addiction.', 'Relational'],
+      ['Treat co-existing problems', 'Depression, anxiety, ADHD and trauma must be treated, or relapse is likely.', 'Medical'],
+      ['Faith & purpose', 'Spiritual community, grace and meaning are consistently linked with better recovery outcomes.', 'Spiritual'],
+      ['Residential rehab', 'For severe alcohol or drug dependence, or repeated failure: NIMHANS (Bengaluru), AIIMS NDDTC (Delhi), and licensed centres. Beware unlicensed "rehabs" that use force.', 'Intensive']
+    ]))}
+    ${sec('What doesn\'t work', cards([
+      ['Shaming and lecturing', 'Increases hiding and relapse.', 'Avoid'], ['Threats without support', 'Ultimatums can be necessary for safety, but alone they rarely create change.', 'Avoid'],
+      ['Enabling', 'Covering up, paying debts, making excuses: it shields them from consequences.', 'Avoid'], ['Willpower alone', '"Just stop" ignores roots, brain changes and environment.', 'Avoid'],
+      ['Forced "cures"', 'Chaining, beating, forced "prayer camps" or unlicensed centres are abusive and illegal.', 'Avoid'], ['Doing it alone as a helper', 'Burnout follows. Get support for yourself.', 'Avoid']
+    ]))}
+    ${sec('A practical recovery plan', flow('rplan', [
+      ['Safety first', 'Medical detox for alcohol or drugs if needed; remove immediate dangers; crisis lines.'],
+      ['Honest assessment', 'How often, how much, what consequences, what roots? A doctor, counsellor or de-addiction centre.'],
+      ['Commit to a plan', 'Specific goals (abstinence or a defined limit, decided with professionals); a start date.'],
+      ['Barriers and replacements', 'Remove access; add healthy rewards (exercise, hobbies, people).'],
+      ['Support network', 'A group, accountability partner, counsellor, family trained in CRAFT.'],
+      ['Treat the root', 'Trauma, loneliness, mental illness, marriage problems.'],
+      ['Relapse plan', 'Warning signs, who to call, what to do within 24 hours after a slip.'],
+      ['Build a new life', 'Purpose, relationships, faith, service: recovery is not just stopping but living.']
+    ], true))}
+    ${sec('Stories of what worked (composites)', cases([
+      { tag: 'Alcohol, Kerala', k: 'gold', t: 'The father who drank every night', s: 'Thomas, 48, drank heavily for 15 years. His wife had tried crying, threatening and hiding bottles.', w: 'Grief after his brother\'s death, work stress, and a family history of drinking.', h: 'His wife learned CRAFT methods from a counsellor: rewarding sober evenings, not rescuing him from consequences, and inviting him to treatment at a good moment. He accepted a medically supervised detox, naltrexone, and AA.', o: 'Sober four years. Lesson: families can learn approaches that work better than confrontation.' },
+      { tag: 'Porn, Chennai', k: 'rose', t: 'The youth leader', s: 'Daniel, 24, a youth leader, had used porn since 12 and hid it for years.', w: 'Loneliness after moving cities, shame from strict teaching, and stress.', h: 'A mentor used open questions instead of lectures; Daniel joined a men\'s group, installed accountability software, began ACT-based counselling, and started playing football twice a week.', o: 'Free for 18 months, with honest slips handled quickly. Lesson: curiosity and community beat shame.' },
+      { tag: 'Betting apps, Hyderabad', k: 'sky', t: '₹6 lakh in debt', s: 'Ravi, 29, lost his savings and borrowed from friends on cricket betting apps.', w: 'Boredom, thrill-seeking, a peer group that bet, and wanting quick money.', h: 'His family stopped paying his debts, his phone was locked down with banking controls, he started CBT, and joined a Gamblers Anonymous group online.', o: 'Debts being repaid; no betting for a year. Lesson: environment change and natural consequences matter.' },
+      { tag: 'Affair, Bengaluru', k: 'gold', t: 'The emotional affair at work', s: 'Priya, 38, had an emotional affair that turned physical with a colleague.', w: 'Years of feeling unseen at home and unresolved resentment.', h: 'She ended contact and changed teams; individual counselling and couples counselling; her husband learned to listen; they rebuilt with transparency.', o: 'Lesson: affairs, like other addictions, often meet a real need in a destructive way.' }
+    ]))}
+    ${sec('Caring for yourself as a helper', steps([['You can\'t control their choices', 'You can influence, love and set boundaries, but recovery is theirs.'], ['Set boundaries', 'Protect yourself and children from harm, including violence and financial ruin.'], ['Get your own support', 'Al-Anon, counsellors, friends, church.'], ['Rest and pray', '"Come to me, all who labour and are heavy laden" (Matt 11:28).']]))}`;
+  },
+  mount() {
+    const score = Array(ROOTS.length).fill(0), on = new Set();
+    const upd = () => { score.fill(0); on.forEach(i => SIGNS[i][1].forEach(r => score[r]++)); const mx = Math.max(1, ...score); $$('#rtG .rootb').forEach((b, i) => { b.querySelector('span').style.width = (score[i] / mx * 100) + '%'; b.classList.toggle('hot', score[i] > 0 && score[i] === mx); }); };
+    $('#sgC').addEventListener('click', e => { const c = e.target.closest('[data-s]'); if (!c) return; const i = +c.dataset.s; on.has(i) ? on.delete(i) : on.add(i); c.setAttribute('aria-pressed', on.has(i)); upd(); });
+    $('#rtG').addEventListener('click', e => { const b = e.target.closest('[data-r]'); if (!b) return; const r = ROOTS[+b.dataset.r]; $('#rtI').innerHTML = `<span class="label">Root</span><h3>${r[0]}</h3>${split(panel('What it looks like', `<p>${r[1]}</p>`, 'gold'), panel('What helps', `<p>${r[2]}</p>`, 'sage'))}`; });
+    let mi = 0; const miDraw = () => { const m = MI[mi]; $('#miO').innerHTML = `<div class="sim" style="margin-top:12px"><span class="label">Practice ${mi + 1} of ${MI.length}</span><div class="bubble">${m.q}</div><div class="sim-o">${m.o.map((o, i) => `<button class="opt" data-o="${i}">${o[0]}</button>`).join('')}</div><div id="miF"></div></div>`; };
+    $('#miO').addEventListener('click', e => { const o = e.target.closest('[data-o]'); if (o) { const r = MI[mi].o[+o.dataset.o]; $$('#miO .opt').forEach(b => b.classList.toggle('pick', b === o)); $('#miF').innerHTML = note(`<b>${['Not helpful', 'Helpful', 'Partly helpful'][r[1]]}.</b> ${r[2]}`, ['rose', 'sage', ''][r[1]]) + `<button class="pbtn solid" data-n="1" style="margin-top:10px">${mi < MI.length - 1 ? 'Next practice' : 'Start again'}</button>`; } if (e.target.closest('[data-n]')) { mi = (mi + 1) % MI.length; miDraw(); } });
+    miDraw();
+    [0, 1, 2, 3].forEach(i => { const t = $('#db' + i); try { t.value = localStorage.getItem('sia-db' + i) || ''; } catch (e) {} t.addEventListener('input', () => { try { localStorage.setItem('sia-db' + i, t.value); } catch (e) {} }); });
+    orbit();
   }
 };
 
