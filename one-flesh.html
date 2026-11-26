@@ -514,6 +514,12 @@ main { min-width: 0; padding-block: 28px 120px; padding-left: max(16px, env(safe
 .dbc { padding: 12px; border-radius: 14px 14px 14px 4px; border: 1px solid var(--line); display: grid; gap: 6px; }
 .dbc textarea { width: 100%; min-height: 90px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: inherit; font-size: 15px; padding: 10px; }
 @media (max-width: 640px) { .dbal { grid-template-columns: minmax(0, 1fr); } }
+
+/* v10 */
+.spk { opacity: 0; animation: spk .3s ease forwards; }
+@keyframes spk { to { opacity: 1; } }
+.rwl { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: draw 2.5s ease forwards; }
+#bdD { transition: cx .3s, cy .3s; filter: drop-shadow(0 0 6px var(--rose)); }
 </style>
 
 <canvas id="bgfx" aria-hidden="true"></canvas>
@@ -606,10 +612,10 @@ function orbit() {
 /* ============ navigation ============ */
 const NAV = [
   { g: 'Foundations', c: 'var(--gold)', items: [['home', 'The Atlas'], ['design', "God's Design"], ['lens', 'The Relational Lens'], ['history', 'Evolution & Distortion'], ['culture', 'Cultures & Eras'], ['family', 'Family Roots'], ['learning', 'How We Learn About Sex'], ['lovelust', 'Love, Lust & Sin'], ['myths', 'Myths & Misunderstandings']] },
-  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['climax', 'Intercourse, Climax & Lubrication'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan'], ['drive', 'Desire, Drive & Widowhood'], ['benefits', 'Benefits of Sex'], ['ssa', 'Same-Sex Attraction']] },
+  { g: 'Body & Mind', c: 'var(--sky)', items: [['anatomy', 'The Body'], ['bodymap', 'The Whole Body'], ['response', 'What Happens Inside'], ['climax', 'Intercourse, Climax & Lubrication'], ['arousal', 'Arousal: Design & Handling'], ['fantasy', 'Fantasy, Triggers & Arousal'], ['lifespan', 'Desire Across the Lifespan'], ['drive', 'Desire, Drive & Widowhood'], ['benefits', 'Benefits of Sex'], ['ssa', 'Same-Sex Attraction']] },
   { g: 'Union', c: 'var(--rose)', items: [['firstnight', 'First Night & Talking'], ['fertility', 'Fertility & Pregnancy'], ['struggles', 'Struggles in Marriage'], ['closeness', 'Intimacy Without Sex'], ['foreplay', 'Foreplay & Touch'], ['practice', 'The Act: Process & Safety'], ['positions', 'Positions & Penetration'], ['deeper', 'Deeper Pleasure'], ['variety', 'Keeping It Alive'], ['questions', 'Oral Sex & Honest Questions'], ['pain', 'When It Is Hard or Painful'], ['aftercare', 'Pain, Cool-down & Aftercare']] },
   { g: 'Shadows', c: 'var(--rose)', items: [['falls', 'Why Good People Fall'], ['chains', 'Domino Chains & Consequences'], ['premarital', 'Pre-marital Sex & Dating'], ['casual', 'Sex Without Commitment'], ['affairs', 'Affairs: Anatomy & Recovery'], ['abuse', 'Abuse: Types & Response'], ['offenders', 'How Abusers Form'], ['porn', 'Porn & Imagination'], ['masturbation', 'Masturbation: Deep Study'], ['psych', 'Effects of Unhealthy Sex']] },
-  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['addictions', 'Addictions & Statistics'], ['helping', 'Helping Someone Struggling'], ['healing', 'Healing & Freedom'], ['sinful', 'When Sex Feels Sinful'], ['energy', 'Creative Power Before Marriage']] },
+  { g: 'Healing', c: 'var(--sage)', items: [['rewire', 'Rewire & Restore'], ['addictions', 'Addictions & Statistics'], ['helping', 'Helping Someone Struggling'], ['autopilot', 'Habits Without Triggers'], ['healing', 'Healing & Freedom'], ['sinful', 'When Sex Feels Sinful'], ['energy', 'Creative Power Before Marriage']] },
   { g: 'Teaching', c: 'var(--gold)', items: [['children', 'Teaching Children'], ['teach', 'Curriculum by Age'], ['counsel', 'Counselling Toolkit']] },
   { g: 'Reference', c: 'var(--muted)', items: [['solver', 'Problem Solver'], ['vocab', 'Sexual Vocabulary'], ['stats', 'Statistics'], ['sources', 'Books & Sources']] }
 ];
@@ -3762,6 +3768,119 @@ M.helping = {
     miDraw();
     [0, 1, 2, 3].forEach(i => { const t = $('#db' + i); try { t.value = localStorage.getItem('sia-db' + i) || ''; } catch (e) {} t.addEventListener('input', () => { try { localStorage.setItem('sia-db' + i, t.value); } catch (e) {} }); });
     orbit();
+  }
+};
+
+/* ================= v10: arousal design & habits without triggers ================= */
+const WAROUSE = [
+  ['Emotional', 'var(--rose)', [['Feeling loved & safe', 'For many women emotional security is the doorway: feeling chosen, protected and close.'], ['Being desired', 'Knowing she is wanted (not just used) is one of the strongest arousal sources.'], ['Romance & words', 'Affirmation, tenderness, a love letter, flirting during the day.']]],
+  ['Sensory', 'var(--gold)', [['Touch', 'Slow, affectionate touch; kissing; touch on lips, neck, breasts, inner thighs.'], ['Scent & voice', 'His smell, perfume, jasmine; a low voice, whispered words.'], ['Sight', 'Women respond to visual cues too (studies show genital response to many images), though it is often less tied to felt desire.']]],
+  ['Hormonal', 'var(--sage)', [['Around ovulation', 'Many women notice higher desire and arousal mid-cycle.'], ['Before or after a period', 'Some women feel a rise in desire just before or after menstruation.'], ['Pregnancy', 'The second trimester often brings increased blood flow and arousal.']]],
+  ['Imaginative', 'var(--sky)', [['Romantic stories', 'Novels, films, songs and daydreams of being loved can arouse strongly.'], ['Memory', 'Remembering a close moment with her husband.'], ['Fantasy', 'Imagined scenarios; best directed toward her own spouse.']]],
+  ['Situational', 'var(--muted)', [['Rest & relaxation', 'A holiday, a quiet evening, no to-do list: brakes released.'], ['Novelty', 'New places and experiences together.'], ['Privacy', 'Feeling unobserved and unhurried.']]],
+  ['Involuntary', 'var(--rose)', [['During sleep', 'Women, like men, have genital arousal during REM sleep several times a night, sometimes with dreams and orgasm.'], ['Physical friction', 'Riding, cycling, clothing, a full bladder: purely reflexive arousal that means nothing morally.'], ['Hormone surges', 'Spontaneous waves of desire without any thought behind them, especially in the teens and twenties.']]]
+];
+const COMPASS = {
+  start: { q: 'You notice arousal. Are you married?', o: [['Yes', 'm1'], ['No', 's1']] },
+  m1: { q: 'Is it a good time for both of you (rested, private, wanted)?', o: [['Yes', 'L_turn'], ['Not now', 'L_save']] },
+  s1: { q: 'Is something feeding it right now (images, fantasy, a person, a situation)?', o: [['Yes', 's2'], ['No, it just came', 'L_spont']] },
+  s2: { q: 'Can you remove yourself from the source right now?', o: [['Yes', 'L_flee'], ['Not easily', 'L_capt']] },
+  L_turn: ['Turn toward your spouse', 'Arousal in marriage is a gift to share. Tell or show your spouse. "Rejoice in the wife of your youth" (Prov 5:18), and wives initiating is biblical too (Song 7:11-12).', 'sage'],
+  L_save: ['Hold it with joy, and plan', 'Not every arousal needs action. Enjoy it, tell your spouse ("I\'m thinking of you"), and plan time together. Anticipation is foreplay.', 'sage'],
+  L_spont: ['Normal body, no sin', 'Spontaneous arousal is your body working as designed. Acknowledge it calmly, don\'t panic or feed it, and carry on with what you were doing. It will pass in minutes.', 'gold'],
+  L_flee: ['Flee and redirect', '"Flee youthful passions and pursue righteousness... with those who call on the Lord" (2 Tim 2:22). Close the app, leave the room, end the conversation, go to a public place, move your body.', 'sage'],
+  L_capt: ['Take the thought captive', 'Breathe slowly, name what you feel, pray briefly, turn your attention fully to something else (2 Cor 10:5; Phil 4:8), and text a friend or accountability partner. If this situation keeps recurring, change it.', 'gold']
+};
+M.arousal = {
+  t: 'Arousal: Design & Handling', e: 'Body & Mind',
+  l: 'Why God designed intercourse around rhythmic movement, when and why women become aroused, whether every woman experiences arousal before marriage, why God designed arousal at all, and how to handle it biblically, whether single or married.',
+  h() {
+    return `${sec('Why rhythmic movement? The nerve science', `<div class="stage"><svg viewBox="0 0 640 260" id="rcS" role="img" aria-label="Nerve firing under constant versus rhythmic touch"></svg><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="pbtn solid" id="rcGo">Play the nerve signals</button></div></div>`, 'Touch nerves (mechanoreceptors) fire strongly when pressure changes and quickly go quiet under constant pressure. This is "sensory adaptation", the reason you stop feeling your clothes. Rhythmic stroking keeps the signal fresh and lets arousal build.')}
+    ${sec('Why God designed intercourse with stroking', cards([
+      ['Keeps the nerves firing', 'Constant pressure fades within seconds; repeated movement renews the signal from the glans, the clitoral complex and the nerve-rich outer third of the vagina.', 'Nerves'],
+      ['Builds to a threshold', 'Each stroke adds to the last (summation) until arousal crosses the orgasm reflex threshold. Rhythm is how the body "charges up".', 'Reflex'],
+      ['Stimulates both', 'Movement creates friction for him and pressure and friction for her: clitoral body, bulbs, vaginal walls. Rocking or grinding gives her more.', 'Mutual'],
+      ['Fertility', 'Movement and ejaculation deposit sperm near the cervix, where fertile mucus can carry them upward.', 'Life'],
+      ['Synchrony', 'Rhythm entrains breath and heartbeat; partners naturally fall into a shared pace, a bodily picture of unity.', 'Union'],
+      ['A dance, not a performance', 'Both move, both give, both receive: "Draw me after you; let us run" (Song 1:4). Biblically, intercourse is mutual self-giving rather than one person acting on another.', 'Design']
+    ]))}
+    ${sec('Where does a woman\'s arousal come from?', `<div class="stage"><div class="rmap" id="wa">${WAROUSE.map((r, i) => `<div class="rcat" style="--c:${r[1]};animation-delay:${i * .1}s"><b>${r[0]}</b>${r[2].map((x, k) => `<button class="rleaf" data-r="${i}" data-k="${k}">${x[0]}</button>`).join('')}</div>`).join('')}</div><div class="info" id="waI" style="min-height:0"><span class="label">Tap a source</span><p>Women\'s arousal usually combines several sources at once, with emotional safety often being the gate the others pass through.</p></div></div>`)}
+    ${sec('Does every woman experience arousal after puberty, before marriage?', `<div class="stage"><svg viewBox="0 0 640 120" role="img" aria-label="Proportion of women experiencing arousal">${Array.from({ length: 100 }, (_, i) => `<circle cx="${20 + (i % 25) * 24.5}" cy="${18 + Math.floor(i / 25) * 26}" r="9" fill="${i === 99 ? 'var(--muted)' : 'var(--rose)'}" opacity="${i === 99 ? .5 : .75}" class="nwd" style="animation-delay:${i * .012}s"/>`).join('')}</svg>${split(panel('Nearly all, yes', ul(['Rising oestrogen and testosterone at puberty bring arousal to the vast majority of girls: romantic longing, physical warmth and tingling, and genital responses.', 'Nearly everyone, women included, experiences genital arousal during REM sleep, whether or not they remember it.', 'Many unmarried Christian women experience strong arousal and feel ashamed, thinking "good girls" don\'t. That is untrue.', 'Many don\'t recognise or name it, especially if they were taught arousal is shameful, or if it shows up as emotional longing rather than physical urgency.']), 'rose'), panel('Exceptions', ul(['Around 1% of people report little or no sexual attraction (asexuality, Bogaert 2004), which is why one dot above is grey. Many still experience physical arousal.', 'Some medical conditions, hormonal problems, medications (especially antidepressants) and depression reduce arousal.', 'Trauma can shut arousal down, or tie it to fear.', 'Arousal varies hugely: some women feel it daily, others rarely. Both are normal.']), 'gold'))}</div>`, 'An illustration: about 99 in 100 women experience sexual arousal at some point after puberty, whether or not they are married.')}
+    ${sec('Why did God design arousal?', `<div class="stage"><svg viewBox="0 0 640 230" role="img" aria-label="Purposes of arousal">${[['Draws to union', 'It moves two people toward each other (Gen 2:24)'], ['Prepares the body', 'Lubrication, erection, lengthening: comfort and pleasure'], ['Gives joy', 'Pleasure is God\'s idea (Prov 5:19; Song)'], ['Bonds', 'Oxytocin and vasopressin glue a couple together'], ['Brings life', 'Desire rises around fertility; children are a blessing'], ['Points beyond', 'Longing for union echoes our longing for God (Ps 42:1)']].map((p, i) => { const a = i / 6 * Math.PI * 2 - Math.PI / 2, x = 320 + 220 * Math.cos(a), y = 115 + 88 * Math.sin(a); return `<line x1="320" y1="115" x2="${x}" y2="${y}" stroke="var(--gold)" class="rootl" style="animation-delay:${i * .12}s"/><g class="rootn" style="animation-delay:${.3 + i * .12}s"><rect x="${x - 95}" y="${y - 20}" width="190" height="40" rx="12" fill="var(--surface)" stroke="var(--gold)"/><text x="${x}" y="${y - 3}" text-anchor="middle" class="ft" style="font-weight:700">${p[0]}</text><text x="${x}" y="${y + 12}" text-anchor="middle" class="ft" style="font-size:9.5px;fill:var(--muted)">${p[1]}</text></g>`; }).join('')}<circle cx="320" cy="115" r="38" fill="var(--rose-soft)" stroke="var(--rose)" stroke-width="2"/><text x="320" y="119" text-anchor="middle" style="font-family:var(--display);font-weight:700;fill:var(--ink)">Arousal</text></svg></div>`, 'Arousal is not a flaw from the Fall. It was part of the "very good" design before sin (Gen 1:31; 2:24-25).')}
+    ${sec('Handling arousal biblically: a compass', `<div class="stage"><div id="cmp" class="okf"></div></div>`, 'Answer step by step. Arousal itself is not sin; what we do with it matters (James 1:14-15).')}
+    ${sec('Principles for handling arousal', split(panel('Truths', ul(['<b>Arousal is not sin.</b> Jesus was tempted in every way, yet without sin (Heb 4:15).', '<b>Feeding it is the danger.</b> "Everyone who looks... with lustful intent" (Matt 5:28): the problem is the cultivated gaze, not the passing feeling.', '<b>Timing matters.</b> "Do not stir up or awaken love until it pleases" (Song 2:7): don\'t deliberately ignite what you cannot rightly fulfil.', '<b>Self-control is a fruit of the Spirit</b> (Gal 5:23), grown over time, not a switch.', '<b>Marriage is God\'s provision</b> for strong desire (1 Cor 7:2, 9).']), 'gold'), panel('Practices', ul(['Name it calmly: "My body is aroused." No panic, no shame.', 'Don\'t feed it: no lingering, scrolling or fantasising.', 'Change your state: stand, walk, cold water, exercise.', 'Meet the underlying need: rest, connection, purpose.', 'Pray simply: thanks for the design, help for the moment.', 'Have a friend who knows your struggles.', 'If married: bring it home to your spouse.', 'If engaged and struggling greatly: talk with your pastor about the wedding timeline.']), 'sage')))}
+    ${sec('Spontaneous arousal is not sin', cards([
+      ['Morning and sleep arousal', 'Erections and vaginal engorgement during REM sleep are automatic and healthy.', 'Body'],
+      ['Teenage "random" erections', 'Hormone surges in boys cause erections with no thoughts at all, sometimes at embarrassing moments. Teach boys this is normal.', 'Teens'],
+      ['Vibration and friction', 'Bus rides, bicycles, clothing, sports: reflexive and morally neutral.', 'Reflex'],
+      ['Arousal during abuse', 'If the body responded during abuse, it was a reflex, never consent and never the victim\'s fault.', 'Important']
+    ]))}`;
+  },
+  mount() {
+    const rc = () => { const S = $('#rcS'); let h = `<text x="10" y="18" class="ft" style="font-weight:700">CONSTANT PRESSURE</text><text x="10" y="138" class="ft" style="font-weight:700">RHYTHMIC STROKING</text><line x1="10" x2="630" y1="100" y2="100" stroke="var(--line)"/><line x1="10" x2="630" y1="220" y2="220" stroke="var(--line)"/>`;
+      h += `<path d="M10 92 L40 40 L630 40" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 4"/><path d="M10 212 ${Array.from({ length: 20 }, (_, i) => `Q ${25 + i * 31} ${i % 2 ? 210 : 160} ${40 + i * 31} 185`).join(' ')}" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 4"/>`;
+      let x = 30; for (let i = 0; i < 40 && x < 630; i++) { const gap = 6 + i * i * .45; x += gap; if (x > 630) break; h += `<line x1="${x}" x2="${x}" y1="96" y2="${60 + Math.min(30, i * 1.5)}" stroke="var(--sky)" stroke-width="2" class="spk" style="animation-delay:${x / 630 * 3}s"/>`; }
+      for (let i = 0; i < 20; i++) for (let k = 0; k < 5; k++) { const xx = 32 + i * 31 + k * 4; h += `<line x1="${xx}" x2="${xx}" y1="216" y2="${180 - i * 1.3}" stroke="var(--rose)" stroke-width="2" class="spk" style="animation-delay:${xx / 630 * 3}s"/>`; }
+      h += `<text x="630" y="58" text-anchor="end" class="ft" style="fill:var(--sky);font-size:11px">signal fades (adaptation)</text><text x="630" y="140" text-anchor="end" class="ft" style="fill:var(--rose);font-size:11px">signal sustained and building</text>`; S.innerHTML = h; };
+    $('#rcGo').addEventListener('click', rc); rc();
+    $('#wa').addEventListener('click', e => { const b = e.target.closest('.rleaf'); if (!b) return; $$('#wa .rleaf').forEach(x => x.classList.toggle('on', x === b)); const R = WAROUSE[+b.dataset.r], x = R[2][+b.dataset.k]; $('#waI').innerHTML = `<span class="label">${R[0]}</span><h3>${x[0]}</h3><p>${x[1]}</p>`; });
+    const path = [];
+    const draw = () => { const k = path[path.length - 1], N = COMPASS[k];
+      let h = path.slice(0, -1).map((p, i) => `<div class="okn ans"><b>${COMPASS[p].q}</b><span class="pill gold">${COMPASS[p].o.find(o => o[1] === path[i + 1])[0]}</span></div><div class="okar">&#8595;</div>`).join('');
+      if (Array.isArray(N)) h += `<div class="okn res ${N[2] === 'sage' ? 'good' : ''}" style="${N[2] === 'gold' ? 'border-color:var(--gold);background:var(--gold-soft)' : ''}"><h3>${N[0]}</h3><p>${N[1]}</p><button class="pbtn" data-rs="1">Start again</button></div>`;
+      else h += `<div class="okn cur"><b>${N.q}</b><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">${N.o.map(o => `<button class="pbtn solid" data-go2="${o[1]}">${o[0]}</button>`).join('')}</div></div>`;
+      $('#cmp').innerHTML = h; };
+    $('#cmp').addEventListener('click', e => { const g = e.target.closest('[data-go2]'); if (g) { path.push(g.dataset.go2); draw(); } if (e.target.closest('[data-rs]')) { path.length = 0; path.push('start'); draw(); } });
+    path.push('start'); draw();
+  }
+};
+
+/* ---------- HABITS WITHOUT TRIGGERS ---------- */
+const HCUES = [['Time of day', 'Late night, early morning, after lunch'], ['Place', 'Bed, bathroom, a particular chair'], ['Phone in hand', 'Unlocking the phone with no purpose'], ['Being alone', 'An empty house or room'], ['Low energy', 'Tired but not sleepy'], ['Transition moments', 'After work, after exams, before sleep'], ['Mild unease', 'A vague restlessness you barely notice'], ['Previous ritual', 'The same apps, the same sequence of searches']];
+const IFCUE = ['it is after 10pm and I am in bed with my phone', 'I am alone at home in the afternoon', 'I feel bored and restless', 'I open my phone without a reason', 'I have just finished work or exams', 'I wake up and reach for my phone'];
+const IFDO = ['put my phone outside the bedroom and read a book', 'go for a 15-minute walk or call a friend', 'do 20 push-ups and drink a glass of water', 'open my Bible app or a podcast instead', 'text my accountability partner "on autopilot right now"', 'leave the room and do one useful task'];
+M.autopilot = {
+  t: 'Habits Without Triggers', e: 'Healing',
+  l: 'Many people say, "I don\'t even feel tempted. I just find myself watching porn or masturbating, out of boredom or for no reason." This section explains why: how habits run on autopilot, how cues become invisible, why boredom pulls so hard, and how to rebuild the habit itself.',
+  h() {
+    return `${sec('The habit loop', cycle('hloop', 'Habit|loop', [
+      ['Cue', 'Something starts the routine: often a time, place, mood or the phone in your hand. With repetition the cue becomes invisible; you no longer notice it.', 'Make the cue visible: write down when and where it happens for one week.'],
+      ['Craving', 'The brain predicts a reward and releases dopamine before anything happens. It feels like "nothing", just a pull.', 'Name it: "That\'s the habit predicting a reward."'],
+      ['Routine', 'The automatic behaviour: opening the app, searching, masturbating. Done with little conscious thought.', 'Add friction: make the routine harder (filters, phone outside the room).'],
+      ['Reward', 'Brief relief, stimulation or sleep. The reward strengthens the cue-routine link.', 'Find a healthier routine that gives a similar reward.']
+    ]), 'Research suggests around 40% of daily actions are habits performed in the same context almost automatically (Wood et al., 2002). Porn and masturbation habits work the same way.')}
+    ${sec('Invisible cues', `<div class="stage"><span class="label">Tap the cues that might apply to you</span><div class="chips" id="hcC">${HCUES.map((c, i) => `<button class="chip" data-c="${i}">${c[0]}</button>`).join('')}</div><div id="hcO" class="grid" style="margin-top:10px"></div></div>`, '"For no reason" usually means "for a reason I can no longer see". These are the most common hidden cues.')}
+    ${sec('Why boredom pulls so hard', `<div class="stage"><svg viewBox="0 0 640 220" role="img" aria-label="Stimulation and performance curve"><path d="M40 190 C 180 180 240 40 320 40 C 400 40 460 180 600 190" fill="none" stroke="var(--sage)" stroke-width="3"/><text x="320" y="30" text-anchor="middle" class="ft" style="fill:var(--sage)">engaged, focused, content</text><text x="50" y="210" class="ft" style="font-size:11px;fill:var(--muted)">under-stimulated (bored)</text><text x="590" y="210" text-anchor="end" class="ft" style="font-size:11px;fill:var(--muted)">over-stimulated (anxious)</text><circle id="bdD" r="9" fill="var(--rose)"/></svg><input type="range" id="bdR" min="0" max="100" value="12" style="width:100%;accent-color:var(--rose)" aria-label="Stimulation level"><p id="bdT"></p></div>`, 'The brain works best at a medium level of stimulation (the Yerkes-Dodson curve). Drag the dot.')}
+    ${sec('Why unpredictable rewards hook harder', `<div class="stage"><svg viewBox="0 0 640 200" role="img" aria-label="Predictable versus unpredictable reward"><text x="10" y="18" class="ft" style="font-weight:700;fill:var(--sky)">PREDICTABLE REWARD (a meal, a walk)</text><path d="M10 80 ${Array.from({ length: 10 }, (_, i) => `L ${40 + i * 60} ${40 + Math.min(i * 4, 30)} L ${70 + i * 60} 80`).join(' ')}" fill="none" stroke="var(--sky)" stroke-width="2.5" class="rwl"/><text x="10" y="118" class="ft" style="font-weight:700;fill:var(--rose)">UNPREDICTABLE REWARD (scrolling, porn, betting)</text><path d="M10 190 ${[150, 185, 130, 180, 125, 160, 120, 185, 128, 150].map((y, i) => `L ${40 + i * 60} ${y} L ${70 + i * 60} 190`).join(' ')}" fill="none" stroke="var(--rose)" stroke-width="2.5" class="rwl" style="animation-delay:.4s"/></svg>${note('Psychologists call it "variable-ratio reinforcement", the slot-machine principle. When you never know if the next click will be the "best" one, anticipation dopamine stays high and the behaviour becomes compulsive. Porn sites and social feeds are built on this.')}</div>`)}
+    ${sec('Other reasons it happens "for no reason"', cards([
+      ['Conditioning', 'Like Pavlov\'s dogs, the body learns to expect arousal in a certain place or at a certain time, and arousal arrives on cue.', 'Learning'],
+      ['Low-grade stress', 'Mild anxiety or unease you don\'t consciously notice still seeks relief.', 'Stress'],
+      ['Sleep ritual', 'For many it has become the way they fall asleep.', 'Routine'],
+      ['Default activity', 'When nothing else is planned, the oldest, easiest habit fills the gap.', 'Default'],
+      ['Tolerance', 'The more often it\'s done, the lower the baseline of pleasure without it, so ordinary life feels flat.', 'Brain'],
+      ['Identity', '"This is just what I do." Habits become part of how we see ourselves.', 'Self-image']
+    ]))}
+    ${sec('Build your if-then plan', `<div class="stage"><div class="mcols"><div><label class="label" for="ifC">If...</label><select id="ifC" class="din" style="max-width:100%;width:100%">${IFCUE.map(c => `<option>${c}</option>`).join('')}</select></div><div><label class="label" for="ifD">then I will...</label><select id="ifD" class="din" style="max-width:100%;width:100%">${IFDO.map(c => `<option>${c}</option>`).join('')}</select></div></div><div class="dcard" id="ifOut" style="margin-top:12px"></div><button class="pbtn" id="ifCopy">Copy my plan</button></div>`, '"Implementation intentions" (Gollwitzer) are specific if-then plans. Across many studies they roughly double the chance of following through compared with good intentions alone.')}
+    ${sec('Rebuilding the habit', steps([
+      ['Track for a week', 'Note time, place, mood and what you were doing before. Make the invisible cues visible.'],
+      ['Change the cue', 'Phone out of the bedroom, no devices in the bathroom, a different evening routine.'],
+      ['Add friction', 'Filters, accountability software, logging out, a 20-second delay: small barriers cut automatic behaviour sharply.'],
+      ['Keep the cue, swap the routine', 'If boredom at 10pm is the cue, plan a specific replacement (your if-then plan).'],
+      ['Raise baseline stimulation', 'A full, purposeful day (exercise, people, meaningful work) leaves less room for empty hours.'],
+      ['Tell someone', 'Accountability turns an autopilot habit into a conscious choice.'],
+      ['Expect a dip', 'The first 2-4 weeks feel flat and restless; this is the brain recalibrating (see Rewire & Restore).'],
+      ['New identity', '"I am someone who goes to sleep with a book." Identity sustains habits better than willpower.']
+    ]))}
+    ${sec('Story (composite)', cases([{ tag: 'Student, Trichy', k: 'sky', t: '"I don\'t even want to; it just happens"', s: 'Joel, 21, said he never felt tempted. Every night in his hostel bed he would scroll, then find himself watching porn and masturbating, then sleep.', w: 'An invisible cue (bed plus phone plus 11pm), a sleep ritual, and low daytime stimulation after quitting sports.', h: 'He tracked the pattern for a week, kept his phone in his locker overnight, set an if-then plan (if it\'s 10:30, then football highlights with roommates, then a book), and rejoined the college football team.', o: 'The habit collapsed within a month. Lesson: change the context, not just the willpower.' }]))}`;
+  },
+  mount() {
+    orbit();
+    const on = new Set(); $('#hcC').addEventListener('click', e => { const c = e.target.closest('[data-c]'); if (!c) return; const i = +c.dataset.c; on.has(i) ? on.delete(i) : on.add(i); c.setAttribute('aria-pressed', on.has(i)); $('#hcO').innerHTML = [...on].map(i => `<div class="card"><span class="label">Hidden cue</span><h3>${HCUES[i][0]}</h3><p>${HCUES[i][1]}</p></div>`).join(''); });
+    const bd = v => { const x = 40 + v / 100 * 560, t = (x - 320) / 280, y = 40 + 150 * Math.min(1, t * t); $('#bdD').setAttribute('cx', x); $('#bdD').setAttribute('cy', y); $('#bdT').innerHTML = v < 30 ? '<b>Bored:</b> the brain is under-stimulated and hunts for the fastest available stimulation, which for many people is a phone, porn or masturbation. It feels like "no reason", but the reason is the empty state itself.' : v < 70 ? '<b>Engaged:</b> meaningful work, conversation, exercise or creativity. Urges are rare here.' : '<b>Over-stimulated:</b> stress and overload, so the brain seeks relief, often through the same habits.'; };
+    $('#bdR').addEventListener('input', e => bd(+e.target.value)); bd(12);
+    const ifu = () => { $('#ifOut').innerHTML = `<span class="label">My plan</span><q>If ${$('#ifC').value}, then I will ${$('#ifD').value}.</q>`; };
+    $('#ifC').addEventListener('change', ifu); $('#ifD').addEventListener('change', ifu); ifu();
+    $('#ifCopy').addEventListener('click', e => { const t = $('#ifOut q').textContent; navigator.clipboard && navigator.clipboard.writeText(t).then(() => e.target.textContent = 'Copied', () => e.target.textContent = 'Select the text to copy'); });
   }
 };
 
